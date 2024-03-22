@@ -8,6 +8,8 @@ public class Room implements TimerSubscriber {
     private ArrayList<Entity> entities = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
 
+    private ArrayList<RoomAbility> abilities = new ArrayList<>();
+
     Room(int capacity) {
         this.capacity = capacity;
     }
