@@ -10,7 +10,7 @@ public class Room implements TimerSubscriber {
 
     private ArrayList<RoomAbility> abilities = new ArrayList<>();
 
-    Room(int capacity) {
+    public Room(int capacity) {
         this.capacity = capacity;
     }
 

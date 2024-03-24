@@ -3,7 +3,7 @@ package main;
 public class Teacher extends Entity {
     @Override
     public void StartRound(TimerEvent data) {
-        System.out.println("Teacher: StartRound");
+
     }
 
     @Override

@@ -29,7 +29,7 @@ public class Game {
             entities.add(player);
 
             // TODO: decide in which room to spawn the student in
-            rooms.get(0).AcceptEntity(player);
+            player.Teleport(rooms.get(0));
         }
     }
 
@@ -40,7 +40,7 @@ public class Game {
             entities.add(teacher);
 
             // TODO: decide in which room to spawn the teacher in
-            rooms.get(1).AcceptEntity(teacher);
+            teacher.Teleport(rooms.get(1));
         }
     }
 

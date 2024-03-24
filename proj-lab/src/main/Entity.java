@@ -27,6 +27,31 @@ public abstract class Entity implements TimerSubscriber {
         return activeProtections;
     }
 
+    public void AddProtection(Protection protection) {
+        activeProtections.add(protection);
+    }
+
+    public void RemoveProtection(Protection protection) {
+        if (!activeProtections.remove(protection))
+            throw new RuntimeException("Trying to remove a protection which the entity does not have. ");
+    }
+
+    public void PickUpItem(Item item) {
+        if (containingRoom == null || !containingRoom.GetItems().contains(item))
+            throw new RuntimeException("Can't pick up item");
+
+        containingRoom.PickUpItem(item);
+        item.PickedUp(this, containingRoom);
+    }
+
+    public void PlaceItem(Item item) {
+        if (containingRoom == null)
+            throw new RuntimeException("Can't pick up item");
+
+        containingRoom.PlaceItem(item);
+        item.Placed(this, containingRoom);
+    }
+
     public void ApplyAction(Action action) {
         action.Execute(this);
     }
@@ -36,7 +61,8 @@ public abstract class Entity implements TimerSubscriber {
         if (!destination.CanStepInto(this))
             return false;
 
-        containingRoom.RemoveEntity(this);
+        if (containingRoom != null)
+            containingRoom.RemoveEntity(this);
         destination.AcceptEntity(this);
         containingRoom = destination;
         return true;
