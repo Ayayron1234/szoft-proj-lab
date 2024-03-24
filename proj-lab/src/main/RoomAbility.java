@@ -1,5 +1,5 @@
 package main;
 
 public interface RoomAbility {
-    void Activate();
+    void Activate(Room room);
 }

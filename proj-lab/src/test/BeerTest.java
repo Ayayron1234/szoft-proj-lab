@@ -21,6 +21,7 @@ class BeerTest {
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         Teacher.ResetUIDs();
+        Room.ResetUIDs();
 
         student = new Student("player1");
         teacher = new Teacher();

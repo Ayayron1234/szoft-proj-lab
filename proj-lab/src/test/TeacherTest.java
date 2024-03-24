@@ -23,6 +23,7 @@ class TeacherTest {
 
     @BeforeEach
     void setUp() {
+        Room.ResetUIDs();
         Teacher.ResetUIDs();
 
         game = new Game();

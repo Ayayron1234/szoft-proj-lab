@@ -15,7 +15,6 @@ public class Poisoner implements Action {
 
         System.out.printf("%s was poisoned.\n", target.GetName());
         target.DropAllItems();
-        // TODO: kimarad 1 korbol
-
+        target.MissRounds(1);
     }
 }

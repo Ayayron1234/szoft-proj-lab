@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class CursedAbility implements RoomAbility {
     public ArrayList<Room> hiddenNeighbours = new ArrayList<>();
     @Override
-    public void Activate() {
+    public void Activate(Room room) {
 
     }
 }

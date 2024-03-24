@@ -21,6 +21,7 @@ class EntityTest {
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         Teacher.ResetUIDs();
+        Room.ResetUIDs();
 
         student = new Student("player1");
         room = new Room(1);

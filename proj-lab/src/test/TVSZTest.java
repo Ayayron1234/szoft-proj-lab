@@ -21,6 +21,7 @@ class TVSZTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
+        Room.ResetUIDs();
         Teacher.ResetUIDs();
 
         student = new Student("player1");

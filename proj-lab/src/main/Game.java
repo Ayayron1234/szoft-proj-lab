@@ -1,5 +1,7 @@
 package main;
 
+import main.roomabilities.PoisonAbility;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -34,6 +36,11 @@ public class Game {
         return teacher;
     }
 
+    public Room CreatePoisonedRoom(int capacity) {
+        Room room = new Room(capacity);
+        room.AddAbility(new PoisonAbility());
+        return room;
+    }
 
     private void InitRooms() {
         Room room1 = new Room(5);

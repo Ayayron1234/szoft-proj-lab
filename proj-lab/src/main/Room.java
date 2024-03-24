@@ -4,17 +4,22 @@ import java.util.ArrayList;
 
 public class Room implements TimerSubscriber {
     private int capacity;
+    private static int lastUid = 0;
+    private int uid;
+
     private ArrayList<Room> neighbours = new ArrayList<>();
     private ArrayList<Entity> entities = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
-    private static int lastUid = 0;
-    private int uid;
 
     private ArrayList<RoomAbility> abilities = new ArrayList<>();
 
     public Room(int capacity) {
         this.uid = lastUid++;
         this.capacity = capacity;
+    }
+
+    public static void ResetUIDs() {
+        lastUid = 0;
     }
 
     public int GetRoomNumber() { return uid; }
@@ -38,6 +43,10 @@ public class Room implements TimerSubscriber {
 
     public void SetCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public void AddAbility(RoomAbility ability) {
+        abilities.add(ability);
     }
 
     public ArrayList<Room> GetNeighbours() {

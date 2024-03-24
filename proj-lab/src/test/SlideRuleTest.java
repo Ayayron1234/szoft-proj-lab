@@ -24,6 +24,8 @@ class SlideRuleTest {
 
     @BeforeEach
     void setUp() {
+        Room.ResetUIDs();
+
         student = new Student("player1");
         game = new Game();
         sliderule = new SlideRule(game);
