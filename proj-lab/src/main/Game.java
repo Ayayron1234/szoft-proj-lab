@@ -12,7 +12,30 @@ public class Game {
 
     Timer timer = new Timer();
 
-    public void InitRooms() {
+    public void RemoveEntity(Entity entity) {
+        entities.remove(entity);
+        timer.Unsubscribe(entity);
+
+        if (entities.isEmpty())
+            End(false);
+    }
+
+    public Student CreateStudent(String name) {
+        Student student = new Student(name, this);
+        entities.add(student);
+        timer.Subscribe(student);
+        return student;
+    }
+
+    public Teacher CreateTeacher() {
+        Teacher teacher = new Teacher(this);
+        entities.add(teacher);
+        timer.Subscribe(teacher);
+        return teacher;
+    }
+
+
+    private void InitRooms() {
         Room room1 = new Room(5);
         Room room2 = new Room(3);
 
@@ -22,22 +45,18 @@ public class Game {
         // TODO: implement room generation
     }
 
-    public void InitStudents(int count) {
+    private void InitStudents(int count) {
         for (int i = 0; i < count; ++i) {
-            Student player = new Student();
-            timer.Subscribe(player);
-            entities.add(player);
+            Student player = CreateStudent(Integer.toString(i));
 
             // TODO: decide in which room to spawn the student in
             player.Teleport(rooms.get(0));
         }
     }
 
-    public void InitTeachers(int count) {
+    private void InitTeachers(int count) {
         for (int i = 0; i < count; ++i) {
-            Teacher teacher = new Teacher();
-            timer.Subscribe(teacher);
-            entities.add(teacher);
+            Teacher teacher = CreateTeacher();
 
             // TODO: decide in which room to spawn the teacher in
             teacher.Teleport(rooms.get(1));
@@ -50,9 +69,18 @@ public class Game {
         Room starterRoom = new Room(5);
         timer.Subscribe(starterRoom);
 
+        InitRooms();
+        InitStudents(2);
+        InitTeachers(3);
+
         while(roundsLeft > 0) {
             MainLoop();
         }
+    }
+
+    public void End(boolean victory){
+        System.out.printf("Game.End(%b)", victory);
+
     }
 
     private void MainLoop() {

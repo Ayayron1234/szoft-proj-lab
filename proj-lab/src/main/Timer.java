@@ -24,7 +24,7 @@ public class Timer {
     }
 
     public void StartTurn(Entity who, TimerEvent data) {
-        System.out.printf("Timer.StartTurn(%s%d)\n", who.GetName(), data.GetTurnNumber());
+        System.out.printf("Timer.StartTurn(%s)\n", who.GetName());
         if (subscribers.contains(who))
             who.StartTurn(data);
     }

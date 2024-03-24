@@ -1,6 +1,17 @@
 package main;
 
 public class Student extends Entity {
+    private final String uniqueName;
+
+    public Student(String uniqueName) {
+        this.uniqueName = uniqueName;
+    }
+
+    public Student(String uniqueName, Game game) {
+        super(game);
+        this.uniqueName = uniqueName;
+    }
+
     @Override
     public void StartRound(TimerEvent data) {
 //        System.out.println("Student: StartRound");
@@ -26,6 +37,6 @@ public class Student extends Entity {
 
     @Override
     public String GetName() {
-        return "Hallgató";
+        return String.format("Hallgató(%s)", uniqueName);
     }
 }

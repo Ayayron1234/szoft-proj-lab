@@ -7,12 +7,17 @@ public class Room implements TimerSubscriber {
     private ArrayList<Room> neighbours = new ArrayList<>();
     private ArrayList<Entity> entities = new ArrayList<>();
     private ArrayList<Item> items = new ArrayList<>();
+    private static int lastUid = 0;
+    private int uid;
 
     private ArrayList<RoomAbility> abilities = new ArrayList<>();
 
     public Room(int capacity) {
+        this.uid = lastUid++;
         this.capacity = capacity;
     }
+
+    public int GetRoomNumber() { return uid; }
 
     public ArrayList<Item> GetItems() {
         return items;

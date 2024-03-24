@@ -8,9 +8,6 @@ import main.itemtypes.TVSZ;
 public class Main {
     public static void main(String[] args) {
         Game game = new Game();
-        game.InitRooms();
-        game.InitStudents(2);
-        game.InitTeachers(3);
         game.Start();
     }
 }
