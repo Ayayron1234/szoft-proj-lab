@@ -36,6 +36,7 @@ public abstract class Entity implements TimerSubscriber {
         return activeProtections;
     }
 
+    public Room GetContainingRoom() { return containingRoom; }
     public boolean HasProtectionType(ProtectionType type) {
         for (var protection : activeProtections)
             if (protection.GetType().equals(type))
