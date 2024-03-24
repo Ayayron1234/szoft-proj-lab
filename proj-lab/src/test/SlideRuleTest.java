@@ -41,7 +41,7 @@ class SlideRuleTest {
     @Test
     public void WinGameTest() {
         student.PickUpItem(sliderule);
-        assertEquals("Hallgató(player1) picked up the sliderule from room #0 so Students won the game.\n", myOut.toString());
+        assertEquals("Hallgató(player1) picked up the sliderule from room #0 so Students won the game.\nGame.End(true)\n", myOut.toString());
         myOut.reset();
 
         //assertEquals();

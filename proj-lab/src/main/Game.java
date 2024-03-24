@@ -86,7 +86,7 @@ public class Game {
     }
 
     public void End(boolean victory){
-        System.out.printf("Game.End(%b)", victory);
+        System.out.printf("Game.End(%b)\n", victory);
 
     }
 

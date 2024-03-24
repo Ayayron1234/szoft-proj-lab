@@ -1,9 +1,7 @@
 package test;
 
-import main.Game;
-import main.Room;
-import main.Student;
-import main.Teacher;
+import main.*;
+import main.actions.SoulDrainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +41,13 @@ class TeacherTest {
 
         myOut.reset();
         teacher.DrainSouls();
-        assertEquals(String.format("%s drains the soul of entities.\n%s's soul was drained.\n", teacher.GetName(), student1.GetName()), myOut.toString());
+        assertEquals(String.format("%s drains the soul of entities.\n%s dropped out of game.\n%s's soul was drained.\n", teacher.GetName(), student1.GetName(), student1.GetName()), myOut.toString());
+        myOut.reset();
+
+        assertTrue(student2.Teleport(room));
+        student2.AddProtection(new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, 3));
+        teacher.DrainSouls();
+        assertEquals(String.format("%s drains the soul of entities.\n%s was protected against soul draining.\n", teacher.GetName(), student2.GetName()), myOut.toString());
+        myOut.reset();
     }
 }

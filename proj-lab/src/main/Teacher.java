@@ -2,6 +2,7 @@ package main;
 
 import main.actions.SoulDrainer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -27,10 +28,15 @@ public class Teacher extends Entity {
 
         SoulDrainer drainer = new SoulDrainer();
 
-        Iterator<Entity> iter = containingRoom.GetEntities().iterator();
-        while(iter.hasNext()) {
-            Entity entity = iter.next();
+        ArrayList<Entity> entities = containingRoom.GetEntities();
+        int entitiesSize = entities.size();
+        for (int i = 0; i < entitiesSize; ++i) {
+            Entity entity = entities.get(i);
             entity.ApplyAction(drainer);
+            if (entitiesSize != entities.size()) {
+                --i;
+                entitiesSize = entities.size();
+            }
         }
     }
 
