@@ -7,6 +7,9 @@ public class Beer extends Item {
     private Protection providedProtection = null;
     private Entity owner = null;
 
+    /**
+     * @return
+     */
     @Override
     public String GetName() {
         return "Szent Söröspohár";

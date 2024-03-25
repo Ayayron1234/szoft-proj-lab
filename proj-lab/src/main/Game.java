@@ -5,15 +5,26 @@ import main.roomabilities.PoisonAbility;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Manages the state and logic of the game, including rounds, entities (students and teachers),
+ * and rooms. This class is responsible for initializing the game environment, starting the game,
+ * and handling the progression of rounds until the game ends either through victory or defeat.
+ */
 public class Game {
-    int roundsLeft = 4;
-    int roundNumber = 0;
+    int roundsLeft = 4; // The number of rounds remaining in the game.
+    int roundNumber = 0; // The current round number.
 
-    ArrayList<Room> rooms = new ArrayList<>();
-    ArrayList<Entity> entities = new ArrayList<>();
+    ArrayList<Room> rooms = new ArrayList<>(); // The list of rooms in the game.
+    ArrayList<Entity> entities = new ArrayList<>(); // The list of entities (students and teachers) in the game.
 
-    Timer timer = new Timer();
+    Timer timer = new Timer(); // The timer used to manage round and turn timing events.
 
+    /**
+     * Removes an entity from the game and unsubscribes it from the timer. If no entities remain,
+     * the game ends in defeat.
+     *
+     * @param entity The entity to remove from the game.
+     */
     public void RemoveEntity(Entity entity) {
         entities.remove(entity);
         timer.Unsubscribe(entity);
@@ -22,6 +33,12 @@ public class Game {
             End(false);
     }
 
+    /**
+     * Creates a new student entity, adds it to the game, and subscribes it to the timer.
+     *
+     * @param name The name of the student.
+     * @return The created student entity.
+     */
     public Student CreateStudent(String name) {
         Student student = new Student(name, this);
         entities.add(student);
@@ -29,6 +46,11 @@ public class Game {
         return student;
     }
 
+    /**
+     * Creates a new teacher entity, adds it to the game, and subscribes it to the timer.
+     *
+     * @return The created teacher entity.
+     */
     public Teacher CreateTeacher() {
         Teacher teacher = new Teacher(this);
         entities.add(teacher);
@@ -36,12 +58,22 @@ public class Game {
         return teacher;
     }
 
+    /**
+     * Creates a room with a specified capacity and adds a poison ability to it.
+     *
+     * @param capacity The maximum number of entities the room can hold.
+     * @return The created room with a poison ability.
+     */
     public Room CreatePoisonedRoom(int capacity) {
         Room room = new Room(capacity);
         room.AddAbility(new PoisonAbility());
         return room;
     }
 
+    /**
+     * Initializes the rooms in the game. Additional implementation required for
+     * generating rooms beyond the initial setup.
+     */
     private void InitRooms() {
         Room room1 = new Room(5);
         Room room2 = new Room(3);
@@ -52,6 +84,11 @@ public class Game {
         // TODO: implement room generation
     }
 
+    /**
+     * Initializes the student entities in the game and assigns them to rooms.
+     *
+     * @param count The number of students to create and initialize.
+     */
     private void InitStudents(int count) {
         for (int i = 0; i < count; ++i) {
             Student player = CreateStudent(Integer.toString(i));
@@ -61,6 +98,11 @@ public class Game {
         }
     }
 
+    /**
+     * Initializes the teacher entities in the game and assigns them to rooms.
+     *
+     * @param count The number of teachers to create and initialize.
+     */
     private void InitTeachers(int count) {
         for (int i = 0; i < count; ++i) {
             Teacher teacher = CreateTeacher();
@@ -70,6 +112,10 @@ public class Game {
         }
     }
 
+    /**
+     * Starts the game by initializing the game environment and entering the main game loop.
+     * Continues until all rounds are completed or the game ends.
+     */
     public void Start() {
         System.out.println("Game.Start()");
 
@@ -85,11 +131,19 @@ public class Game {
         }
     }
 
+    /**
+     * Ends the game with a specified outcome.
+     *
+     * @param victory True if the game ends in victory, false otherwise.
+     */
     public void End(boolean victory){
         System.out.printf("Game.End(%b)\n", victory);
 
     }
-
+/**
+ * Executes a single round of the game. This includes starting the round, executing turns for
+ * each entity, and then ending  the round. It processes all entities' actions, increments the round number, and decrements the rounds left.
+ **/
     private void MainLoop() {
         TimerEvent timerEvent = new TimerEvent(roundNumber, roundsLeft, 0);
 

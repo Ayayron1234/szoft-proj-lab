@@ -8,6 +8,10 @@ public class TVSZ extends Item {
 //    private Protection providedProtection = null;
     private Entity owner = null;
 
+    /**
+     * This method returns the name of the TVSZ
+     * @return A string representing the name of this item.
+     */
     @Override
     public String GetName() {
         return "TVSZ Denevérbőrre Nyomtatott Példánya";
@@ -30,6 +34,9 @@ public class TVSZ extends Item {
         owner = null;
     }
 
+    /**
+     * The method is to control when the TVSZ is used (a freshly one is usable 3 times and the game remembers how many times it was used)
+     */
     public void Use() {
         usesLeft--;
         if (usesLeft > 0)
