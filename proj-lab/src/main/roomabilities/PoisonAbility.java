@@ -3,6 +3,7 @@ package main.roomabilities;
 import main.Entity;
 import main.Room;
 import main.RoomAbility;
+import main.Student;
 import main.actions.Poisoner;
 
 public class PoisonAbility implements RoomAbility {
@@ -10,10 +11,12 @@ public class PoisonAbility implements RoomAbility {
     public void Activate(Room room) {
         System.out.println("PoisonAbility.Activate");
 
-        /*Poisoner poisoner = new Poisoner();
+        System.out.println("new Poisoner");
+        Poisoner poisoner = new Poisoner();
 
-        for (Entity entity : room.GetEntities()) {
-            entity.ApplyAction(poisoner);
-        }*/
+        room.GetEntities();
+        System.out.println("For entity in room.GetEntities()");
+
+        new Student("").ApplyAction(poisoner);
     }
 }

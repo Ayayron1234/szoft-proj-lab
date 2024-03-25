@@ -3,8 +3,6 @@ package main;
 import java.util.ArrayList;
 
 public class Timer {
-    final private ArrayList<TimerSubscriber> subscribers = new ArrayList<TimerSubscriber>();
-
     /**
      * This method implements subscribtion to the Timer
      * @param subscriber - the subscriber to the Timer
@@ -12,7 +10,6 @@ public class Timer {
      */
     public void Subscribe(TimerSubscriber subscriber) {
         System.out.println("Timer.Subscribe");
-        subscribers.add(subscriber);
     }
 
     /**
@@ -22,7 +19,6 @@ public class Timer {
      */
     public void Unsubscribe(TimerSubscriber subscriber) {
         System.out.println("Timer.Unsubscribe");
-        subscribers.remove(subscriber);
     }
 
     /**
@@ -32,8 +28,9 @@ public class Timer {
      */
     public void StartRound(TimerEvent data) {
         System.out.println("Timer.StartRound");
-        for (TimerSubscriber subscriber : subscribers)
-            subscriber.StartRound(data);
+        TimerSubscriber subscriber = new Student("");
+        Subscribe(subscriber);
+        subscriber.StartRound(data);
     }
 
     /**
@@ -43,8 +40,6 @@ public class Timer {
      */
     public void EndRound(TimerEvent data) {
         System.out.println("Timer.EndRound");
-        for (TimerSubscriber subscriber : subscribers)
-            subscriber.EndRound(data);
     }
 
     /**
@@ -54,9 +49,9 @@ public class Timer {
      */
     public void StartTurn(Entity who, TimerEvent data) {
         System.out.println("Timer.StartTurn");
-        System.out.printf("Timer.StartTurn(%s)\n", who.GetName());
-        if (subscribers.contains(who))
-            who.StartTurn(data);
+        TimerSubscriber subscriber = new Student("");
+        Subscribe(subscriber);
+        subscriber.StartTurn(data);
     }
 
     /**
@@ -66,7 +61,5 @@ public class Timer {
      */
     public void EndTurn(Entity who, TimerEvent data) {
         System.out.println("Timer.EndTurn");
-        if (subscribers.contains(who))
-            who.EndTurn(data);
     }
 }

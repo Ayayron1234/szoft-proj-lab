@@ -1,12 +1,16 @@
 package main;
 
+import main.roomabilities.CursedAbility;
+import main.roomabilities.PoisonAbility;
+
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Room implements TimerSubscriber {
-    private int capacity;
-    private static int lastUid = 0;
-    private int uid;
+//    private int capacity;
+//    private static int lastUid = 0;
+//    private int uid;
 
     private ArrayList<Room> neighbours = new ArrayList<>();
     private ArrayList<Entity> entities = new ArrayList<>();
@@ -19,8 +23,8 @@ public class Room implements TimerSubscriber {
      * @param capacity - capacity of room (how many entities can fit)
      */
     public Room(int capacity) {
-        this.uid = lastUid++;
-        this.capacity = capacity;
+//        this.uid = lastUid++;
+//        this.capacity = capacity;
     }
 
     /**
@@ -28,7 +32,7 @@ public class Room implements TimerSubscriber {
      */
     public static void ResetUIDs() {
         System.out.println("Room.ResetUIDs");
-        lastUid = 0;
+//        lastUid = 0;
     }
 
     /**
@@ -36,7 +40,7 @@ public class Room implements TimerSubscriber {
      */
     public int GetRoomNumber() {
         System.out.println("Room.GetRoomNumber");
-        return uid;
+        return 0;
     }
 
     /**
@@ -44,7 +48,7 @@ public class Room implements TimerSubscriber {
      */
     public ArrayList<Item> GetItems() {
         System.out.println("Room.GetItems");
-        return items;
+        return new ArrayList<>();
     }
 
     /**
@@ -53,7 +57,6 @@ public class Room implements TimerSubscriber {
      */
     public void PlaceItem(Item item) {
         System.out.println("Room.PlaceItem");
-        items.add(item);
     }
 
     /**
@@ -62,16 +65,15 @@ public class Room implements TimerSubscriber {
      */
     public void PickUpItem(Item item) {
         System.out.println("Room.PickUpItem");
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Could the item be found in the room entity is standing in?\n 1-yes 2-no");
+
         String answer = scanner.nextLine();
         if(answer.equals("2")) {
             System.out.println("Room doesn't contain provided item.");
-        }
-        items.remove(item);
-
-        /*if (!items.remove(item))
-            throw new RuntimeException("Room doesn't contain provided item. ");*/
+        } else
+            System.out.println("Picked up item from room");
     }
 
     /**
@@ -79,7 +81,7 @@ public class Room implements TimerSubscriber {
      */
     public int GetCapacity() {
         System.out.println("Room.GetCapacity");
-        return capacity;
+        return 0;
     }
 
     /**
@@ -88,7 +90,6 @@ public class Room implements TimerSubscriber {
      */
     public void SetCapacity(int capacity) {
         System.out.println("Room.SetCapacity");
-        this.capacity = capacity;
     }
 
     /**
@@ -100,12 +101,27 @@ public class Room implements TimerSubscriber {
         abilities.add(ability);
     }
 
+    public void ActivateAbilities() {
+        System.out.println("Room.ActivateAbilities");
+
+        System.out.println("Is the ability a curse(1) ability or a poison(2) ability?");
+
+        Scanner scanner = new Scanner(System.in);
+        if (scanner.nextLine().equals("1")) {
+            CursedAbility cursedAbility = new CursedAbility();
+            cursedAbility.Activate(this);
+        } else {
+            PoisonAbility poison = new PoisonAbility();
+            poison.Activate(this);
+        }
+    }
+
     /**
      * @return neighbours - the list of neighbours that the room has
      */
     public ArrayList<Room> GetNeighbours() {
         System.out.println("Room.GetNeighbours");
-        return neighbours;
+        return new ArrayList<>();
     }
 
     /**
@@ -114,7 +130,6 @@ public class Room implements TimerSubscriber {
      */
     public void AddNeighbour(Room neighbour) {
         System.out.println("Room.AddNeighbour");
-        neighbours.add(neighbour);
     }
 
     /**
@@ -123,7 +138,7 @@ public class Room implements TimerSubscriber {
      */
     public boolean RemoveNeighbour(Room neighbour) {
         System.out.println("Room.RemoveNeighbour");
-        return neighbours.remove(neighbour);
+        return true;
     }
 
     /**
@@ -134,17 +149,6 @@ public class Room implements TimerSubscriber {
      */
     public void AcceptEntity(Entity entity) {
         System.out.println("Room.AcceptEntity");
-        /*Scanner scanner = new Scanner(System.in);
-        System.out.println("Can entity step into this room?\n 1-yes 2-no");
-        String answer = scanner.nextLine();
-        if(answer.equals("2")) {
-            System.out.println("Room is full, cant pass");
-        }*/
-        entities.add(entity);
-
-        /*if (!CanStepInto(entity))
-            throw new RuntimeException("main.Entity count exceeds maximum");
-        entities.add(entity);*/
     }
 
     /**
@@ -181,9 +185,38 @@ public class Room implements TimerSubscriber {
      */
     public boolean CanStepInto(Entity who) {
         System.out.println("Room.CanStepInto");
-        return entities.size() < capacity;
+        return true;
     }
 
+    public void SplitRoom() {
+        System.out.println("Room.SplitRoom");
+
+        Room newRoom = new Room(0);
+
+        GetNeighbours();
+        newRoom.AddNeighbour(this);
+        RemoveNeighbour(this);
+
+        newRoom.AddAbility(new PoisonAbility());
+        newRoom.SetCapacity(0);
+    }
+
+    public static void MergeRoom(Room a, Room b) {
+        System.out.println("Room.MergeRoom");
+
+        a.GetNeighbours();
+        b.GetNeighbours();
+
+        System.out.println("For neighbour in a.GetNeighbours() and b.GetNeigbours");
+        new Room(0).RemoveNeighbour(a);
+        new Room(0).RemoveNeighbour(b);
+
+        System.out.println("new Room");
+        Room newRoom = new Room(0);
+
+        newRoom.AddAbility(new PoisonAbility());
+        newRoom.SetCapacity(0);
+    }
 
     @Override
     public void StartRound(TimerEvent data) {

@@ -1,9 +1,6 @@
 package main.itemtypes;
 
-import main.Entity;
-import main.Item;
-import main.Room;
-import main.TimerEvent;
+import main.*;
 import main.actions.Poisoner;
 
 import java.util.Scanner;
@@ -15,9 +12,6 @@ import java.util.Scanner;
  * mechanics where items can influence the environment or entities within it.
  */
 public class Camembert extends Item {
-    private int duration = 3; // The number of rounds the room remains poisoned after placement.
-    private Room activationPlace = null; // The room in which the cheese is activated, or null if not placed.
-
     /**
      * Returns the name of the item.
      *
@@ -39,7 +33,6 @@ public class Camembert extends Item {
     @Override
     public void PickedUp(Entity who, Room where) {
         System.out.println("Camembert.PickedUp");
-        activationPlace = null;
     }
 
     /**
@@ -52,14 +45,11 @@ public class Camembert extends Item {
     @Override
     public boolean CanPickUp(Entity who) {
         System.out.println("Camembert.CanPickUp");
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Can the entity pick up the camembert?\n 1-yes 2-no");
         String answer = scanner.nextLine();
         return (answer.equals("1"));
-
-        /*
-        return activationPlace == null;
-         */
     }
 
     /**
@@ -72,12 +62,6 @@ public class Camembert extends Item {
     @Override
     public void Placed(Entity who, Room where) {
         System.out.println("Camembert.Placed");
-        activationPlace = where;
-
-        /*
-        activationPlace = where;
-        System.out.printf("%s placed down mask and poisoned room #%d for %d rounds.\n", who.GetName(), where.GetRoomNumber(), duration);
-         */
     }
 
     /**
@@ -90,42 +74,21 @@ public class Camembert extends Item {
      */
     @Override
     public void StartRound(TimerEvent data) {
-        System.out.println("Camembert.StartRound()");
+        System.out.println("Camembert.StartRound");
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Is the Camembert active?\n 1-yes 2-no");
+
         String answer = scanner.nextLine();
         if(answer.equals("2")){
             return;
         }
 
+        System.out.println("new Poisoner");
         Poisoner poisoner = new Poisoner();
-        for (Entity entity : activationPlace.GetEntities()) {
-            entity.ApplyAction(poisoner);
-        }
 
-        --duration;
-        if (duration == 0) {
-            activationPlace = null;
-        }
+        System.out.println("For entity in room.GetEntities()");
 
-        /*
-        if (activationPlace == null)
-            return;
-
-        Poisoner poisoner = new Poisoner();
-        for (Entity entity : activationPlace.GetEntities()) {
-            entity.ApplyAction(poisoner);
-        }
-
-        --duration;
-
-        if (duration == 0) {
-            System.out.printf("Room #%d is no longer poisoned by camambert.\n", activationPlace.GetRoomNumber());
-            activationPlace = null;
-            // TODO: Implement item deletion or removal logic here if needed.
-        }
-        else
-            System.out.printf("Room #%d is poisoned by camambert for duration:%d.\n", activationPlace.GetRoomNumber(), duration);
-         */
+        new Student("").ApplyAction(poisoner);
     }
 }

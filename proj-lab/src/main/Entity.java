@@ -10,12 +10,6 @@ import java.util.Scanner;
  * rooms, picking up and dropping items, and managing protections.
  */
 public abstract class Entity implements TimerSubscriber {
-    Room containingRoom; // The room where the entity currently is.
-    ArrayList<Protection> activeProtections = new ArrayList<>(); // List of active protections on the entity.
-    ArrayList<Item> items = new ArrayList<>(); // Items currently carried by the entity.
-    Game game = null; // The game instance to which the entity belongs.
-    int missedRoundsLeft = 0; // Rounds the entity is set to miss.
-
     /**
      * Default constructor for creating an entity without specifying a game context.
      */
@@ -27,7 +21,6 @@ public abstract class Entity implements TimerSubscriber {
      * @param game The game instance to which the entity will be added.
      */
     public Entity(Game game) {
-        this.game = game;
     }
 
     /**
@@ -40,16 +33,18 @@ public abstract class Entity implements TimerSubscriber {
     public boolean Step(Room destination) {
         System.out.println("Entity.Step");
 
+        Room containingRoom = new Room(2);
+        containingRoom.GetNeighbours();
+
+        destination.CanStepInto(this);
+
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Is the room you want to move to a neighbouring room?\n 1-yes 2-no");
-        String answer = scanner.nextLine();
-        if(answer.equals("2")) return false;
+        System.out.println("Can entity step into room? (1-yes 2-no)");
 
-        /*ArrayList<Room> neighbours = containingRoom.GetNeighbours();
-        if (!neighbours.contains(destination))
-            return false;*/
+        if (scanner.nextLine().equals("1"))
+            destination.AcceptEntity(this);
 
-        return MoveToRoom(destination);
+        return true;
     }
 
     /**
@@ -76,10 +71,14 @@ public abstract class Entity implements TimerSubscriber {
      * @return An ArrayList of {@link Protection} objects.
      */
     public ArrayList<Protection> GetActiveProtections() {
-        return activeProtections;
+        System.out.println("Entity.GetActiveProtections");
+        return new ArrayList<>();
     }
 
-    public Room GetContainingRoom() { return containingRoom; }
+    public Room GetContainingRoom() {
+        System.out.println("Entity.GetContainingRoom");
+        return new Room(0);
+    }
 
     /**
      * Checks if the entity has a specific type of protection.
@@ -94,12 +93,6 @@ public abstract class Entity implements TimerSubscriber {
         String answer = scanner.nextLine();
         if(answer.equals("2")) return false;
         return true;
-
-
-        /*for (var protection : activeProtections)
-            if (protection.GetType().equals(type))
-                return true;
-        return false;*/
     }
 
     /**
@@ -109,7 +102,6 @@ public abstract class Entity implements TimerSubscriber {
      */
     public void AddProtection(Protection protection) {
         System.out.println("Entity.AddProtection");
-        activeProtections.add(protection);
     }
 
     /**
@@ -119,19 +111,14 @@ public abstract class Entity implements TimerSubscriber {
      */
     public void RemoveProtection(Protection protection) {
         System.out.println("Entity.RemoveProtection");
+
         Scanner scanner = new Scanner(System.in);
         System.out.printf("Does entity have %s? \n 1-yes 2-no", protection.GetType().toString());
+
         String answer = scanner.nextLine();
         if(answer.equals("2")) {
             System.out.println("Trying to remove a protection which the entity does not have.");
         }
-        else {
-            activeProtections.remove(protection);
-        }
-
-
-        /*if (!activeProtections.remove(protection))
-            throw new RuntimeException("Trying to remove a protection which the entity does not have.");*/
     }
 
     /**
@@ -141,24 +128,18 @@ public abstract class Entity implements TimerSubscriber {
      */
     public void PickUpItem(Item item) {
         System.out.println("Entity.PickUpItem");
+
+        System.out.println("Does the entity have enough space in their inventory?\n 1-yes 2-no");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Is the item currently in this room?\n 1-yes 2-no");
-        String answer = scanner.nextLine();
-        if(answer.equals("2")) {
-            System.out.println("Can't pick up item");
-        }
-        else {
-            containingRoom.PickUpItem(item);
-            item.PickedUp(this, containingRoom);
-            items.add(item);
+        if (scanner.nextLine().equals("2")) {
+            System.out.println("The entity couldn't pick up item.");
+            return;
         }
 
-        /*if (containingRoom == null || !containingRoom.GetItems().contains(item))
-            throw new RuntimeException("Can't pick up item");
+        Room room = new Room(0);
+        new Room(0).PickUpItem(item);
 
-        containingRoom.PickUpItem(item);
-        item.PickedUp(this, containingRoom);
-        items.add(item);*/
+        item.PickedUp(this, room);
     }
 
     /**
@@ -168,23 +149,18 @@ public abstract class Entity implements TimerSubscriber {
      */
     public void PlaceItem(Item item) {
         System.out.println("Entity.PlaceItem");
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Is the item currently in entity's inventory?\n 1-yes 2-no");
+
         String answer = scanner.nextLine();
         if(answer.equals("2")) {
             System.out.println("Can't place item");
         }
         else {
-            containingRoom.PlaceItem(item);
-            item.Placed(this, containingRoom);
-            items.remove(item);
+            new Room(0).PlaceItem(item);
+            item.Placed(this, new Room(0));
         }
-        /*if (containingRoom == null || !items.contains(item))
-            throw new RuntimeException("Can't place item");
-
-        containingRoom.PlaceItem(item);
-        item.Placed(this, containingRoom);
-        items.remove(item);*/
     }
 
     /**
@@ -194,22 +170,16 @@ public abstract class Entity implements TimerSubscriber {
      */
     public void DropItem(Item item) {
         System.out.println("Entity.DropItem");
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Is the item currently in entity's inventory?\n 1-yes 2-no");
+
         String answer = scanner.nextLine();
         if(answer.equals("2")) {
             System.out.println("Can't drop item");
         } else {
-            containingRoom.PlaceItem(item);
-            items.remove(item);
+            new Room(0).PlaceItem(item);
         }
-
-
-        /*if (containingRoom == null || !items.contains(item))
-            throw new RuntimeException("Can't drop item");
-
-        containingRoom.PlaceItem(item);
-        items.remove(item);*/
     }
 
     /**
@@ -218,7 +188,7 @@ public abstract class Entity implements TimerSubscriber {
      * @return An ArrayList of {@link Item} objects.
      */
     public ArrayList<Item> GetItems() {
-        return items;
+        return new ArrayList<>();
     }
 
     /**
@@ -226,8 +196,6 @@ public abstract class Entity implements TimerSubscriber {
      */
     public void DropAllItems() {
         System.out.println("Entity.DropAllItems");
-        for (Item item : items)
-            DropItem(item);
     }
 
     /**
@@ -250,29 +218,7 @@ public abstract class Entity implements TimerSubscriber {
      */
     private boolean MoveToRoom(Room destination) {
         System.out.println("Entity.MoveToRoom");
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Can entity step into destination?\n 1-yes 2-no");
-        String answer = scanner.nextLine();
-        if(answer.equals("2")) {
-            return false;
-        } else {
-            if (containingRoom != null)
-                containingRoom.RemoveEntity(this);
-            destination.AcceptEntity(this);
-            containingRoom = destination;
-            return true;
-        }
-
-
-        /*// Check whether room has enough capacity to accept entity
-        if (!destination.CanStepInto(this))
-            return false;
-
-        if (containingRoom != null)
-            containingRoom.RemoveEntity(this);
-        destination.AcceptEntity(this);
-        containingRoom = destination;
-        return true;*/
+        return true;
     }
     /**
      * Removes the entity from the game entirely. This includes removing the entity from
@@ -283,10 +229,7 @@ public abstract class Entity implements TimerSubscriber {
      */
     public boolean DropOutOfGame() {
         System.out.println("Entity.DropOutOfGame");
-        //System.out.printf("%s dropped out of game.\n", GetName());
-        containingRoom.RemoveEntity(this);
-        if (game != null)
-            game.RemoveEntity(this);
+        new Game().RemoveEntity(this);
         return true;
     }
     /**
@@ -299,8 +242,6 @@ public abstract class Entity implements TimerSubscriber {
      */
     public boolean MissRounds(int roundCount) {
         System.out.println("Entity.MissRounds");
-        //System.out.printf("%s misses %d rounds.\n", GetName(), roundCount);
-        missedRoundsLeft = roundCount;
         return true;
     }
 }

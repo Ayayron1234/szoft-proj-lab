@@ -3,15 +3,12 @@ package main;
 import java.util.List;
 
 public class Student extends Entity {
-    private final String uniqueName;
 
     /**
      * This method is the constructor of the Student class
      * @param uniqueName the name that the student is called in this game (it has to be unique but now it isn't checked so we have to make sure of it)
      */
     public Student(String uniqueName) {
-        System.out.println("Student.Student");
-        this.uniqueName = uniqueName;
     }
 
     /**
@@ -22,7 +19,6 @@ public class Student extends Entity {
     public Student(String uniqueName, Game game) {
         super(game);
         System.out.println("Student.Student");
-        this.uniqueName = uniqueName;
     }
 
     @Override
@@ -38,9 +34,6 @@ public class Student extends Entity {
     @Override
     public void StartTurn(TimerEvent data) {
         System.out.println("Student.StartTurn");
-        if (data.GetTurnNumber() == 1) {
-            List<Room>  neighbours = this.containingRoom.GetNeighbours();
-        }
     }
 
     @Override
@@ -55,6 +48,6 @@ public class Student extends Entity {
     @Override
     public String GetName() {
         System.out.println("Student.GetName");
-        return String.format("Hallgató(%s)", uniqueName);
+        return "";
     }
 }

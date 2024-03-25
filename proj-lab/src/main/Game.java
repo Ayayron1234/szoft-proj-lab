@@ -12,14 +12,6 @@ import java.util.Scanner;
  * and handling the progression of rounds until the game ends either through victory or defeat.
  */
 public class Game {
-    int roundsLeft = 4; // The number of rounds remaining in the game.
-    int roundNumber = 0; // The current round number.
-
-    ArrayList<Room> rooms = new ArrayList<>(); // The list of rooms in the game.
-    ArrayList<Entity> entities = new ArrayList<>(); // The list of entities (students and teachers) in the game.
-
-    Timer timer = new Timer(); // The timer used to manage round and turn timing events.
-
     /**
      * Removes an entity from the game and unsubscribes it from the timer. If no entities remain,
      * the game ends in defeat.
@@ -29,18 +21,12 @@ public class Game {
     public void RemoveEntity(Entity entity) {
         System.out.println("Game.RemoveEntity");
 
-        entities.remove(entity);
-        rooms.remove(entity);
-        timer.Unsubscribe(entity);
-
+        System.out.println("Was this the last student in the game?\n 1-yes 2-no");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Was this the last player alive?\n 1-yes 2-no");
         String answer = scanner.nextLine();
         if(answer.equals("1")) {
             End(false);
         }
-        /*if (entities.isEmpty())
-            End(false);*/
     }
 
     /**
@@ -52,8 +38,6 @@ public class Game {
     public Student CreateStudent(String name) {
         System.out.println("Game.CreateStudent");
         Student student = new Student(name, this);
-        entities.add(student);
-        timer.Subscribe(student);
         return student;
     }
 
@@ -65,8 +49,6 @@ public class Game {
     public Teacher CreateTeacher() {
         System.out.println("Game.CreateTeacher");
         Teacher teacher = new Teacher(this);
-        entities.add(teacher);
-        timer.Subscribe(teacher);
         return teacher;
     }
 
@@ -89,13 +71,6 @@ public class Game {
      */
     private void InitRooms() {
         System.out.println("Game.InitRooms");
-        Room room1 = new Room(5);
-        Room room2 = new Room(3);
-
-        rooms.add(room1);
-        rooms.add(room2);
-
-        // TODO: implement room generation
     }
 
     /**
@@ -105,12 +80,6 @@ public class Game {
      */
     private void InitStudents(int count) {
         System.out.println("Game.InitStudents");
-        for (int i = 0; i < count; ++i) {
-            Student player = CreateStudent(Integer.toString(i));
-
-            // TODO: decide in which room to spawn the student in
-            player.Teleport(rooms.get(0));
-        }
     }
 
     /**
@@ -120,12 +89,6 @@ public class Game {
      */
     private void InitTeachers(int count) {
         System.out.println("Game.InitTeachers");
-        for (int i = 0; i < count; ++i) {
-            Teacher teacher = CreateTeacher();
-
-            // TODO: decide in which room to spawn the teacher in
-            teacher.Teleport(rooms.get(1));
-        }
     }
 
     /**
@@ -134,17 +97,6 @@ public class Game {
      */
     public void Start() {
         System.out.println("Game.Start");
-
-        Room starterRoom = new Room(5);
-        timer.Subscribe(starterRoom);
-
-        InitRooms();
-        InitStudents(2);
-        InitTeachers(3);
-
-        while(roundsLeft > 0) {
-            MainLoop();
-        }
     }
 
     /**
@@ -153,8 +105,7 @@ public class Game {
      * @param victory True if the game ends in victory, false otherwise.
      */
     public void End(boolean victory){
-        System.out.printf("Game.End(%b)\n", victory);
-
+        System.out.printf("Game.End\n");
     }
 /**
  * Executes a single round of the game. This includes starting the round, executing turns for
@@ -162,19 +113,19 @@ public class Game {
  **/
     private void MainLoop() {
         System.out.println("Game.MainLoop");
-        TimerEvent timerEvent = new TimerEvent(roundNumber, roundsLeft, 0);
+        TimerEvent timerEvent = new TimerEvent(0, 0, 0);
 
+        Timer timer = new Timer();
         timer.StartRound(timerEvent);
 
-        for (Entity entity : entities) {
-            timer.StartTurn(entity, timerEvent);
-            timer.EndTurn(entity, timerEvent);
-            timerEvent.IncreaseTurnCounter();
-        }
+        System.out.println("For entity in entities");
+
+        Student student = new Student("");
+
+        timer.StartTurn(student, timerEvent);
+        timer.EndTurn(student, timerEvent);
+        timerEvent.IncreaseTurnCounter();
 
         timer.EndRound(timerEvent);
-
-        ++roundNumber;
-        --roundsLeft;
     }
 }

@@ -45,7 +45,7 @@ public class SlideRule extends Item {
     @Override
     public void PickedUp(Entity who, Room where) {
         System.out.println("SlideRule.PickedUp");
-        if(game != null) game.End(true);
+        new Game().End(true);
 
         /*
         System.out.printf("%s picked up the sliderule from room #%d so Students won the game.\n", who.GetName(), where.GetRoomNumber());

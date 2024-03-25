@@ -1,6 +1,7 @@
 package main.itemtypes;
 
 import main.*;
+import main.actions.SoulDrainer;
 
 import java.util.Scanner;
 
@@ -24,16 +25,7 @@ public class Beer extends Item {
 
         Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, durationLeft);
         providedProtection = protection;
-        owner = who;
         who.AddProtection(protection);
-
-        /*
-        System.out.printf("%s picked up beer with duration:%d.\n", who.GetName(), durationLeft);
-
-        Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, durationLeft);
-        providedProtection = protection;
-        owner = who;
-        who.AddProtection(protection);*/
     }
 
     @Override
@@ -42,22 +34,11 @@ public class Beer extends Item {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Is the beer empty? 1-yes 2-no");
+
         String answer = scanner.nextLine();
         if(answer.equals("2")){
-            owner.RemoveProtection(providedProtection);
-            providedProtection = null;
+            who.RemoveProtection(providedProtection);
         }
-
-        /*
-        if (providedProtection != null) {
-            owner.RemoveProtection(providedProtection);
-            providedProtection = null;
-            System.out.printf("%s placed down beer and lost protection.\n", who.GetName());
-        } else
-            System.out.printf("%s placed down beer.\n", who.GetName());
-
-        owner = null;
-         */
     }
 
     @Override
@@ -66,24 +47,11 @@ public class Beer extends Item {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Is the beer empty? 1-yes 2-no");
+
         String answer = scanner.nextLine();
         if(answer.equals("2")){
-            providedProtection.DecreaseDuration();
-            durationLeft = providedProtection.GetDuration();
+            new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, 3).DecreaseDuration();
+            new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, 3).GetDuration();
         }
-        /*
-        if (providedProtection == null)
-            return;
-
-        providedProtection.DecreaseDuration();
-        durationLeft = providedProtection.GetDuration();
-        if (providedProtection.GetDuration() == 0) {
-            owner.RemoveProtection(providedProtection);
-            providedProtection = null;
-            System.out.printf("%s lost protection from beer.\n", owner.GetName());
-        }
-        else
-            System.out.printf("%s's protection provided by beer now has duration:%d.\n", owner.GetName(), durationLeft);
-    */
     }
 }

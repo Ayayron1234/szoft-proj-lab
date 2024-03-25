@@ -7,15 +7,12 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 public class Teacher extends Entity {
-    private static int lastUid = 0;
-    private int uid;
 
     /**
      * This method is the constructor of the Teacher class with autoincremented UID
      */
     public Teacher() {
-        System.out.println("Teacher.Teacher");
-        this.uid = lastUid++;
+
     }
 
     /**
@@ -25,7 +22,6 @@ public class Teacher extends Entity {
     public Teacher(Game game) {
         super(game);
         System.out.println("Teacher.Teacher");
-        this.uid = lastUid++;
     }
 
     /**
@@ -33,44 +29,21 @@ public class Teacher extends Entity {
      */
     public static void ResetUIDs() {
         System.out.println("Teacher.ResetUIDs");
-        lastUid = 0;
     }
 
     /**
      * This method is where the teacher tries to drain the soul of every students who is in the same room as him/her
      */
-    public void DrainSouls(Teacher teacher ) {
+    public void DrainSouls() {
         System.out.println("Teacher.DrainSouls");
 
+        new Room(0).GetEntities();
+        Student student = new Student("");
+
+        System.out.println("new SoulDrainer");
         SoulDrainer drainer = new SoulDrainer();
-        ArrayList<Entity> entities = containingRoom.GetEntities();
-        int entitiesSize = entities.size();
-        for (int i = 0; i < entitiesSize; ++i) {
-            Entity entity = entities.get(i);
-            if(entity!=teacher){ //we need this to avoid suicide
-                entity.ApplyAction(drainer);
-                if (entitiesSize != entities.size()) {
-                --i;
-                entitiesSize = entities.size();
-                }
-            }
-        }
-        
-        System.out.printf("%s drains the soul of entities.\n", GetName());
 
-        /*SoulDrainer drainer = new SoulDrainer();
-
-        ArrayList<Entity> entities = containingRoom.GetEntities();
-        int entitiesSize = entities.size();
-        for (int i = 0; i < entitiesSize; ++i) {
-            Entity entity = entities.get(i);
-            entity.ApplyAction(drainer);
-            if (entitiesSize != entities.size()) {
-                --i;
-                entitiesSize = entities.size();
-            }
-        }
-         */
+        student.ApplyAction(drainer);
     }
 
     /**
@@ -104,7 +77,7 @@ public class Teacher extends Entity {
     @Override
     public String GetName() {
         System.out.println("Teacher.GetName");
-        return String.format("Oktató%d", uid);
+        return "";
     }
 
     /**

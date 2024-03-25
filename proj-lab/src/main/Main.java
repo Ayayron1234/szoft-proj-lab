@@ -1,6 +1,11 @@
 package main;
 
+import main.actions.Poisoner;
+import main.actions.SoulDrainer;
+import main.actions.Stunner;
 import main.itemtypes.Beer;
+import main.itemtypes.Camembert;
+import main.itemtypes.SlideRule;
 import main.itemtypes.TVSZ;
 import java.util.Scanner;
 
@@ -8,292 +13,291 @@ import java.util.Scanner;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game();
-        game.Start();
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Choose a Script's number:\n" +
-                "The scripts that can be chosen:\n" +
-                "1: Student stepping between rooms\n" +
-                "2: Room is on full capacity\n" +
-                "3: Student picks up, and places items\n" +
-                "4: Teacher drainsoul\n" +
-                "Choose one:\n");
-        int numberOfScript = scanner.nextInt();
-        script(numberOfScript);
+        script();
     }
 
-    public static void script(int numberOfScript){
-        Scanner scanner = new Scanner(System.in);
-        while(scanner.hasNextLine()) {
-            switch (numberOfScript) {
-                case 1:
-                    System.out.println("You entered to the first script.");
-                    Scenario1(scanner);
-                    break;
-                case 2:
-                    System.out.println("You entered to the second script.");
-                    Scenario2(scanner);
-                    break;
-                case 3:
-                    System.out.println("You entered to the third script.");
-                    Scenario3(scanner);
-                    break;
-                case 4:
-                    System.out.println("You entered to the fourth script.");
-                    Scenario4(scanner);
-                    break;
-                case 5:
-                    System.out.println("You entered to the fifth script.");
-                    break;
-                default:
-                    System.out.println("There was an error! That script number is invalid!");
-            }
-        }
-    }
-
-    public static void Scenario1(Scanner scanner){
-        Room room1 = new Room(2);
-        Room room2 = new Room(2);
-        Room room3 = new Room(2);
-
-        room1.AddNeighbour(room2);
-        room2.AddNeighbour(room1);
-        room2.AddNeighbour(room3);
-
+    /**
+     * A hallgató egy mérgező szobában van egy kör elején.
+     * A szoba megmérgezi a benne lévő entitásokat.
+     * A hallgató tarsolyában van egy működő maszk, ezért védett a méreg ellen.
+     * A hallgatóra nincs hatással a mérgező szoba.
+     */
+    public static void ScenarioBlockPoison() {
+        Room room = new Room(2);
+        Poisoner poisoner = new Poisoner();
+        System.out.println("new Poisoner");
         Student student = new Student("player");
 
-        student.Teleport(room1);
-        System.out.println("3 rooms are given in the following structure: 1 <-> 2 -> 3\n" +
-                "you are now in room 1, you may now step into a neighbouring room, choose one:");
-        while (scanner.hasNextInt()) {
-            int numberOfRoomToStep = scanner.nextInt();
-            switch (numberOfRoomToStep) {
-                case 1:
-                    if (student.Step(room1)) {
-                        System.out.println("You are now in room 1");
-                    } else {
-                        System.out.println("You can't step into that room");
-                    }
-                    break;
-                case 2:
-                    if (student.Step(room2)) {
-                        System.out.println("You are now in room 2");
-                    } else {
-                        System.out.println("You can't step into that room");
-                    }
-                    break;
-                case 3:
-                    if (student.Step(room3)) {
-                        System.out.println("You are now in room 3");
-                    } else {
-                        System.out.println("You can't step into that room");
-                    }
-                    break;
-                default:
-                    System.out.println("Exiting script!");
-                    break;
-            }
-        }
+        student.ApplyAction(poisoner);
     }
 
-    public static void Scenario2(Scanner scanner) {
-        Room room1 = new Room(1);
-        Room room2 = new Room(1);
-        Room room3 = new Room(1);
-
-        room1.AddNeighbour(room2);
-        room2.AddNeighbour(room3);
+    /**
+     * A hallgató egy szobában tartózkodik egy oktatóval.
+     * Az oktató elveszi a lelkét a szobában tartózkodó hallgatóknak.
+     * A hallgató tarsolyában van TVSZ, vagy Szent Söröspohár, emiatt védett a lélek elszívás ellen.
+     * A hallgató megmenekül, nem esik ki a játékból.
+     */
+    public static void ScenarioBlockSoulDrain() {
+        Room room = new Room(2);
         Student student = new Student("player");
         Teacher teacher = new Teacher();
-        student.Teleport(room1);
-        teacher.Teleport(room2);
-        System.out.println("3 rooms are given in the following structure: 1 -> 2 -> 3\n" +
-                "you are now in room 1, you may now step into a neighbouring room, choose one:");
-        int numberOfRoomToStep = scanner.nextInt();
-        switch (numberOfRoomToStep) {
-            case 1:
-                if (student.Step(room1)) {
-                    System.out.println("You are now in room 1");
-                } else {
-                    if(room1.GetCapacity() == room1.GetEntities().size()) System.out.println("You can't step into that room because it's full");
-                    else System.out.println("You can't step into that room");
-                }
-                break;
-            case 2:
-                if (student.Step(room2)) {
-                    System.out.println("You are now in room 2");
-                } else {
-                    if(room2.GetCapacity() == room2.GetEntities().size()) System.out.println("You can't step into that room because it's full");
-                    else System.out.println("You can't step into that room");
-                }
-                break;
-            case 3:
-                if (student.Step(room3)) {
-                    System.out.println("You are now in room 3");
-                } else {
-                    if(room3.GetCapacity() == room3.GetEntities().size()) System.out.println("You can't step into that room because it's full");
-                    else System.out.println("You can't step into that room");
-                }
-                break;
-            default:
-                System.out.println("Exiting script!");
-                break;
-        }
-        teacher.Step(room3);
-        numberOfRoomToStep = scanner.nextInt();
-        switch (numberOfRoomToStep) {
-            case 1:
-                if (student.Step(room1)) {
-                    System.out.println("You are now in room 1");
-                } else {
-                    if(room1.GetCapacity() == room1.GetEntities().size()) System.out.println("You can't step into that room because it's full");
-                    else System.out.println("You can't step into that room");
-                }
-                break;
-            case 2:
-                if (student.Step(room2)) {
-                    System.out.println("You are now in room 2");
-                } else {
-                    if(room2.GetCapacity() == room2.GetEntities().size()) System.out.println("You can't step into that room because it's full");
-                    else System.out.println("You can't step into that room");
-                }
-                break;
-            case 3:
-                if (student.Step(room3)) {
-                    System.out.println("You are now in room 3");
-                } else {
-                    if(room3.GetCapacity() == room3.GetEntities().size()) System.out.println("You can't step into that room because it's full");
-                    else System.out.println("You can't step into that room");
-                }
-                break;
-            default:
-                System.out.println("Exiting script!");
-                break;
-        }
+
+        System.out.println("new SoulDrainer");
+        SoulDrainer drainer = new SoulDrainer();
+
+        room.GetEntities();
+
+        student.ApplyAction(drainer);
     }
 
-    public static void Scenario3(Scanner scanner) {
-    Room room1 = new Room(2);
-    Room room2 = new Room(2);
-    room1.AddNeighbour(room2);
-    room2.AddNeighbour(room1);
+    /**
+     * Az oktató a kör elején egy szobában van más entitásokkal.
+     * Megpróbálja elvenni az entitások lelkét.
+     * Az entitás hallgató, és nincs védelme lelkének elvételével szemben.
+     * A hallgató kiesik a játékból.
+     */
+    public static void ScenarioDrainSoul() {
+        Teacher teacher = new Teacher();
+        Room room = new Room(0);
 
-    // Create items and add them to rooms
-    Item beer = new Beer();
-    room1.PlaceItem(beer);
-    
-
-    Student student = new Student("player");
-    student.Teleport(room1);
-
-    System.out.println("There are two rooms connected to each other. Room 1 has a Beer, and Room 2 has a TVSZ.\n" +
-            "You are currently in Room 1. Choose an action:\n" +
-            "1: Move to Room 2\n" +
-            "2: Pick up Beer\n" +
-            "3: Move to Room 1 (if in Room 2)\n" +
-            "4: Place Beer in Room 2 (if holding)\n" +
-            "5: Exit");
-
-
-    while (scanner.hasNextInt()) {
-        int action = scanner.nextInt();
-        switch (action) {
-            case 1:
-            if(student.GetContainingRoom()!=room2 && student.GetContainingRoom().GetNeighbours().contains(room2)){
-                student.Step(room2);
-                System.out.println("Moved to Room 2.");
-            }else if(student.GetContainingRoom()==room2){
-                System.out.println("You already in Room 2.");
-            }else
-                System.out.println("The Room you want to Step in is not a neighbour");
-
-                break;
-            case 2:
-                if(student.GetItems().contains(beer)) {
-                    System.out.println("You already have the Beer.");
-                } else if(student.GetContainingRoom().GetItems().contains(beer)) {
-                    student.PickUpItem(beer);
-                    student.GetContainingRoom().PickUpItem(beer);
-                    System.out.println("Picked up Beer.");
-                }else
-                    System.out.println("The Room don't contain the Beer");
-                break;
-            case 3:
-            if(student.GetContainingRoom()!=room1 && student.GetContainingRoom().GetNeighbours().contains(room1)){
-                student.Step(room1);
-                System.out.println("Moved to Room 1.");
-            }else if(student.GetContainingRoom()==room1){
-                System.out.println("You already in Room 1.");
-            }else
-                System.out.println("The Room you want to Step in is not a neighbour");
-
-                break;
-            case 4:
-                if(student.GetItems().contains(beer)) {
-                    student.GetContainingRoom().PlaceItem(beer);
-                    student.PlaceItem(beer);
-                    System.out.println("Placed Beer in containing room");
-                } else {
-                    System.out.println("You don't have Beer to place.");
-                }
-                break;
-            case 5:
-                System.out.println("Exiting Scenario 3.");
-                return;
-            default:
-                System.out.println("Invalid action. Try again.");
-                break;
-        }
+        teacher.DrainSouls();
     }
-}
 
-    public static void Scenario4(Scanner scanner) {
-        Game game = new Game();
+    /**
+     * Az elátkozott szoba értesül egy kör kezdetéről.
+     * A szoba kiválaszt néhány (akár 0) még nem eltűntetett ajtót.
+     * A kiválasztott ajtókat eltünteti, de számon tartja mint egy rejtett ajtó.
+     */
+    public static void ScenarioHideDoor () {
+        Room room = new Room(0);
+        room.ActivateAbilities();
+    }
 
-        // Initialize game rooms and teacher
-        Room room1 = new Room(2); 
-        Room room2 = new Room(2); 
-        room1.AddNeighbour(room2);
-        room2.AddNeighbour(room1);
-        
-        Teacher teacher = game.CreateTeacher(); // Assuming CreateTeacher adds the teacher to the game
-        teacher.Teleport(room1); // Start the teacher in room1
+    /**
+     * Az utolsó hallgatóval egy szobába kerül egy tanár.
+     * A tanár elszívja a hallgató lelkét.
+     * Nincs a hallgatónál a lélek elszívását blokkoló tárgy vagy éppen  nincs lélek elszívást blokkoló hatás rajta.
+     * Megnézzük hány még játékban lévő hallgató maradt.
+     * Ha ez a szám nullára csökkent akkor a játék a hallgatók (játékosok) vereségével véget ért.
+     */
+    public static void ScenarioLoseGame() {
+        Teacher teacher = new Teacher();
+        //Room room = new Room(2);
+        SoulDrainer drainer = new SoulDrainer();
+        System.out.println("new SoulDrainer");
         Student student = new Student("player");
-        student.Teleport(room2);
-        
 
-        while (scanner.hasNextInt()) {
-            System.out.println("\nChoose an action:\n" +
-                               "1. Step student to Room 1\n" +
-                               "2. Soul Drain \n" +
-                               "3. Exit scenario");
-            int action = scanner.nextInt();
-            switch (action) {
-                case 1:
-                if(student.GetContainingRoom()!=room1 && student.GetContainingRoom().GetNeighbours().contains(room1)){
-                    student.Step(room1);
-                    System.out.println("Moved to Room 1.");
-                }else if(student.GetContainingRoom()==room1){
-                    System.out.println("You already in Room 1.");
-                }else
-                    System.out.println("The Room you want to Step in is not a neighbour");
-    
-                    break;
-                case 2:
-                   if(student.GetContainingRoom()==teacher.GetContainingRoom()){
-                    teacher.DrainSouls(teacher);
-                    System.out.println("The Student has been it's soul drained, and lost the game");
-                   }else
-                  System.out.println("There is no Student in the room");
-                    break;
-                case 3:
-                    System.out.println("Exiting Scenario 4.");
-                    return;
-                default:
-                    System.out.println("Invalid action. Try again.");
-                    break;
-            }
-        }
+        student.ApplyAction(drainer);
     }
+
+    /**
+     * Kör elején két egymással szomszédos szoba egyesül.
+     * Az új szoba az egyesített szobák tulajdonságait és szomszédait megörökli.
+     * Az új szoba befogadóképessége a nagyobb szoba befogadóképességével lesz azonos.
+     */
+    public static void ScenarioMergeRooms() {
+        Room a = new Room(0);
+        Room b = new Room(0);
+        Room.MergeRoom(a, b);
+    }
+
+    /**
+     * Az entitás megnézi, hogy milyen tárgyak vannak az őt tartalmazó szobában.
+     * Az entitás kiválaszt egy elérhető tárgyat, amit az entitás típusa fel tud venni.
+     * Az entitás tarsolyában még van elegendő hely.
+     * A tárgy bekerül az entitás tarsolyába és értesül erről.
+     */
+    public static void ScenarioPickupItem () {
+        Student student = new Student("");
+        Item item = new TVSZ();
+        student.PickUpItem(item);
+    }
+
+    /**
+     * Az entitás megnézi, hogy milyen tárgyak vannak a tarsolyában.
+     * Az entitás kiválaszt egy tárgyat.
+     * A tárgy kikerül az entitás tarsolyából és bekerül a szobába amiben az entitás áll.
+     * A tárgy értesül róla, hogy lerakták.
+     */
+    public static void ScenarioPlaceItem () {
+        Student student = new Student("");
+        Item item = new TVSZ();
+        student.PlaceItem(item);
+    }
+
+    /**
+     * Vonatkozik ez bármely entitásra amely az adott szobában tartózkodik a kör elején.
+     * A szoba megmérgezi a benne lévő entitásokat.
+     * Amennyiben a hatás ellen nem tudnak védekezni eszméletüket vesztik.
+     * Az eszméletüket vesztett entitások elejtik az összes a tarsolyukban lévő tárgyat.
+     * Az eszméletüket vesztett entitások kimaradnak az adott körből.
+     */
+    public static void ScenarioPoisonEntities () {
+        Room room = new Room(0);
+        room.ActivateAbilities();
+    }
+
+    /**
+     * Az entitás leteszi a tarsolyából (“kibontja” és ezzel elhasználja) a Camembert tárgyat.
+     * A szoba ennek hatására mérgezővé válik három kör erejéig.
+     */
+    public static void ScenarioPoisonateRoom () {
+        Student student = new Student("player");
+
+        Camembert camembert = new Camembert();
+        student.PlaceItem(camembert);
+
+        camembert.StartRound(new TimerEvent(0,0,0));
+    }
+
+    /**
+     * Az elátkozott szoba értesül egy kör kezdetéről.
+     * A szoba kiválaszt néhány (akár 0) már eltűntetett ajtót.
+     * A kiválasztott ajtók újra előtűnnek.
+     */
+    public static void ScenarioRevealDoor() {
+        Room room = new Room(0);
+        room.ActivateAbilities();
+    }
+
+    /**
+     * Kör elején egy szoba kettéválik.
+     * A két létrejövő szoba szomszédos.
+     * A szobák megöröklik az eredeti
+     */
+    public static void ScenarioSplitRooms() {
+        Room baseRoom = new Room(0);
+        baseRoom.SplitRoom();
+    }
+
+    /**
+     * Egy adott hallgató vagy oktató lépése kezdődik el.
+     */
+    public static void ScenarioStartTurn() {
+        Timer timer = new Timer();
+        Entity entity = new Student("");
+        timer.StartTurn(entity, new TimerEvent(0, 0, 0));
+    }
+
+    /**
+     * Véget ér egy kör anélkül, hogy vége lenne a játéknak.
+     * A megfelelő tárgyak és entitások értesülnek a kör elejéről.
+     * Elkezdődnek a hallgatók és oktatók lépései.
+     */
+    public static void ScenarioStartRound() {
+        Timer timer = new Timer();
+        timer.StartRound(new TimerEvent(0, 0, 0));
+    }
+
+    /**
+     * Az entitás (oktató, vagy hallgató) belép egy általa kiválasztott szobába, és elhagyja azt a szobát, amiben eddig tartózkodott.
+     */
+    public static void ScenarioStep() {
+        Entity entity = new Student("");
+        Room neighbourRoom = new Room(2);
+        entity.Step(neighbourRoom);
+    }
+
+    /**
+     * A hallgatóval egy szobába lép egy tanár.
+     * Megpróbálja elszívni a hallgató lelkét.
+     * Ha rendelkezik még Nedves Táblatörlő Ronggyal a hallgató akkor megdobja vele az egy szobában tartózkodó tanárt, ezzel megbénítva őt.
+     */
+    public static void ScenarioStunTeacher() {
+        Entity teacher = new Teacher();
+        Entity student1 = new Student("");
+        System.out.println("new Stunner");
+        Stunner stunner = new Stunner(2);
+
+        teacher.ApplyAction(stunner);
+    }
+
+    /**
+     * A hallgató lehelyezi a Tranzisztor pozitív pólusát egy szobában.
+     * A hallgató lehelyezi a Tranzisztor negatív pólusát egy másik szobában.
+     * Ha a hallgató használja valamely pólust az adott szobákból a másik pólust tartalmazó szobába kerül a használat hatására.
+     */
+    public static void ScenarioTeleport() {
+        Entity entity = new Student("");
+        Room room1 = new Room(1);
+        entity.Teleport(room1);
+    }
+
+    /**
+     * Egy hallgató belép egy szobába, amiben megtalálható a Logarléc
+     * A hallgató felveszi
+     * Megnyerik a játékot a hallgatók
+     * A játéknak vége.
+     */
+    public static void ScenarioWinGame() {
+        Entity entity = new Student("");
+        Room room1 = new Room(1);
+        Item item1 = new SlideRule(new Game());
+
+        entity.PickUpItem(item1);
+    }
+
+    // Block Poison, Block Soul Drain, Drain Soul, Hide Door, Lose Game, Merge Rooms, Pickup Item, Place Item, Poison Entities, Poisonate Room, Reveal Door, Split Rooms, Start Round, Start Turn, Step, Stun Teacher, Teleport, Win Game
+
+    /**
+     * This method is to choose a script out of the ones we created
+     * If we write one that doesn't match the type there's an error
+     * If we write one that doesn't match the listed numbers we write it to the user....
+     */
+    public static void script(){
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\nChoose a sequence's number:\n" +
+                "The sequences that can be chosen:\n\n" +
+                "1: Block Poison\n" +
+                "2: Block Soul Drain\n" +
+                "3: Drain Soul\n" +
+                "4: Hide Door\n" +
+                "5: Lose Game\n" +
+                "6: Merge Rooms\n" +
+                "7: Pickup Item\n" +
+                "8: Place Item\n" +
+                "9: Poison Entities\n" +
+                "10: Poisonate Room\n" +
+                "11: Reveal Door\n" +
+                "12: Start Round\n" +
+                "13: Start Turn\n" +
+                "14: Split Rooms\n" +
+                "15: Step\n" +
+                "16: Stun Teacher\n" +
+                "17: Teleport\n" +
+                "18: Win Game\n" +
+                "Choose one:");
+
+        int numberOfScript = scanner.nextInt();
+        switch (numberOfScript) {
+            case 1: ScenarioBlockPoison(); break;
+            case 2: ScenarioBlockSoulDrain(); break;
+            case 3: ScenarioDrainSoul(); break;
+            case 4: ScenarioHideDoor(); break;
+            case 5: ScenarioLoseGame(); break;
+            case 6: ScenarioMergeRooms(); break;
+            case 7: ScenarioPickupItem(); break;
+            case 8: ScenarioPlaceItem(); break;
+            case 9: ScenarioPoisonEntities(); break;
+            case 10: ScenarioPoisonateRoom(); break;
+            case 11: ScenarioRevealDoor(); break;
+            case 12: ScenarioStartRound(); break;
+            case 13: ScenarioStartTurn(); break;
+            case 14: ScenarioSplitRooms(); break;
+            case 15: ScenarioStep(); break;
+            case 16: ScenarioStunTeacher(); break;
+            case 17: ScenarioTeleport(); break;
+            case 18: ScenarioWinGame(); break;
+            default:
+                System.out.println("There was an error! That script number is invalid!");
+                break;
+        }
+
+        scanner.nextLine();
+        scanner.nextLine();
+        script();
+    }
+
+
 }

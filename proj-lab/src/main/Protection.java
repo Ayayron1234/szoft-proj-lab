@@ -1,7 +1,6 @@
 package main;
 
 public class Protection {
-    private int duration;
     private final ProtectionType type;
 
     /**
@@ -11,7 +10,6 @@ public class Protection {
      */
     public Protection(ProtectionType type, int duration) {
         this.type = type;
-        this.duration = duration;
     }
 
     /**
@@ -20,7 +18,7 @@ public class Protection {
      */
     public int GetDuration() {
         System.out.println("Protection.GetDuration");
-        return duration;
+        return 0;
     }
 
     /**
@@ -37,6 +35,5 @@ public class Protection {
      */
     public void DecreaseDuration() {
         System.out.println("Protection.DecreaseDuration");
-        duration -= 1;
     }
 }

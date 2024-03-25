@@ -31,18 +31,8 @@ public class Poisoner implements Action {
         if(answer.equals("2")){
             target.DropAllItems();
             target.MissRounds(1);
+        } else {
+            System.out.println("Entity saved by POISON_PROTECTION!");
         }
-
-        /*
-        // Check if target has protection against poison
-        if (target.HasProtectionType(ProtectionType.POISON_PROTECTION)) {
-            System.out.printf("%s was protected against poisoning.\n", target.GetName());
-            return;
-        }
-
-        System.out.printf("%s was poisoned.\n", target.GetName());
-        target.DropAllItems();
-        target.MissRounds(1);
-        */
     }
 }

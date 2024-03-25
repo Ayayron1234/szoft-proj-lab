@@ -1,9 +1,6 @@
 package main.actions;
 
-import main.Action;
-import main.Entity;
-import main.Item;
-import main.ProtectionType;
+import main.*;
 import main.itemtypes.TVSZ;
 
 import java.util.Scanner;
@@ -26,42 +23,15 @@ public class SoulDrainer implements Action {
     public void Execute(Entity target) {
         System.out.println("SoulDrainer.Execute");
 
+        target.GetActiveProtections();
+
+        System.out.println("Does the entity have SOUL_DRAIN_PROTECTION?\n 1-yes 2-no");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Does the Entity have SOUL_DRAIN_PROTECTION?\n 1-yes 2-no");
-        String answer = scanner.nextLine();
-        if(answer.equals("2")){
-            System.out.println("Does the Entity have a TVSZ in its inventory?\n 1-yes 2-no");
-            answer = scanner.nextLine();
-            if(answer.equals("2")){
-                target.DropOutOfGame();
-            }
-            else{
-                TVSZ tvsz = new TVSZ();
-                tvsz.Use();
-            }
-        }
 
-
-        /*
-        // Check if target has protection against souldrain
-        if (target.HasProtectionType(ProtectionType.SOULD_DRAIN_PROTECTION)) {
-            System.out.printf("%s was protected against soul draining.\n", target.GetName());
-            return;
-        }
-
-        // Check if entity has a TVSZ in their directory
-        for(Item item : target.GetItems()) {
-            if (!item.GetName().equals(new TVSZ().GetName()))
-                continue;
-
-            ((TVSZ)item).Use();
-            System.out.printf("%s was protected against soul draining.\n", target.GetName());
-            return;
-        }
-
-        if (target.DropOutOfGame())
-            System.out.printf("%s's soul was drained.\n", target.GetName());
-
-         */
+        String line = scanner.nextLine();
+        if (line.equals("2"))
+            target.DropOutOfGame();
+        else if (line.equals("1"))
+            System.out.println("Entity blocked soul drain.");
     }
 }
