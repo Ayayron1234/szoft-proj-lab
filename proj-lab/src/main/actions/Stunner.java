@@ -7,6 +7,13 @@ import main.Entity;
  * This is typically executed by another entity or as a result of an item's effect.
  */
 public class Stunner implements Action {
+
+    int roundsMissed = 0;
+  
+    public Stunner(int num){
+        roundsMissed = num;
+    }
+
     /**
      * Executes the stun action on the specified entity target. Once stunned, the target
      * entity will miss its next turn, simulating being stunned and unable to move.
@@ -16,5 +23,6 @@ public class Stunner implements Action {
     @Override
     public void Execute(Entity target) {
         //TODO kimarad 1 korbol
+        target.MissRounds(roundsMissed);
     }
 }

@@ -70,6 +70,8 @@ public abstract class Entity implements TimerSubscriber {
         return activeProtections;
     }
 
+    public Room GetContainingRoom() { return containingRoom; }
+
     /**
      * Checks if the entity has a specific type of protection.
      *
