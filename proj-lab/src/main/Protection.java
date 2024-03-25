@@ -19,6 +19,7 @@ public class Protection {
      * @return duration of the protection
      */
     public int GetDuration() {
+        System.out.println("Protection.GetDuration");
         return duration;
     }
 
@@ -27,6 +28,7 @@ public class Protection {
      * @return type of the protection (from the enum class ProtectionType)
      */
     public ProtectionType GetType() {
+        System.out.println("Protection.GetType");
         return type;
     }
 
@@ -34,6 +36,7 @@ public class Protection {
      * This method is to decrease the duration of the protection
      */
     public void DecreaseDuration() {
+        System.out.println("Protection.DecreaseDuration");
         duration -= 1;
     }
 }

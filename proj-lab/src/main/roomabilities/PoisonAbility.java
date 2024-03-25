@@ -8,10 +8,12 @@ import main.actions.Poisoner;
 public class PoisonAbility implements RoomAbility {
     @Override
     public void Activate(Room room) {
-        Poisoner poisoner = new Poisoner();
+        System.out.println("PoisonAbility.Activate");
+
+        /*Poisoner poisoner = new Poisoner();
 
         for (Entity entity : room.GetEntities()) {
             entity.ApplyAction(poisoner);
-        }
+        }*/
     }
 }

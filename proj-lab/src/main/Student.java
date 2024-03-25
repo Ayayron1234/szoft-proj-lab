@@ -8,6 +8,7 @@ public class Student extends Entity {
      * @param uniqueName the name that the student is called in this game (it has to be unique but now it isn't checked so we have to make sure of it)
      */
     public Student(String uniqueName) {
+        System.out.println("Student.Student");
         this.uniqueName = uniqueName;
     }
 
@@ -18,30 +19,31 @@ public class Student extends Entity {
      */
     public Student(String uniqueName, Game game) {
         super(game);
+        System.out.println("Student.Student");
         this.uniqueName = uniqueName;
     }
 
     @Override
     public void StartRound(TimerEvent data) {
-//        System.out.println("Student: StartRound");
+        System.out.println("Student.StartRound");
     }
 
     @Override
     public void EndRound(TimerEvent data) {
-
+        System.out.println("Student.EndRound");
     }
 
     @Override
     public void StartTurn(TimerEvent data) {
+        System.out.println("Student.StartTurn");
         if (data.GetTurnNumber() == 1) {
             var neighbours = this.containingRoom.GetNeighbours();
-
         }
     }
 
     @Override
     public void EndTurn(TimerEvent data) {
-
+        System.out.println("Student.EndTurn");
     }
 
     /**
@@ -50,6 +52,7 @@ public class Student extends Entity {
      */
     @Override
     public String GetName() {
+        System.out.println("Student.GetName");
         return String.format("Hallgató(%s)", uniqueName);
     }
 }

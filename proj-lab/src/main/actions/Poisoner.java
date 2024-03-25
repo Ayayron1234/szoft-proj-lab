@@ -24,8 +24,14 @@ public class Poisoner implements Action {
     @Override
     public void Execute(Entity target) {
         System.out.println("Poisoner.Execute");
+
         Scanner scanner = new Scanner(System.in);
-        // TODO
+        System.out.println("Does the Entity have POISON_PROTECTION?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")){
+            target.DropAllItems();
+            target.MissRounds(1);
+        }
 
         /*
         // Check if target has protection against poison

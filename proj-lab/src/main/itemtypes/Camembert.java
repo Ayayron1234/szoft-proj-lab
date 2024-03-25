@@ -5,6 +5,9 @@ import main.Item;
 import main.Room;
 import main.TimerEvent;
 import main.actions.Poisoner;
+
+import java.util.Scanner;
+
 /**
  * Represents a Camembert cheese item that, when placed in a room, poisons that room
  * for a specified number of rounds. The cheese does not have an effect when carried
@@ -22,6 +25,7 @@ public class Camembert extends Item {
      */
     @Override
     public String GetName() {
+        System.out.println("Camembert.GetName");
         return "Dobozolt Káposztás Camembert";
     }
 
@@ -34,6 +38,7 @@ public class Camembert extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
+        System.out.println("Camembert.PickedUp");
         activationPlace = null;
     }
 
@@ -46,7 +51,15 @@ public class Camembert extends Item {
      */
     @Override
     public boolean CanPickUp(Entity who) {
+        System.out.println("Camembert.CanPickUp");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Can the entity pick up the camembert?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        return (answer.equals("1"));
+
+        /*
         return activationPlace == null;
+         */
     }
 
     /**
@@ -58,8 +71,13 @@ public class Camembert extends Item {
      */
     @Override
     public void Placed(Entity who, Room where) {
+        System.out.println("Camembert.Placed");
+        activationPlace = where;
+
+        /*
         activationPlace = where;
         System.out.printf("%s placed down mask and poisoned room #%d for %d rounds.\n", who.GetName(), where.GetRoomNumber(), duration);
+         */
     }
 
     /**
@@ -72,6 +90,25 @@ public class Camembert extends Item {
      */
     @Override
     public void StartRound(TimerEvent data) {
+        System.out.println("Camembert.StartRound()");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Is the Camembert active?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")){
+            return;
+        }
+
+        Poisoner poisoner = new Poisoner();
+        for (Entity entity : activationPlace.GetEntities()) {
+            entity.ApplyAction(poisoner);
+        }
+
+        --duration;
+        if (duration == 0) {
+            activationPlace = null;
+        }
+
+        /*
         if (activationPlace == null)
             return;
 
@@ -89,5 +126,6 @@ public class Camembert extends Item {
         }
         else
             System.out.printf("Room #%d is poisoned by camambert for duration:%d.\n", activationPlace.GetRoomNumber(), duration);
+         */
     }
 }

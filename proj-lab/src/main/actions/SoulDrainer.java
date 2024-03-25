@@ -5,6 +5,9 @@ import main.Entity;
 import main.Item;
 import main.ProtectionType;
 import main.itemtypes.TVSZ;
+
+import java.util.Scanner;
+
 /**
  * Represents an action that attempts to drain the soul of a target entity. If the target does not have
  * protection against soul draining, it is removed from the game. If the target has a specific item ("TVSZ"),
@@ -21,6 +24,25 @@ public class SoulDrainer implements Action {
      */
     @Override
     public void Execute(Entity target) {
+        System.out.println("SoulDrainer.Execute");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Does the Entity have SOUL_DRAIN_PROTECTION?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")){
+            System.out.println("Does the Entity have a TVSZ in its inventory?\n 1-yes 2-no");
+            answer = scanner.nextLine();
+            if(answer.equals("2")){
+                target.DropOutOfGame();
+            }
+            else{
+                TVSZ tvsz = new TVSZ();
+                tvsz.Use();
+            }
+        }
+
+
+        /*
         // Check if target has protection against souldrain
         if (target.HasProtectionType(ProtectionType.SOULD_DRAIN_PROTECTION)) {
             System.out.printf("%s was protected against soul draining.\n", target.GetName());
@@ -39,5 +61,7 @@ public class SoulDrainer implements Action {
 
         if (target.DropOutOfGame())
             System.out.printf("%s's soul was drained.\n", target.GetName());
+
+         */
     }
 }

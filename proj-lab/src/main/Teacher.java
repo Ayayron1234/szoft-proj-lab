@@ -14,6 +14,7 @@ public class Teacher extends Entity {
      * This method is the constructor of the Teacher class with autoincremented UID
      */
     public Teacher() {
+        System.out.println("Teacher.Teacher");
         this.uid = lastUid++;
     }
 
@@ -23,6 +24,7 @@ public class Teacher extends Entity {
      */
     public Teacher(Game game) {
         super(game);
+        System.out.println("Teacher.Teacher");
         this.uid = lastUid++;
     }
 
@@ -30,6 +32,7 @@ public class Teacher extends Entity {
      * This method is resetting the autoincremented UID.
      */
     public static void ResetUIDs() {
+        System.out.println("Teacher.ResetUIDs");
         lastUid = 0;
     }
 
@@ -37,6 +40,20 @@ public class Teacher extends Entity {
      * This method is where the teacher tries to drain the soul of every students who is in the same room as him/her
      */
     public void DrainSouls() {
+        System.out.println("Teacher.DrainSouls");
+
+        SoulDrainer drainer = new SoulDrainer();
+        ArrayList<Entity> entities = containingRoom.GetEntities();
+        int entitiesSize = entities.size();
+        for (int i = 0; i < entitiesSize; ++i) {
+            Entity entity = entities.get(i);
+            entity.ApplyAction(drainer);
+            if (entitiesSize != entities.size()) {
+                --i;
+                entitiesSize = entities.size();
+            }
+        }
+        /*
         System.out.printf("%s drains the soul of entities.\n", GetName());
 
         SoulDrainer drainer = new SoulDrainer();
@@ -51,6 +68,7 @@ public class Teacher extends Entity {
                 entitiesSize = entities.size();
             }
         }
+         */
     }
 
     /**
@@ -59,22 +77,22 @@ public class Teacher extends Entity {
      */
     @Override
     public void StartRound(TimerEvent data) {
-
+        System.out.println("Teacher.StartRound");
     }
 
     @Override
     public void EndRound(TimerEvent data) {
-
+        System.out.println("Teacher.EndRound");
     }
 
     @Override
     public void StartTurn(TimerEvent data) {
-
+        System.out.println("Teacher.StartTurn");
     }
 
     @Override
     public void EndTurn(TimerEvent data) {
-
+        System.out.println("Teacher.EndTurn");
     }
 
     /**
@@ -83,6 +101,7 @@ public class Teacher extends Entity {
      */
     @Override
     public String GetName() {
+        System.out.println("Teacher.GetName");
         return String.format("Oktató%d", uid);
     }
 
@@ -92,6 +111,7 @@ public class Teacher extends Entity {
      */
     @Override
     public boolean DropOutOfGame() {
+        System.out.println("Teacher.DropOutOfGame");
         return false;
     }
 

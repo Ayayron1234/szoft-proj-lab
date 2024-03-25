@@ -4,6 +4,7 @@ import main.*;
 import main.actions.Stunner;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Duster extends Item {
@@ -12,6 +13,7 @@ public class Duster extends Item {
 
     @Override
     public String GetName() {
+        System.out.println("Duster.GetName");
         return "Nedves Táblatörlő Rongy";
     }
 
@@ -23,8 +25,12 @@ public class Duster extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
+        System.out.println("Duster.PickedUp");
+        owner = who;
+        /*
         System.out.printf("%s picked up duster with duration:%d.\n", who.GetName(), usesLeft);
         owner = who;
+         */
     }
 
     /**
@@ -35,8 +41,13 @@ public class Duster extends Item {
      */
     @Override
     public void Placed(Entity who, Room where) {
+        System.out.println("Duster.Placed");
+        owner = null;
+
+        /*
         System.out.printf("%s placed down duster.\n", who.GetName());
         owner = null;
+         */
     }
 
     /**
@@ -48,6 +59,28 @@ public class Duster extends Item {
      */
     @Override
     public void StartRound(TimerEvent data) {
+        System.out.println("Duster.StartRound");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Is the Duster owned by anyone?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")) return;
+
+        System.out.println("Is the Duster dried out?\n 1-yes 2-no");
+        answer = scanner.nextLine();
+        if(answer.equals("1")) return;
+
+        ArrayList<Entity> others = owner.GetContainingRoom().GetEntities();
+        others.remove(owner);
+        Stunner stunner = new Stunner(1);
+        for(Entity teacher : others){
+            if(teacher.getClass() == Teacher.class) {
+                stunner.Execute(teacher);
+            }
+        }
+        usesLeft -= 1;
+
+        /*
         if(owner == null) return;
         if(usesLeft == 0) return;
 
@@ -60,5 +93,6 @@ public class Duster extends Item {
            }
         }
         usesLeft -= 1;
+        */
     }
 }

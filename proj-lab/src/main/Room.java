@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Room implements TimerSubscriber {
     private int capacity;
@@ -26,18 +27,23 @@ public class Room implements TimerSubscriber {
      * Sets the lastUid attribute to 0
      */
     public static void ResetUIDs() {
+        System.out.println("Room.ResetUIDs");
         lastUid = 0;
     }
 
     /**
      * @return the unique identifier (uid) of room
      */
-    public int GetRoomNumber() { return uid; }
+    public int GetRoomNumber() {
+        System.out.println("Room.GetRoomNumber");
+        return uid;
+    }
 
     /**
      * @return the list of items in the room
      */
     public ArrayList<Item> GetItems() {
+        System.out.println("Room.GetItems");
         return items;
     }
 
@@ -46,6 +52,7 @@ public class Room implements TimerSubscriber {
      * @param item - the item placed
      */
     public void PlaceItem(Item item) {
+        System.out.println("Room.PlaceItem");
         items.add(item);
     }
 
@@ -54,14 +61,24 @@ public class Room implements TimerSubscriber {
      * @param item - the item picked up
      */
     public void PickUpItem(Item item) {
-        if (!items.remove(item))
-            throw new RuntimeException("Room doesn't contain provided item. ");
+        System.out.println("Room.PickUpItem");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Could the item be found in the room entity is standing in?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")) {
+            System.out.println("Room doesn't contain provided item.");
+        }
+        items.remove(item);
+
+        /*if (!items.remove(item))
+            throw new RuntimeException("Room doesn't contain provided item. ");*/
     }
 
     /**
      * @return the capacity of room
      */
     public int GetCapacity() {
+        System.out.println("Room.GetCapacity");
         return capacity;
     }
 
@@ -70,6 +87,7 @@ public class Room implements TimerSubscriber {
      * @param capacity - capacity of room
      */
     public void SetCapacity(int capacity) {
+        System.out.println("Room.SetCapacity");
         this.capacity = capacity;
     }
 
@@ -78,6 +96,7 @@ public class Room implements TimerSubscriber {
      * @param ability - the ability added
      */
     public void AddAbility(RoomAbility ability) {
+        System.out.println("Room.AddAbility");
         abilities.add(ability);
     }
 
@@ -85,6 +104,7 @@ public class Room implements TimerSubscriber {
      * @return neighbours - the list of neighbours that the room has
      */
     public ArrayList<Room> GetNeighbours() {
+        System.out.println("Room.GetNeighbours");
         return neighbours;
     }
 
@@ -93,6 +113,7 @@ public class Room implements TimerSubscriber {
      * @param neighbour - new neighbour of the room
      */
     public void AddNeighbour(Room neighbour) {
+        System.out.println("Room.AddNeighbour");
         neighbours.add(neighbour);
     }
 
@@ -101,6 +122,7 @@ public class Room implements TimerSubscriber {
      * @return - the boolean value of the success of removal
      */
     public boolean RemoveNeighbour(Room neighbour) {
+        System.out.println("Room.RemoveNeighbour");
         return neighbours.remove(neighbour);
     }
 
@@ -111,9 +133,18 @@ public class Room implements TimerSubscriber {
      * @param entity - the entity who wants to step into the room
      */
     public void AcceptEntity(Entity entity) {
-        if (!CanStepInto(entity))
-            throw new RuntimeException("main.Entity count exceeds maximum");
+        System.out.println("Room.AcceptEntity");
+        /*Scanner scanner = new Scanner(System.in);
+        System.out.println("Can entity step into this room?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")) {
+            System.out.println("Room is full, cant pass");
+        }*/
         entities.add(entity);
+
+        /*if (!CanStepInto(entity))
+            throw new RuntimeException("main.Entity count exceeds maximum");
+        entities.add(entity);*/
     }
 
     /**
@@ -122,14 +153,24 @@ public class Room implements TimerSubscriber {
      * @param entity - the entity which we want to remove
      */
     public void RemoveEntity(Entity entity) {
-        if (!entities.remove(entity))
-            throw new RuntimeException("main.Room failed to remove entity.");
+        System.out.println("Room.RemoveEntity");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Can entity be removed?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")) {
+            System.out.println("main.Room failed to remove entity.");
+        }
+        entities.remove(entity);
+
+        /*if (!entities.remove(entity))
+            throw new RuntimeException("main.Room failed to remove entity.");*/
     }
 
     /**
      * @return entities - the list of entities currently in the room
      */
     public ArrayList<Entity> GetEntities() {
+        System.out.println("Room.GetEntities");
         return entities;
     }
 
@@ -139,27 +180,28 @@ public class Room implements TimerSubscriber {
      * @return boolean value of whether we can step into the room or not
      */
     public boolean CanStepInto(Entity who) {
+        System.out.println("Room.CanStepInto");
         return entities.size() < capacity;
     }
 
 
     @Override
     public void StartRound(TimerEvent data) {
-
+        System.out.println("Room.StartRound");
     }
 
     @Override
     public void EndRound(TimerEvent data) {
-
+        System.out.println("Room.EndRound");
     }
 
     @Override
     public void StartTurn(TimerEvent data) {
-
+        System.out.println("Room.StartTurn");
     }
 
     @Override
     public void EndTurn(TimerEvent data) {
-
+        System.out.println("Room.EndTurn");
     }
 }

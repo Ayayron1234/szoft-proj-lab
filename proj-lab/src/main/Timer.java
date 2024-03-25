@@ -11,6 +11,7 @@ public class Timer {
      * subscriber is added to the subscribers list
      */
     public void Subscribe(TimerSubscriber subscriber) {
+        System.out.println("Timer.Subscribe");
         subscribers.add(subscriber);
     }
 
@@ -20,6 +21,7 @@ public class Timer {
      * @param subscriber - the subscriber to the Timer
      */
     public void Unsubscribe(TimerSubscriber subscriber) {
+        System.out.println("Timer.Unsubscribe");
         subscribers.remove(subscriber);
     }
 
@@ -29,6 +31,7 @@ public class Timer {
      * @param data - the current state of the game
      */
     public void StartRound(TimerEvent data) {
+        System.out.println("Timer.StartRound");
         for (TimerSubscriber subscriber : subscribers)
             subscriber.StartRound(data);
     }
@@ -39,6 +42,7 @@ public class Timer {
      * @param data - current state of the game
      */
     public void EndRound(TimerEvent data) {
+        System.out.println("Timer.EndRound");
         for (TimerSubscriber subscriber : subscribers)
             subscriber.EndRound(data);
     }
@@ -49,6 +53,7 @@ public class Timer {
      * @param data - current state of the game
      */
     public void StartTurn(Entity who, TimerEvent data) {
+        System.out.println("Timer.StartTurn");
         System.out.printf("Timer.StartTurn(%s)\n", who.GetName());
         if (subscribers.contains(who))
             who.StartTurn(data);
@@ -60,6 +65,7 @@ public class Timer {
      * @param data - current state of the game
      */
     public void EndTurn(Entity who, TimerEvent data) {
+        System.out.println("Timer.EndTurn");
         if (subscribers.contains(who))
             who.EndTurn(data);
     }

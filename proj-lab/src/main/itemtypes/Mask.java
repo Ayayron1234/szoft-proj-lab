@@ -3,6 +3,8 @@ package main.itemtypes;
 
 import main.*;
 
+import java.util.Scanner;
+
 /**
  * Represents a protective mask item that can provide protection against specific
  * threats (e.g., poison) for a limited duration. Once picked up by an entity,
@@ -20,6 +22,7 @@ public class Mask extends Item {
      */
     @Override
     public String GetName() {
+        System.out.println("Mask.GetName");
         return "FFP2-es Maszk";
     }
 
@@ -32,12 +35,21 @@ public class Mask extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
+        System.out.println("Mask.PickedUp");
+
+        Protection protection = new Protection(ProtectionType.POISON_PROTECTION, durationLeft);
+        providedProtection = protection;
+        owner = who;
+        who.AddProtection(protection);
+
+        /*
         System.out.printf("%s picked up mask with duration:%d.\n", who.GetName(), durationLeft);
 
         Protection protection = new Protection(ProtectionType.POISON_PROTECTION, durationLeft);
         providedProtection = protection;
         owner = who;
         who.AddProtection(protection);
+         */
     }
 
     /**
@@ -49,6 +61,18 @@ public class Mask extends Item {
      */
     @Override
     public void Placed(Entity who, Room where) {
+        System.out.println("Mask.Placed");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Is the mask worn by anyone?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")) return;
+
+        owner.RemoveProtection(providedProtection);
+        providedProtection = null;
+
+        owner = null;
+        /*
         if (providedProtection != null) {
             owner.RemoveProtection(providedProtection);
             providedProtection = null;
@@ -58,6 +82,7 @@ public class Mask extends Item {
         }
 
         owner = null;
+         */
     }
 
     /**
@@ -68,6 +93,21 @@ public class Mask extends Item {
      */
     @Override
     public void StartRound(TimerEvent data) {
+        System.out.println("Mask.StartRound");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Is the mask worn by anyone?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")) return;
+
+        providedProtection.DecreaseDuration();
+        durationLeft = providedProtection.GetDuration();
+        if (providedProtection.GetDuration() == 0) {
+            owner.RemoveProtection(providedProtection);
+            providedProtection = null;
+        }
+
+        /*
         if (providedProtection == null)
             return;
 
@@ -80,5 +120,6 @@ public class Mask extends Item {
         } else {
             System.out.printf("%s's protection provided by mask now has duration:%d.\n", owner.GetName(), durationLeft);
         }
+         */
     }
 }

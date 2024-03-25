@@ -11,6 +11,7 @@ public class Stunner implements Action {
     int roundsMissed = 0;
   
     public Stunner(int num){
+        System.out.println("Stunner.Stunner");
         roundsMissed = num;
     }
 
@@ -22,7 +23,7 @@ public class Stunner implements Action {
      */
     @Override
     public void Execute(Entity target) {
-        //TODO kimarad 1 korbol
+        System.out.println("Stunner.Execute");
         target.MissRounds(roundsMissed);
     }
 }

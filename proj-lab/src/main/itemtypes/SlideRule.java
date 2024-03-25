@@ -19,6 +19,7 @@ public class SlideRule extends Item {
      * @param game The game instance that this Slide Rule can influence.
      */
     public SlideRule(Game game){
+        System.out.println("SlideRule.SlideRule");
         this.game = game;
     }
 
@@ -29,6 +30,7 @@ public class SlideRule extends Item {
      */
     @Override
     public String GetName() {
+        System.out.println("SlideRule.GetName");
         return "Logarléc";
     }
 
@@ -42,7 +44,12 @@ public class SlideRule extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
+        System.out.println("SlideRule.PickedUp");
+        if(game != null) game.End(true);
+
+        /*
         System.out.printf("%s picked up the sliderule from room #%d so Students won the game.\n", who.GetName(), where.GetRoomNumber());
         if(game != null) game.End(true);
+         */
     }
 }

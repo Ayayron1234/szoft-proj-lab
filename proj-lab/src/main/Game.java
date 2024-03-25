@@ -4,6 +4,7 @@ import main.roomabilities.PoisonAbility;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Manages the state and logic of the game, including rounds, entities (students and teachers),
@@ -26,11 +27,19 @@ public class Game {
      * @param entity The entity to remove from the game.
      */
     public void RemoveEntity(Entity entity) {
+        System.out.println("Game.RemoveEntity");
+
         entities.remove(entity);
         timer.Unsubscribe(entity);
 
-        if (entities.isEmpty())
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Was this the last player alive?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("1")) {
             End(false);
+        }
+        /*if (entities.isEmpty())
+            End(false);*/
     }
 
     /**
@@ -40,6 +49,7 @@ public class Game {
      * @return The created student entity.
      */
     public Student CreateStudent(String name) {
+        System.out.println("Game.CreateStudent");
         Student student = new Student(name, this);
         entities.add(student);
         timer.Subscribe(student);
@@ -52,6 +62,7 @@ public class Game {
      * @return The created teacher entity.
      */
     public Teacher CreateTeacher() {
+        System.out.println("Game.CreateTeacher");
         Teacher teacher = new Teacher(this);
         entities.add(teacher);
         timer.Subscribe(teacher);
@@ -65,6 +76,7 @@ public class Game {
      * @return The created room with a poison ability.
      */
     public Room CreatePoisonedRoom(int capacity) {
+        System.out.println("Game.CreatePoisonedRoom");
         Room room = new Room(capacity);
         room.AddAbility(new PoisonAbility());
         return room;
@@ -75,6 +87,7 @@ public class Game {
      * generating rooms beyond the initial setup.
      */
     private void InitRooms() {
+        System.out.println("Game.InitRooms");
         Room room1 = new Room(5);
         Room room2 = new Room(3);
 
@@ -90,6 +103,7 @@ public class Game {
      * @param count The number of students to create and initialize.
      */
     private void InitStudents(int count) {
+        System.out.println("Game.InitStudents");
         for (int i = 0; i < count; ++i) {
             Student player = CreateStudent(Integer.toString(i));
 
@@ -104,6 +118,7 @@ public class Game {
      * @param count The number of teachers to create and initialize.
      */
     private void InitTeachers(int count) {
+        System.out.println("Game.InitTeachers");
         for (int i = 0; i < count; ++i) {
             Teacher teacher = CreateTeacher();
 
@@ -117,7 +132,7 @@ public class Game {
      * Continues until all rounds are completed or the game ends.
      */
     public void Start() {
-        System.out.println("Game.Start()");
+        System.out.println("Game.Start");
 
         Room starterRoom = new Room(5);
         timer.Subscribe(starterRoom);
@@ -145,6 +160,7 @@ public class Game {
  * each entity, and then ending  the round. It processes all entities' actions, increments the round number, and decrements the rounds left.
  **/
     private void MainLoop() {
+        System.out.println("Game.MainLoop");
         TimerEvent timerEvent = new TimerEvent(roundNumber, roundsLeft, 0);
 
         timer.StartRound(timerEvent);
@@ -152,7 +168,7 @@ public class Game {
         for (Entity entity : entities) {
             timer.StartTurn(entity, timerEvent);
             timer.EndTurn(entity, timerEvent);
-            timerEvent.IncreseTurnCouner();
+            timerEvent.IncreaseTurnCounter();
         }
 
         timer.EndRound(timerEvent);

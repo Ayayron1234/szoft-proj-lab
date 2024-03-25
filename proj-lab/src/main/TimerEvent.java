@@ -10,6 +10,7 @@ public class TimerEvent {
      * @return number of rounds left
      */
     public int GetRoundsLeft() {
+        System.out.println("TimerEvent.GetRoundsLeft");
         return roundsLeft;
     }
 
@@ -18,6 +19,7 @@ public class TimerEvent {
      * @return number of this round
      */
     public int GetRoundNumber() {
+        System.out.println("TimerEvent.GetRoundNumber");
         return roundNumber;
     }
 
@@ -25,12 +27,16 @@ public class TimerEvent {
      * This method is the getter of the turn's number
      * @return number of this turn
      */
-    public int GetTurnNumber() { return turnNumber; }
+    public int GetTurnNumber() {
+        System.out.println("TimerEvent.GetTurnNumber");
+        return turnNumber;
+    }
 
     /**
      * Increases the turn's number by 1
      */
-    public void IncreseTurnCouner() {
+    public void IncreaseTurnCounter() {
+        System.out.println("TimerEvent.IncreaseTurnCounter");
         ++turnNumber;
     }
 

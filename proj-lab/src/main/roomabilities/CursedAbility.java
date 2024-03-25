@@ -10,6 +10,6 @@ public class CursedAbility implements RoomAbility {
     public ArrayList<Room> hiddenNeighbours = new ArrayList<>();
     @Override
     public void Activate(Room room) {
-
+        System.out.println("CursedAbility.Activate");
     }
 }

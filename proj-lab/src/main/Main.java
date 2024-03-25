@@ -17,7 +17,7 @@ public class Main {
                 "1: Student stepping between rooms\n" +
                 "2: Room is on full capacity\n" +
                 "3: Student picks up, and places items\n" +
-                "4: " +
+                "4: \n" +
                 "Choose one:\n");
         int numberOfScript = scanner.nextInt();
         script(numberOfScript);
@@ -175,7 +175,7 @@ public class Main {
 
     public static void Scenario3(Scanner scanner) {
         Student student = new Student("player");
-        
+
     }
 
     public static void Scenario4(Scanner scanner) {
