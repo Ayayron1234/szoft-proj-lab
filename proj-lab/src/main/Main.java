@@ -17,7 +17,7 @@ public class Main {
                 "1: Student stepping between rooms\n" +
                 "2: Room is on full capacity\n" +
                 "3: Student picks up, and places items\n" +
-                "4: \n" +
+                "4: Teacher drainsoul\n" +
                 "Choose one:\n");
         int numberOfScript = scanner.nextInt();
         script(numberOfScript);
@@ -181,7 +181,6 @@ public class Main {
 
     // Create items and add them to rooms
     Item beer = new Beer();
-    Item tvsz = new TVSZ();
     room1.PlaceItem(beer);
     
 
@@ -251,5 +250,50 @@ public class Main {
 
     public static void Scenario4(Scanner scanner) {
         Game game = new Game();
+
+        // Initialize game rooms and teacher
+        Room room1 = new Room(2); 
+        Room room2 = new Room(2); 
+        room1.AddNeighbour(room2);
+        room2.AddNeighbour(room1);
+        
+        Teacher teacher = game.CreateTeacher(); // Assuming CreateTeacher adds the teacher to the game
+        teacher.Teleport(room1); // Start the teacher in room1
+        Student student = new Student("player");
+        student.Teleport(room2);
+        
+
+        while (scanner.hasNextInt()) {
+            System.out.println("\nChoose an action:\n" +
+                               "1. Step student to Room 1\n" +
+                               "2. Soul Drain \n" +
+                               "3. Exit scenario");
+            int action = scanner.nextInt();
+            switch (action) {
+                case 1:
+                if(student.GetContainingRoom()!=room1 && student.GetContainingRoom().GetNeighbours().contains(room1)){
+                    student.Step(room1);
+                    System.out.println("Moved to Room 1.");
+                }else if(student.GetContainingRoom()==room1){
+                    System.out.println("You already in Room 1.");
+                }else
+                    System.out.println("The Room you want to Step in is not a neighbour");
+    
+                    break;
+                case 2:
+                   if(student.GetContainingRoom()==teacher.GetContainingRoom()){
+                    teacher.DrainSouls(teacher);
+                    System.out.println("The Student has been it's soul drained, and lost the game");
+                   }else
+                  System.out.println("There is no Student in the room");
+                    break;
+                case 3:
+                    System.out.println("Exiting Scenario 4.");
+                    return;
+                default:
+                    System.out.println("Invalid action. Try again.");
+                    break;
+            }
+        }
     }
 }

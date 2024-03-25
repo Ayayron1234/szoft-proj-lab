@@ -30,6 +30,7 @@ public class Game {
         System.out.println("Game.RemoveEntity");
 
         entities.remove(entity);
+        rooms.remove(entity);
         timer.Unsubscribe(entity);
 
         Scanner scanner = new Scanner(System.in);

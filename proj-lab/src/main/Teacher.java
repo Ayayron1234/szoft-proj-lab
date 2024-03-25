@@ -39,7 +39,7 @@ public class Teacher extends Entity {
     /**
      * This method is where the teacher tries to drain the soul of every students who is in the same room as him/her
      */
-    public void DrainSouls() {
+    public void DrainSouls(Teacher teacher ) {
         System.out.println("Teacher.DrainSouls");
 
         SoulDrainer drainer = new SoulDrainer();
@@ -47,16 +47,18 @@ public class Teacher extends Entity {
         int entitiesSize = entities.size();
         for (int i = 0; i < entitiesSize; ++i) {
             Entity entity = entities.get(i);
-            entity.ApplyAction(drainer);
-            if (entitiesSize != entities.size()) {
+            if(entity!=teacher){ //we need this to avoid suicide
+                entity.ApplyAction(drainer);
+                if (entitiesSize != entities.size()) {
                 --i;
                 entitiesSize = entities.size();
+                }
             }
         }
-        /*
+        
         System.out.printf("%s drains the soul of entities.\n", GetName());
 
-        SoulDrainer drainer = new SoulDrainer();
+        /*SoulDrainer drainer = new SoulDrainer();
 
         ArrayList<Entity> entities = containingRoom.GetEntities();
         int entitiesSize = entities.size();
