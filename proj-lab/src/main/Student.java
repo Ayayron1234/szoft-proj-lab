@@ -1,5 +1,7 @@
 package main;
 
+import java.util.List;
+
 public class Student extends Entity {
     private final String uniqueName;
 
@@ -37,7 +39,7 @@ public class Student extends Entity {
     public void StartTurn(TimerEvent data) {
         System.out.println("Student.StartTurn");
         if (data.GetTurnNumber() == 1) {
-            var neighbours = this.containingRoom.GetNeighbours();
+            List<Room>  neighbours = this.containingRoom.GetNeighbours();
         }
     }
 

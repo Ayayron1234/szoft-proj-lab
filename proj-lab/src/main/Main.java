@@ -174,9 +174,80 @@ public class Main {
     }
 
     public static void Scenario3(Scanner scanner) {
-        Student student = new Student("player");
+    Room room1 = new Room(2);
+    Room room2 = new Room(2);
+    room1.AddNeighbour(room2);
+    room2.AddNeighbour(room1);
 
+    // Create items and add them to rooms
+    Item beer = new Beer();
+    Item tvsz = new TVSZ();
+    room1.PlaceItem(beer);
+    
+
+    Student student = new Student("player");
+    student.Teleport(room1);
+
+    System.out.println("There are two rooms connected to each other. Room 1 has a Beer, and Room 2 has a TVSZ.\n" +
+            "You are currently in Room 1. Choose an action:\n" +
+            "1: Move to Room 2\n" +
+            "2: Pick up Beer\n" +
+            "3: Move to Room 1 (if in Room 2)\n" +
+            "4: Place Beer in Room 2 (if holding)\n" +
+            "5: Exit");
+
+
+    while (scanner.hasNextInt()) {
+        int action = scanner.nextInt();
+        switch (action) {
+            case 1:
+            if(student.GetContainingRoom()!=room2 && student.GetContainingRoom().GetNeighbours().contains(room2)){
+                student.Step(room2);
+                System.out.println("Moved to Room 2.");
+            }else if(student.GetContainingRoom()==room2){
+                System.out.println("You already in Room 2.");
+            }else
+                System.out.println("The Room you want to Step in is not a neighbour");
+
+                break;
+            case 2:
+                if(student.GetItems().contains(beer)) {
+                    System.out.println("You already have the Beer.");
+                } else if(student.GetContainingRoom().GetItems().contains(beer)) {
+                    student.PickUpItem(beer);
+                    student.GetContainingRoom().PickUpItem(beer);
+                    System.out.println("Picked up Beer.");
+                }else
+                    System.out.println("The Room don't contain the Beer");
+                break;
+            case 3:
+            if(student.GetContainingRoom()!=room1 && student.GetContainingRoom().GetNeighbours().contains(room1)){
+                student.Step(room1);
+                System.out.println("Moved to Room 1.");
+            }else if(student.GetContainingRoom()==room1){
+                System.out.println("You already in Room 1.");
+            }else
+                System.out.println("The Room you want to Step in is not a neighbour");
+
+                break;
+            case 4:
+                if(student.GetItems().contains(beer)) {
+                    student.GetContainingRoom().PlaceItem(beer);
+                    student.PlaceItem(beer);
+                    System.out.println("Placed Beer in containing room");
+                } else {
+                    System.out.println("You don't have Beer to place.");
+                }
+                break;
+            case 5:
+                System.out.println("Exiting Scenario 3.");
+                return;
+            default:
+                System.out.println("Invalid action. Try again.");
+                break;
+        }
     }
+}
 
     public static void Scenario4(Scanner scanner) {
         Game game = new Game();
