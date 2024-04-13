@@ -43,6 +43,14 @@ public abstract class Entity implements TimerSubscriber {
         return false;
     }
 
+    // can be null
+    public Protection GetProtectionWithType(ProtectionType type) {
+        for (var protection : activeProtections)
+            if (protection.GetType().equals(type))
+                return protection;
+        return null;
+    }
+
     public void AddProtection(Protection protection) {
         activeProtections.add(protection);
     }
@@ -116,5 +124,10 @@ public abstract class Entity implements TimerSubscriber {
         System.out.printf("%s misses %d rounds.\n", GetName(), roundCount);
         missedRoundsLeft = roundCount;
         return true;
+    }
+
+    public int GetSpaceInInventory() {
+        // TODO: implement max inventory size
+        return 1;
     }
 }

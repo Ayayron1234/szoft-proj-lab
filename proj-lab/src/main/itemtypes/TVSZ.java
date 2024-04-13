@@ -17,7 +17,7 @@ public class TVSZ extends Item {
     public void PickedUp(Entity who, Room where) {
         System.out.printf("%s picked up tvsz with duration:%d.\n", who.GetName(), usesLeft);
         owner = who;
-        Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, usesLeft);
+        Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, usesLeft, this);
         providedProtection = protection;
         who.AddProtection(protection);
         // TODO: this
@@ -35,7 +35,8 @@ public class TVSZ extends Item {
         owner = null;
     }
 
-    public void Use() {
+    @Override
+    public void Use(Entity who) {
         usesLeft--;
         if (usesLeft > 0)
             System.out.printf("%s's protection provided by tvsz now has uses left:%d.\n", owner.GetName(), usesLeft);

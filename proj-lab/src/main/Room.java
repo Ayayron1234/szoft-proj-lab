@@ -1,6 +1,9 @@
 package main;
 
+import main.actions.Poisoner;
+
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class Room implements TimerSubscriber {
     private int capacity;
@@ -9,8 +12,17 @@ public class Room implements TimerSubscriber {
     private ArrayList<Item> items = new ArrayList<>();
     private static int lastUid = 0;
     private int uid;
+    boolean isSticky = false;
 
     private ArrayList<RoomAbility> abilities = new ArrayList<>();
+
+    public void RemoveAblilityType(Class abilityClass) {
+        ListIterator<RoomAbility> iter = abilities.listIterator();
+        while (iter.hasNext()) {
+            if (iter.next().getClass().equals(abilityClass))
+                iter.remove();
+        }
+    }
 
     public Room(int capacity) {
         this.uid = lastUid++;
@@ -69,6 +81,11 @@ public class Room implements TimerSubscriber {
 
     public boolean CanStepInto(Entity who) {
         return entities.size() < capacity;
+    }
+
+    public void Clean() {
+        isSticky = false;
+        RemoveAblilityType(Poisoner.class);
     }
 
     @Override

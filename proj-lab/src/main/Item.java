@@ -1,6 +1,8 @@
 package main;
 
 public abstract class Item implements TimerSubscriber {
+    private boolean isSticky;
+    private boolean isFake; // If true pickedup and placed methods should not be called.
 
     public abstract String GetName();
 
@@ -8,9 +10,19 @@ public abstract class Item implements TimerSubscriber {
 
     public void Placed(Entity who, Room where) { }
 
-    public boolean CanPickUp(Entity who) {
-        return true;
+    public void Dropped(Entity who, Room where) {
+        Placed(who, where);
     }
+
+    public boolean CanPickUp(Entity who) {
+        return !IsSticky();
+    }
+
+    public boolean IsSticky() {
+        return isSticky;
+    }
+
+    public void Use(Entity who) {}
 
     @Override
     public void StartRound(TimerEvent data) { }

@@ -2,6 +2,8 @@ package main.itemtypes;
 
 import main.*;
 
+import java.util.Random;
+
 public class Beer extends Item {
     private int durationLeft = 3;
     private Protection providedProtection = null;
@@ -16,7 +18,7 @@ public class Beer extends Item {
     public void PickedUp(Entity who, Room where) {
         System.out.printf("%s picked up beer with duration:%d.\n", who.GetName(), durationLeft);
 
-        Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, durationLeft);
+        Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, durationLeft, this);
         providedProtection = protection;
         owner = who;
         who.AddProtection(protection);
@@ -48,5 +50,16 @@ public class Beer extends Item {
         }
         else
             System.out.printf("%s's protection provided by beer now has duration:%d.\n", owner.GetName(), durationLeft);
+    }
+
+
+    @Override
+    public void Use(Entity entity) {
+        if (entity.GetItems().isEmpty())
+            throw new RuntimeException("Entity's inventory should contain at least a beer. ");
+
+        // Entity drops a random item from their inventory
+        int indexOfDroppedItem = new Random().nextInt(0, entity.GetItems().size() - 1);
+        entity.DropItem(entity.GetItems().get(indexOfDroppedItem));
     }
 }

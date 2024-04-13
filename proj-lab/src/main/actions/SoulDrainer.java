@@ -1,9 +1,6 @@
 package main.actions;
 
-import main.Action;
-import main.Entity;
-import main.Item;
-import main.ProtectionType;
+import main.*;
 import main.itemtypes.TVSZ;
 
 public class SoulDrainer implements Action {
@@ -12,16 +9,11 @@ public class SoulDrainer implements Action {
         // Check if target has protection against souldrain
         if (target.HasProtectionType(ProtectionType.SOULD_DRAIN_PROTECTION)) {
             System.out.printf("%s was protected against soul draining.\n", target.GetName());
-            return;
-        }
 
-        // Check if entity has a TVSZ in their directory
-        for(Item item : target.GetItems()) {
-            if (!item.GetName().equals(new TVSZ().GetName()))
-                continue;
+            // Invoke the Use method of the item which provided the protection
+            Protection protection = target.GetProtectionWithType(ProtectionType.SOULD_DRAIN_PROTECTION);
+            protection.GetProvider().Use(target);
 
-            ((TVSZ)item).Use();
-            System.out.printf("%s was protected against soul draining.\n", target.GetName());
             return;
         }
 
