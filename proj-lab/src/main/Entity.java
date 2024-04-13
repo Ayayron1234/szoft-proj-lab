@@ -8,6 +8,7 @@ public abstract class Entity implements TimerSubscriber {
     ArrayList<Protection> activeProtections = new ArrayList<>();
     ArrayList<Item> items = new ArrayList<>();
     Game game = null;
+    int missedRoundsLeft = 0;
 
     public Entity() { }
 
@@ -108,6 +109,12 @@ public abstract class Entity implements TimerSubscriber {
         containingRoom.RemoveEntity(this);
         if (game != null)
             game.RemoveEntity(this);
+        return true;
+    }
+
+    public boolean MissRounds(int roundCount) {
+        System.out.printf("%s misses %d rounds.\n", GetName(), roundCount);
+        missedRoundsLeft = roundCount;
         return true;
     }
 }
