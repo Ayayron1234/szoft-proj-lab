@@ -1,0 +1,5 @@
+entity#2 stuns entity#1 with "Nedves Táblatörlő Rongy"
+entity#1 is stunned
+entity#1 misses 1 round(s)
+entity#1 misses their turn
+it’s entity#2’s turn

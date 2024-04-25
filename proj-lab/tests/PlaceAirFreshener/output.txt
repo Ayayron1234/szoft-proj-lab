@@ -1,0 +1,4 @@
+room#1 poisons it’s entities
+entity#1 placed "Légfrissítő"
+"Légfrissítő" refreshes air
+it’s entity#1’s turn

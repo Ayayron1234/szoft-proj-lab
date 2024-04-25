@@ -1,0 +1,5 @@
+it’s entity#1’s turn
+it’s entity#2’s turn
+entity#2 drains soul
+entity#1 dropped out of game
+game over

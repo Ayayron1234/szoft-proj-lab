@@ -1,0 +1,3 @@
+it’s entity#1’s turn
+entity#1 picked up "Logarléc"
+victory

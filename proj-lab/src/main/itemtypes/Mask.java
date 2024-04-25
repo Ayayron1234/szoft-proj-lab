@@ -16,7 +16,7 @@ public class Mask extends Item {
     public void PickedUp(Entity who, Room where) {
         System.out.printf("%s picked up mask with duration:%d.\n", who.GetName(), durationLeft);
 
-        Protection protection = new Protection(ProtectionType.POISON_PROTECTION, durationLeft);
+        Protection protection = new Protection(ProtectionType.POISON_PROTECTION, durationLeft, this);
         providedProtection = protection;
         owner = who;
         who.AddProtection(protection);

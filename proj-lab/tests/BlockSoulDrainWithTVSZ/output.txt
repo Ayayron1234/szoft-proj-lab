@@ -1,0 +1,5 @@
+it’s entity#1’s turn
+it’s entity#2’s turn
+entity#2 drains soul
+entity#1 blocks soul drain with "TVSZ Denevérbőrre Nyomtatott Példánya"
+it’s entity#1’s turn

@@ -1,0 +1,5 @@
+it’s entity#1’s turn
+entity#1 couldn’t pick up item#1, because its sticky
+it’s entity#1’s turn
+items in room: 0:"TVSZ Denevérbőrre Nyomtatott Példánya"
+it’s entity#1’s turn

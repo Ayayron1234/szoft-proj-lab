@@ -1,0 +1,4 @@
+it’s entity#1’s turn
+entity#1 picked up "Logarléc"
+"Logarléc" was a fake item
+it’s enitity#1’s turn

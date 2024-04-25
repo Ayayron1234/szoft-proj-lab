@@ -1,0 +1,5 @@
+it’s entity#1’s turn
+entity#1 steps to room#2
+it’s entity#1’s turn
+neighbouring rooms: 
+it’s entity#1’s turn

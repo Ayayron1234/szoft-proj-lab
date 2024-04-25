@@ -1,0 +1,6 @@
+room#1 poisons it’s entities
+entity#1 is poisoned
+entity#1 drops "TVSZ Denevérbőrre Nyomtatott Példánya"
+entity#1 misses 1 round(s)
+entity#1 misses their turn
+it’s entity#1’s turn

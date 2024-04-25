@@ -1,0 +1,7 @@
+it’s entity#1’s turn
+entity#1 placed "Tranzisztor"
+entity#1 is teleported to room#2
+entity#1 picked up "Tranzisztor"
+it’s entity#1’s turn
+neighbouring rooms: 0:room#1
+it’s entity#1’s turn

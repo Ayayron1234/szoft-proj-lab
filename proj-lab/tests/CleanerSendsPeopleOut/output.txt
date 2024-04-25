@@ -1,0 +1,5 @@
+entity#2 sends out people from the room
+entity#1 steps to room#2
+it’s entity#1’s turn
+neighbouring rooms: 0:room#1
+it’s entity#2’s turn

@@ -1,0 +1,13 @@
+{
+	"game": {"roundsLeft": 10},
+	"rooms": [
+		{"id": "room#1", "capacity": 2, 
+"containedEntities": ["entity#1"], "items": ["item#1"]}
+	],
+"items": [
+	{"id": "item#1", "type": "SlideRule"}
+],
+	"entities": [
+		{"id": "entity#1", "type": "Student"}
+	]
+}

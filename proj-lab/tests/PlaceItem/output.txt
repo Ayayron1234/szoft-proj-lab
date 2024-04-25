@@ -1,0 +1,3 @@
+it’s entity#1’s turn
+entity#1 placed "TVSZ Denevérbőrre Nyomtatott Példánya"
+it’s entity#1’s turn

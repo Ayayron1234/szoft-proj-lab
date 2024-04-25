@@ -1,0 +1,3 @@
+room#1 poisons it’s entities
+entity#1 blocked poison with "FFP2-es Maszk"
+it’s entity#1’s turn

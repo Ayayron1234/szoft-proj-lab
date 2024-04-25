@@ -1,0 +1,3 @@
+pickup 0
+list items
+exit

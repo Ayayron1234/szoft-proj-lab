@@ -1,0 +1,6 @@
+it’s entity#1’s turn
+it’s entity#2’s turn
+entity#2 drains soul
+entity#1 blocks soul drain with "Szent Söröspohár"
+entity#1 drops "Szent Söröspohár"
+it’s entity#1’s turn

@@ -1,0 +1,20 @@
+{
+	"game": {"roundsLeft": 10},
+	"rooms": [
+		{"id": "room#1", "capacity": 2, 
+"containedEntities": ["entity#1", "entity#2"]}
+	],
+	"entities": [
+		{"id": "entity#1", "type": "Student", 
+"inventory": ["item#1"], 
+"activeProtections": ["protection#1"]},
+		{"id": "entity#2", "type": "Teacher"}
+	],
+	"protections": [
+		{"id": "protection#1", "type": "soul_drain_protection"}
+	],
+	"items": [
+		{"id": "item#1", "type": "TVSZ", "durationLeft": 3, 
+"providedProtection": "protection#1"}
+	]
+}

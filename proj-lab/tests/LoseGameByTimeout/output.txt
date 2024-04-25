@@ -1,0 +1,2 @@
+it’s entity#1’s turn
+game over
