@@ -4,9 +4,9 @@
 		{"id": "room#1", "capacity": 1, 
         "containedEntities": ["entity#1"], 
         "neighbours": ["room#2"]},
-        {"id": "room#2, "capacity": 0}
+        {"id": "room#2", "capacity": 0}
 	],
 	"entities": [
-		{"id": "entity#1", "type": "Student"},
+		{"id": "entity#1", "type": "Student"}
 	]
 }

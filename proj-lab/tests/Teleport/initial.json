@@ -3,7 +3,7 @@
 	"rooms": [
 		{"id": "room#1", "capacity": 1, 
         "containedEntities": ["entity#1"]},
-        {"id": "room#2, "capacity": 1, "items": ["item#1"], "neighbours": ["room#1"]}
+        {"id": "room#2", "capacity": 1, "items": ["item#1"], "neighbours": ["room#1"]}
 	],
     "items": [
 	    {"id": "item#1", "type": "Transistor", "pair": "item#2"},
@@ -11,6 +11,6 @@
     ],
 	"entities": [
 		{"id": "entity#1", "type": "Student", 
-        "inventory": ["item#2"]},
+        "inventory": ["item#2"]}
 	]
 }
