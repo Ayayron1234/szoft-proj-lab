@@ -14,8 +14,6 @@ public class Mask extends Item {
 
     @Override
     public void PickedUp(Entity who, Room where) {
-        System.out.printf("%s picked up mask with duration:%d.\n", who.GetName(), durationLeft);
-
         Protection protection = new Protection(ProtectionType.POISON_PROTECTION, durationLeft, this);
         providedProtection = protection;
         owner = who;
@@ -27,9 +25,7 @@ public class Mask extends Item {
         if (providedProtection != null) {
             owner.RemoveProtection(providedProtection);
             providedProtection = null;
-            System.out.printf("%s placed down mask and lost protection.\n", who.GetName());
         } else
-            System.out.printf("%s placed down mask.\n", who.GetName());
 
         owner = null;
     }
@@ -44,11 +40,11 @@ public class Mask extends Item {
         if (providedProtection.GetDuration() == 0) {
             owner.RemoveProtection(providedProtection);
             providedProtection = null;
-            System.out.printf("%s lost protection from mask.\n", owner.GetName());
         }
-        else
-            System.out.printf("%s's protection provided by mask now has duration:%d.\n", owner.GetName(), durationLeft);
     }
 
-
+    @Override
+    public void Use(Entity who) {
+        System.out.printf("%s blocked poison with %s", who.GetName(), GetName());
+    }
 }

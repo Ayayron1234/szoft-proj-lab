@@ -2,24 +2,14 @@ package main;
 
 import main.actions.SoulDrainer;
 
-import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.*;
 
 public class Cleaner extends Entity {
-    private static int lastUid = 0;
-    private int uid;
+    private int             uid;
+    private final Random    randomGenerator = new Random();
 
-    public Cleaner() {
-        this.uid = lastUid++;
-    }
-
-    public Cleaner(Game game) {
-        super(game);
-        this.uid = lastUid++;
-    }
-
-    public static void ResetUIDs() {
-        lastUid = 0;
+    public Cleaner(int uid, Game game) {
+        super(uid, game);
     }
 
     public void CleanRoom() {
@@ -30,10 +20,6 @@ public class Cleaner extends Entity {
 
         Iterator<Entity> iter = containingRoom.GetEntities().iterator();
 
-        // Select room to send entities to
-        // TODO: select room randomly
-        Room roomToSendEntities = containingRoom.GetNeighbours().get(0);
-
         while(iter.hasNext()) {
             Entity entity = iter.next();
 
@@ -41,38 +27,27 @@ public class Cleaner extends Entity {
             if (entity.equals(this))
                 continue;
 
+            // Filter full rooms
+            List<Room> availableRooms = containingRoom.GetNeighbours().stream().filter(room -> room.GetSpaceLeft() > 0).toList();
+            if (availableRooms.isEmpty())
+                continue;
+
+            // Select room to step into
+            int index = randomGenerator.nextInt(availableRooms.size());
+            Room roomToSendEntities = availableRooms.get(index);
+
             entity.Step(roomToSendEntities);
         }
     }
 
     @Override
-    public void StartRound(TimerEvent data) {
-
+    public void DropOutOfGame() {
+        // Cleaners can't drop out of the game
     }
 
     @Override
-    public void EndRound(TimerEvent data) {
+    public void HandleTurn() {
 
-    }
-
-    @Override
-    public void StartTurn(TimerEvent data) {
-
-    }
-
-    @Override
-    public void EndTurn(TimerEvent data) {
-
-    }
-
-    @Override
-    public String GetName() {
-        return String.format("Takarító%d", uid);
-    }
-
-    @Override
-    public boolean DropOutOfGame() {
-        return false;
     }
 
 }

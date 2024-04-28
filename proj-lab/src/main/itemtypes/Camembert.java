@@ -28,7 +28,6 @@ public class Camembert extends Item {
     @Override
     public void Placed(Entity who, Room where) {
         activationPlace = where;
-        System.out.printf("%s placed down mask and poisoned room #%d for %d rounds.\n", who.GetName(), where.GetRoomNumber(), duration);
     }
 
     @Override
@@ -38,9 +37,11 @@ public class Camembert extends Item {
 
     @Override
     public void StartRound(TimerEvent data) {
+        // Return if camembert isn't activated
         if (activationPlace == null)
             return;
 
+        System.out.printf("%item#%d poisons room\n", GetUID());
         Poisoner poisoner = new Poisoner();
         for (Entity entity : activationPlace.GetEntities()) {
             entity.ApplyAction(poisoner);

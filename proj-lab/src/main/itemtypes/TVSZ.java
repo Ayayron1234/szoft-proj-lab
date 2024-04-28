@@ -38,10 +38,12 @@ public class TVSZ extends Item {
     @Override
     public void Use(Entity who) {
         usesLeft--;
-        if (usesLeft > 0)
-            System.out.printf("%s's protection provided by tvsz now has uses left:%d.\n", owner.GetName(), usesLeft);
+        System.out.printf("%s blocks soul drain with %s", who.GetName(), GetName());
+        if (usesLeft > 0) {
+            //System.out.printf("%s's protection provided by tvsz now has uses left:%d.\n", owner.GetName(), usesLeft);
+        }
         else {
-            System.out.printf("%s broke tvsz with last use and lost protection.\n", owner.GetName());
+            //System.out.printf("%s broke tvsz with last use and lost protection.\n", owner.GetName());
             owner = null;
         }
     }

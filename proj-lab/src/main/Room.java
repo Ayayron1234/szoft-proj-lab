@@ -3,29 +3,28 @@ package main;
 import main.actions.Poisoner;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 public class Room implements TimerSubscriber {
-    private int capacity;
-    private ArrayList<Room> neighbours = new ArrayList<>();
-    private ArrayList<Entity> entities = new ArrayList<>();
-    private ArrayList<Item> items = new ArrayList<>();
-    private static int lastUid = 0;
-    private int uid;
-    boolean isSticky = false;
+    private int                     uid;
+    private int                     capacity;
 
-    private ArrayList<RoomAbility> abilities = new ArrayList<>();
+    private ArrayList<Room>         neighbours = new ArrayList<>();
+    private ArrayList<Entity>       entities = new ArrayList<>();
+    private ArrayList<Item>         items = new ArrayList<>();
 
-    public void RemoveAblilityType(Class abilityClass) {
-        ListIterator<RoomAbility> iter = abilities.listIterator();
-        while (iter.hasNext()) {
-            if (iter.next().getClass().equals(abilityClass))
-                iter.remove();
-        }
+    boolean                         isSticky = false;
+    private ArrayList<RoomAbility>  abilities = new ArrayList<>();
+
+    public void RemoveAbilityType(Class abilityClass) {
+        abilities.removeIf(ability -> ability.getClass().equals(abilityClass));
     }
 
-    public Room(int capacity) {
-        this.uid = lastUid++;
+    public int GetSpaceLeft() {
+        return capacity - entities.size();
+    }
+
+    public Room(int uid, int capacity) {
+        this.uid = uid;
         this.capacity = capacity;
     }
 
@@ -85,7 +84,7 @@ public class Room implements TimerSubscriber {
 
     public void Clean() {
         isSticky = false;
-        RemoveAblilityType(Poisoner.class);
+        RemoveAbilityType(Poisoner.class);
     }
 
     @Override

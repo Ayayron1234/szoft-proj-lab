@@ -16,8 +16,6 @@ public class Beer extends Item {
 
     @Override
     public void PickedUp(Entity who, Room where) {
-        System.out.printf("%s picked up beer with duration:%d.\n", who.GetName(), durationLeft);
-
         Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, durationLeft, this);
         providedProtection = protection;
         owner = who;
@@ -29,9 +27,7 @@ public class Beer extends Item {
         if (providedProtection != null) {
             owner.RemoveProtection(providedProtection);
             providedProtection = null;
-            System.out.printf("%s placed down beer and lost protection.\n", who.GetName());
-        } else
-            System.out.printf("%s placed down beer.\n", who.GetName());
+        }
 
         owner = null;
     }
@@ -46,17 +42,15 @@ public class Beer extends Item {
         if (providedProtection.GetDuration() == 0) {
             owner.RemoveProtection(providedProtection);
             providedProtection = null;
-            System.out.printf("%s lost protection from beer.\n", owner.GetName());
         }
-        else
-            System.out.printf("%s's protection provided by beer now has duration:%d.\n", owner.GetName(), durationLeft);
     }
-
 
     @Override
     public void Use(Entity entity) {
         if (entity.GetItems().isEmpty())
             throw new RuntimeException("Entity's inventory should contain at least a beer. ");
+
+        System.out.printf("%s blocks soul drain with %s\n", entity.GetName(), GetName());
 
         // Entity drops a random item from their inventory
         int indexOfDroppedItem = new Random().nextInt(0, entity.GetItems().size() - 1);

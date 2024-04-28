@@ -10,6 +10,7 @@ public class PoisonAbility implements RoomAbility {
     @Override
     public void Activate(Room room) {
         Poisoner poisoner = new Poisoner();
+        System.out.printf("room#%d poisons it's entities", room.GetRoomNumber());
 
         for (Entity entity : room.GetEntities()) {
             entity.ApplyAction(poisoner);

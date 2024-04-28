@@ -36,6 +36,7 @@ public class Transistor extends Item {
 
         // Teleport entity to the paired transistor's location and pick up paired transistor
         who.Teleport(pair.location);
+        System.out.printf("%s is teleported to room#%d", who.GetName(), pair.location.GetRoomNumber());
         who.PickUpItem(pair);
     }
 

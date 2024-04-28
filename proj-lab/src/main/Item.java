@@ -1,8 +1,17 @@
 package main;
 
 public abstract class Item implements TimerSubscriber {
+    private int     uid;
     private boolean isSticky;
     private boolean isFake; // If true pickedup and placed methods should not be called.
+
+    public void SetUID(int uid) {
+        this.uid = uid;
+    }
+
+    public int GetUID() {
+        return uid;
+    }
 
     public abstract String GetName();
 
