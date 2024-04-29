@@ -16,4 +16,9 @@ public class PoisonAbility implements RoomAbility {
             entity.ApplyAction(poisoner);
         }
     }
+
+    @Override
+    public String GetTypeString() {
+        return "poison_ability";
+    }
 }

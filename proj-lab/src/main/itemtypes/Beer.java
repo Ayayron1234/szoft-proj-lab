@@ -1,5 +1,6 @@
 package main.itemtypes;
 
+import com.google.gson.JsonObject;
 import main.*;
 
 import java.util.Random;
@@ -16,14 +17,20 @@ public class Beer extends Item {
 
     @Override
     public void PickedUp(Entity who, Room where) {
-        Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, durationLeft, this);
-        providedProtection = protection;
-        owner = who;
-        who.AddProtection(protection);
+        if(!IsFake()) {
+            owner = who;
+            Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, durationLeft, this);
+            providedProtection = protection;
+            who.AddProtection(protection);
+        }
     }
 
     @Override
     public void Placed(Entity who, Room where) {
+        if(IsFake()) {
+            return;
+        }
+
         if (providedProtection != null) {
             owner.RemoveProtection(providedProtection);
             providedProtection = null;
@@ -34,6 +41,9 @@ public class Beer extends Item {
 
     @Override
     public void StartRound(TimerEvent data) {
+        if (IsFake())
+            return;
+
         if (providedProtection == null)
             return;
 
@@ -47,6 +57,7 @@ public class Beer extends Item {
 
     @Override
     public void Use(Entity entity) {
+        if(IsFake()) return;
         if (entity.GetItems().isEmpty())
             throw new RuntimeException("Entity's inventory should contain at least a beer. ");
 
@@ -55,5 +66,10 @@ public class Beer extends Item {
         // Entity drops a random item from their inventory
         int indexOfDroppedItem = new Random().nextInt(0, entity.GetItems().size() - 1);
         entity.DropItem(entity.GetItems().get(indexOfDroppedItem));
+    }
+
+    @Override
+    public void Deserialize(JsonObject json) {
+        
     }
 }

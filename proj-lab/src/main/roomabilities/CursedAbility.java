@@ -1,5 +1,7 @@
 package main.roomabilities;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import main.Room;
 import main.RoomAbility;
 
@@ -11,5 +13,10 @@ public class CursedAbility implements RoomAbility {
     @Override
     public void Activate(Room where) {
 
+    }
+
+    @Override
+    public String GetTypeString() {
+        return "cursed_ability";
     }
 }

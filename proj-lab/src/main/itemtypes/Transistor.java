@@ -15,6 +15,8 @@ public class Transistor extends Item {
 
     @Override
     public void PickedUp(Entity who, Room where) {
+        if (IsFake())
+            return;
         // Create pair
         if (pair == null) {
             Transistor pairedTransistor = new Transistor();
@@ -29,6 +31,8 @@ public class Transistor extends Item {
 
     @Override
     public void Placed(Entity who, Room where) {
+        if (IsFake())
+            return;
         location = where;
 
         if (pair == null)
@@ -42,6 +46,8 @@ public class Transistor extends Item {
 
     @Override
     public void Dropped(Entity who, Room where) {
+        if (IsFake())
+            return;
         location = where;
     }
 }

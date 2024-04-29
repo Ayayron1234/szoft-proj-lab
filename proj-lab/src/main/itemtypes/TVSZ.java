@@ -15,6 +15,9 @@ public class TVSZ extends Item {
 
     @Override
     public void PickedUp(Entity who, Room where) {
+        if (IsFake())
+            return;
+
         System.out.printf("%s picked up tvsz with duration:%d.\n", who.GetName(), usesLeft);
         owner = who;
         Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, usesLeft, this);
@@ -25,6 +28,9 @@ public class TVSZ extends Item {
 
     @Override
     public void Placed(Entity who, Room where) {
+        if (IsFake())
+            return;
+
         if (providedProtection != null) {
             owner.RemoveProtection(providedProtection);
             providedProtection = null;
@@ -35,8 +41,12 @@ public class TVSZ extends Item {
         owner = null;
     }
 
+
     @Override
     public void Use(Entity who) {
+        if (IsFake())
+            return;
+
         usesLeft--;
         System.out.printf("%s blocks soul drain with %s", who.GetName(), GetName());
         if (usesLeft > 0) {

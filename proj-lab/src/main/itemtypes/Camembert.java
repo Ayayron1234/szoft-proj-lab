@@ -27,7 +27,9 @@ public class Camembert extends Item {
 
     @Override
     public void Placed(Entity who, Room where) {
-        activationPlace = where;
+        if(!IsFake()) {
+            activationPlace = where;
+        }
     }
 
     @Override
@@ -37,6 +39,9 @@ public class Camembert extends Item {
 
     @Override
     public void StartRound(TimerEvent data) {
+        if(IsFake())
+            return;
+
         // Return if camembert isn't activated
         if (activationPlace == null)
             return;
