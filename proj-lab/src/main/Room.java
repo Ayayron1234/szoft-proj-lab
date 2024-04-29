@@ -8,7 +8,11 @@ import main.roomabilities.CursedAbility;
 import main.roomabilities.PoisonAbility;
 
 import java.util.ArrayList;
-
+/**
+ * Represents a room in the game environment. Rooms can contain entities, items, and abilities. Rooms also have the capacity to
+ * connect with other rooms (neighbours). This class handles various functionalities such as adding and removing entities,
+ * placing items, and serializing/deserializing room data.
+ */
 public class Room implements TimerSubscriber {
     private int                     uid;
     private int                     capacity;
@@ -20,78 +24,154 @@ public class Room implements TimerSubscriber {
     boolean                         isSticky = false;
     private ArrayList<RoomAbility>  abilities = new ArrayList<>();
 
+    /**
+     * Removes a specific type of ability from the room.
+     * @param abilityClass The class type of the ability to remove.
+     */
     public void RemoveAbilityType(Class abilityClass) {
         abilities.removeIf(ability -> ability.getClass().equals(abilityClass));
     }
 
+    /**
+     * Calculates and returns the available space left in the room based on its capacity and the number of entities currently in it.
+     * @return The number of additional entities this room can accommodate.
+     */
     public int GetSpaceLeft() {
         return capacity - entities.size();
     }
 
+    /**
+     * Constructs a room with a unique identifier and a specific capacity.
+     * @param uid Unique identifier for the room.
+     * @param capacity Maximum number of entities the room can hold.
+     */
     public Room(int uid, int capacity) {
         this.uid = uid;
         this.capacity = capacity;
     }
 
+    /**
+     * Returns the unique identifier of the room.
+     * @return The unique identifier of the room.
+     */
     public int GetRoomNumber() { return uid; }
 
+    /**
+     * Retrieves a list of items currently in the room.
+     * @return A list of items in the room.
+     */
     public ArrayList<Item> GetItems() {
         return items;
     }
 
+    /**
+     * Places an item into the room.
+     * @param item The item to be placed in the room.
+     */
     public void PlaceItem(Item item) {
         items.add(item);
     }
 
+    /**
+     * Removes a specified item from the room.
+     * @param item The item to remove.
+     */
     public void PickUpItem(Item item) {
         if (!items.remove(item))
             throw new RuntimeException("Room doesn't contain provided item. ");
     }
 
+    /**
+     * Retrieves the room's capacity.
+     * @return The maximum number of entities that the room can hold.
+     */
     public int GetCapacity() {
         return capacity;
     }
 
+     /**
+     * Sets a new capacity for the room.
+     * @param capacity The new capacity to set.
+     */
     public void SetCapacity(int capacity) {
         this.capacity = capacity;
     }
 
+     /**
+     * Retrieves a list of neighboring rooms.
+     * @return A list of rooms directly accessible from this room.
+     */
     public ArrayList<Room> GetNeighbours() {
         return neighbours;
     }
 
+    
+    /**
+     * Adds a neighboring room to this room.
+     * @param neighbour The room to add as a neighbour.
+     */
     public void AddNeighbour(Room neighbour) {
         neighbours.add(neighbour);
     }
 
+    /**
+     * Removes a neighboring room.
+     * @param neighbour The room to remove from the neighbours list.
+     * @return true if the neighbour was removed, false otherwise.
+     */
     public boolean RemoveNeighbour(Room neighbour) {
         return neighbours.remove(neighbour);
     }
 
+     /**
+     * Accepts an entity into the room if there is space available.
+     * @param entity The entity to be added to the room.
+     */
     public void AcceptEntity(Entity entity) {
         if (!CanStepInto(entity))
             throw new RuntimeException("main.Entity count exceeds maximum");
         entities.add(entity);
     }
 
+    /**
+     * Removes an entity from the room.
+     * @param entity The entity to remove.
+     */
     public void RemoveEntity(Entity entity) {
         if (!entities.remove(entity))
             throw new RuntimeException("main.Room failed to remove entity.");
     }
 
+    /**
+     * Retrieves a list of entities currently in the room.
+     * @return A list of entities in the room.
+     */
     public ArrayList<Entity> GetEntities() {
         return entities;
     }
 
+     /**
+     * Checks if an entity can enter the room based on available capacity.
+     * @param who The entity attempting to enter.
+     * @return true if the entity can enter, false otherwise.
+     */
     public boolean CanStepInto(Entity who) {
         return entities.size() < capacity;
     }
 
+     /**
+     * Cleans the room by resetting specific states like stickiness and removing certain abilities.
+     */
     public void Clean() {
         isSticky = false;
         RemoveAbilityType(Poisoner.class);
     }
 
+
+    /**
+     * Retrieves a room's name and uid in string format
+     * @return A string of the room's name
+     */
     public String toString(){
         return "room#" + Integer.toString(uid);
     }
@@ -118,6 +198,10 @@ public class Room implements TimerSubscriber {
 
     }
 
+     /**
+     * Converts the room state to a JSON object for serialization.
+     * @return A JsonObject representing the room's state.
+     */
     public JsonObject Serialize() {
         JsonObject json = new JsonObject();
         json.add("id", new JsonPrimitive(String.format("item#%d", uid)));
@@ -149,6 +233,12 @@ public class Room implements TimerSubscriber {
         return json;
     }
 
+     /**
+     * Reconstructs a room object from its JSON representation.
+     * @param game The game context to which this room belongs.
+     * @param json The JSON object containing the room data.
+     * @return The deserialized room object.
+     */
     public static Room Deserialize(Game game, JsonObject json) {
         if (!json.has("id") || !json.has("capacity"))
             throw new RuntimeException("");
