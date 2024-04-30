@@ -526,15 +526,12 @@ public class Room implements TimerSubscriber {
         return json;
     }
 
-<<<<<<< Updated upstream
-=======
     /**
      * Deserialize json object into a Room object.
      * @param game
      * @param json
      * @return
      */
->>>>>>> Stashed changes
     public static Room Deserialize(Game game, JsonObject json) {
         if (!json.has("id") || !json.has("capacity"))
             throw new RuntimeException("");
@@ -545,11 +542,8 @@ public class Room implements TimerSubscriber {
                 () -> game.CreateRoom(json.get("capacity").getAsInt()));
         room.uid = uid;
 
-<<<<<<< Updated upstream
-=======
         room.capacity = json.get("capacity").getAsInt();
 
->>>>>>> Stashed changes
         if (json.has("neighbours")) {
             JsonArray neighboursJson = json.get("neighbours").getAsJsonArray();
             for (int i = 0; i < neighboursJson.size(); ++i) {
@@ -573,10 +567,7 @@ public class Room implements TimerSubscriber {
             for (int i = 0; i < itemsJson.size(); ++i) {
                 Item item = game.GetDeserializedObjectReference(itemsJson.get(i).getAsString());
 
-<<<<<<< Updated upstream
-=======
                 item.SetLocationIfNeeded(room);
->>>>>>> Stashed changes
                 room.items.add(item);
             }
         }
@@ -597,9 +588,4 @@ public class Room implements TimerSubscriber {
 
         return room;
     }
-
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 }
