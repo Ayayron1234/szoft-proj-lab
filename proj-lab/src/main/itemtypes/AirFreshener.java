@@ -20,7 +20,7 @@ public class AirFreshener extends Item {
         // Remove poison ability from the room where it was placed
         Class poisonerClass = PoisonAbility.class;
         where.RemoveAbilityType(poisonerClass);
-        System.out.printf("%s refreshes air\n", GetName());
+        System.out.printf("\"%s\" refreshes air\n", GetName());
     }
 
     @Override
@@ -32,7 +32,7 @@ public class AirFreshener extends Item {
         // Remove poison ability from the room where it was placed
         Class poisonerClass = PoisonAbility.class;
         where.RemoveAbilityType(poisonerClass);
-        System.out.printf("%s refreshes air\n", GetName());
+        System.out.printf("\"%s\" refreshes air\n", GetName());
     }
 
 }

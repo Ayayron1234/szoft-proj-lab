@@ -17,18 +17,13 @@ public class Beer extends Item {
     private Protection  providedProtection = null;
     private Entity      owner = null;
 
-<<<<<<< Updated upstream
-=======
+
     /**
-<<<<<<< Updated upstream
-     * @return
-=======
      * Returns the name of the beer.
      *
      * @return A string representing the name of the beer.
->>>>>>> Stashed changes
      */
->>>>>>> Stashed changes
+
     @Override
     public String GetName() {
         return "Szent Söröspohár";
@@ -41,32 +36,18 @@ public class Beer extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-        System.out.println("Beer.PickedUp");
-
-        Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, durationLeft);
-        providedProtection = protection;
-        who.AddProtection(protection);
-=======
-
         System.out.printf("%s picked up \"%s\"\n", who.GetName(), GetName());
         if(IsFake()) {
             System.out.printf("\"%s\" was a fake item\n", GetName());
             return;
         }
->>>>>>> Stashed changes
+
         if(!IsFake()) {
             owner = who;
             Protection protection = new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, durationLeft, this);
             providedProtection = protection;
             who.AddProtection(protection);
         }
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
     }
 
     /**
@@ -80,22 +61,12 @@ public class Beer extends Item {
             return;
         }
 
-<<<<<<< Updated upstream
         if (providedProtection != null) {
             owner.RemoveProtection(providedProtection);
             providedProtection = null;
         }
 
         owner = null;
-=======
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Is the beer empty? 1-yes 2-no");
-
-        String answer = scanner.nextLine();
-        if(answer.equals("2")){
-            who.RemoveProtection(providedProtection);
-        }
->>>>>>> Stashed changes
     }
 
     /**
@@ -108,7 +79,7 @@ public class Beer extends Item {
         if (IsFake())
             return;
 
-<<<<<<< Updated upstream
+
         if (providedProtection == null)
             return;
 
@@ -120,36 +91,6 @@ public class Beer extends Item {
         }
     }
 
-    @Override
-    public void Use(Entity entity) {
-        if(IsFake()) return;
-        if (entity.GetItems().isEmpty())
-            throw new RuntimeException("Entity's inventory should contain at least a beer. ");
-
-        System.out.printf("%s blocks soul drain with %s\n", entity.GetName(), GetName());
-
-        // Entity drops a random item from their inventory
-        int indexOfDroppedItem = new Random().nextInt(0, entity.GetItems().size() - 1);
-        entity.DropItem(entity.GetItems().get(indexOfDroppedItem));
-    }
-
-    @Override
-    public void Deserialize(JsonObject json) {
-        
-=======
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Is the beer empty? 1-yes 2-no");
-
-        String answer = scanner.nextLine();
-        if(answer.equals("2")){
-            new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, 3).DecreaseDuration();
-            new Protection(ProtectionType.SOULD_DRAIN_PROTECTION, 3).GetDuration();
-        }
->>>>>>> Stashed changes
-    }
-<<<<<<< Updated upstream
-=======
-
     /**
      * When the Beer item is used it negates a soul drain action aimed towards it's owner.
      * @param entity The entity that using the item.
@@ -157,6 +98,7 @@ public class Beer extends Item {
     @Override
     public void Use(Entity entity) {
         if(IsFake()) return;
+
         if (entity.GetItems().isEmpty())
             throw new RuntimeException("Entity's inventory should contain at least a beer. ");
 
@@ -190,5 +132,5 @@ public class Beer extends Item {
     public void SetOwnerIfNeeded(Entity owner) {
         this.owner = owner;
     }
->>>>>>> Stashed changes
+
 }

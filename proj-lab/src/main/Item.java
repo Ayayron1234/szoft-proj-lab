@@ -104,8 +104,6 @@ import com.google.gson.JsonPrimitive;
         return isFake;
     }
 
-    public void Use(Entity who) {}
-
     /**
      * The action to be performed when the item is used by an entity.
      *

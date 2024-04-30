@@ -20,25 +20,13 @@ public class Stunner implements Action {
     //Teacher gets stunned, and can't move for a round
     @Override
     public void Execute(Entity target) {
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-        System.out.println("Stunner.Execute");
-        target.MissRounds(roundsMissed);
-=======
->>>>>>> Stashed changes
         // Check if entity is a Teacher
         if (!target.getClass().equals(Teacher.class))
             return;
 
         // Teacher misses a round
-<<<<<<< Updated upstream
-        System.out.printf("%s is stunned\n");
-        target.MissRounds(1);
-=======
         System.out.printf("%s is stunned\n", target.GetName());
         target.MissRounds(1);
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+
     }
 }

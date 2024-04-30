@@ -97,6 +97,9 @@ public class Main {
             System.out.println("The specified file was not found: " + testPath + "/input.txt");
         }
 
+        if (index == 7)
+            System.out.print("");
+
         // Deserialize initial game state
         Game game = Game.Deserialize(initial);
         game.Start();

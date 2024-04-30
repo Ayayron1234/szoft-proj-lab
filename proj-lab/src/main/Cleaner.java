@@ -37,6 +37,8 @@ public class Cleaner extends Entity implements Serializable {
         if (containingRoom == null)
             return;
 
+        System.out.printf("%s sends out people from the room\n", GetName());
+
         containingRoom.Clean();
 
         Iterator<Entity> iter = containingRoom.GetEntities().iterator();
@@ -70,11 +72,6 @@ public class Cleaner extends Entity implements Serializable {
     }
 
     @Override
-    public void HandleTurn() {
-        //CleanRoom();
-    }
-
-    @Override
     public void StartRound(TimerEvent timerEvent) {
         CleanRoom();
     }
@@ -103,6 +100,76 @@ public class Cleaner extends Entity implements Serializable {
         json.add("activeProtections", protectionsJson);
 
         return json;
+    }
+
+
+    /**
+     * This method is to get the name of the Teacher in a form of Oktató<UID>
+     * @return the formatted string of that
+     */
+    @Override
+    public void HandleTurn() {
+        Scanner in = game.GetScanner();    //
+        String[] cmd = in.nextLine().split(" ");
+        String out = "";
+
+        switch(cmd[0])
+        {
+            case "list":
+                if(cmd.length < 2) out += "Incorrect command, missing argument";
+                else if(cmd[1].equals("rooms")){
+                    out += "neighbouring rooms:";
+                    int i = 0;
+                    for(Room r : containingRoom.GetNeighbours()){
+                        out += String.format(" %d:%s",i,r.toString());
+                    }
+                }
+                else if(cmd[1].equals("items")){
+                    out += "items in room:";
+                    int i = 0;
+                    for(Item item : containingRoom.GetItems()){
+                        out += String.format(" %d:\"%s\"",i,item.GetName());
+                    }
+                }
+                else{
+                    out += "Incorrect command, unknown argument";
+                }
+                break;
+            case "place":
+                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
+                else if(items.size() <= Integer.parseInt(cmd[1])){
+                    out += "Incorrect argument, index out of range\n";
+                }
+                else{
+                    PlaceItem(containingRoom.GetItems().get(Integer.parseInt(cmd[1])));
+//                    items.get(Integer.parseInt(cmd[1])).Placed(this, containingRoom);
+                }
+                break;
+            case "pickup":
+                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
+                else if(containingRoom.GetItems().size() <= Integer.parseInt(cmd[1])){
+                    out += "Incorrect argument, index out of range\n";
+                }
+                else{
+                    PickUpItem(containingRoom.GetItems().get(Integer.parseInt(cmd[1])));
+//                    containingRoom.GetItems().get(Integer.parseInt(cmd[1])).PickedUp(this, containingRoom);
+                }
+                break;
+            case "step":
+                if(cmd.length < 2) out += "Incorrect command, missing argument";
+                else if(containingRoom.GetNeighbours().size() <= Integer.parseInt(cmd[1])){
+                    out += "Incorrect argument, index out of range";
+                }
+                else{
+                    this.Step(containingRoom.GetNeighbours().get(Integer.parseInt(cmd[1])));
+                }
+                break;
+            case "skip":
+                break;
+            case "exit":
+                game.Exit(); break;
+        }
+        System.out.print(out);
     }
 
 }

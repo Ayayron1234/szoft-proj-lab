@@ -1,6 +1,5 @@
 package main;
 
-<<<<<<< Updated upstream
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -9,18 +8,11 @@ import main.roomabilities.CursedAbility;
 import main.roomabilities.PoisonAbility;
 
 import java.util.ArrayList;
-=======
-import main.roomabilities.CursedAbility;
-import main.roomabilities.PoisonAbility;
->>>>>>> Stashed changes
 
 import java.util.ArrayList;
-<<<<<<< Updated upstream
 import java.util.Random;
 import java.util.Scanner;
-=======
 import java.util.Iterator;
->>>>>>> Stashed changes
 
 /**
  * Represents a room within a game environment. Entities and items can be at this room.
@@ -28,14 +20,8 @@ import java.util.Iterator;
  * Rooms can have neighbors and also abilities.
  */
 public class Room implements TimerSubscriber {
-<<<<<<< Updated upstream
     private int                     uid;
     private int                     capacity;
-=======
-//    private int capacity;
-//    private static int lastUid = 0;
-//    private int uid;
->>>>>>> Stashed changes
 
     private ArrayList<Room>         neighbours = new ArrayList<>();
     private ArrayList<Entity>       entities = new ArrayList<>();
@@ -44,91 +30,87 @@ public class Room implements TimerSubscriber {
     boolean                         isSticky = false;
     private ArrayList<RoomAbility>  abilities = new ArrayList<>();
 
-<<<<<<< Updated upstream
-    public void RemoveAbilityType(Class abilityClass) {
-        abilities.removeIf(ability -> ability.getClass().equals(abilityClass));
-    }
-
-    public int GetSpaceLeft() {
-        return capacity - entities.size();
-    }
-
-    public Room(int uid, int capacity) {
-        this.uid = uid;
-        this.capacity = capacity;
-    }
-
+    /**
+     * Retrieves the Room Number (UID).
+     *
+     * @return the unique identifier of the room.
+     */
     public int GetRoomNumber() { return uid; }
 
+    /**
+     * Retrieves the items that can be found in the room.
+     *
+     * @return the list of items that are in the room.
+     */
     public ArrayList<Item> GetItems() {
         return items;
     }
 
+    /**
+     * Places item to room, adds it to list of items in room
+     * @param item - the item placed
+     */
     public void PlaceItem(Item item) {
         items.add(item);
     }
 
-    public void PickUpItem(Item item) {
-        if (!items.remove(item))
-            throw new RuntimeException("Room doesn't contain provided item. ");
-    }
-
+    /**
+     * This is the getter of the capacity.
+     *
+     * @return the max capacity of the room.
+     */
     public int GetCapacity() {
         return capacity;
     }
 
+    /**
+     * Sets the value of capacity (how many entities fit into the room)
+     * @param capacity - capacity of room
+     */
     public void SetCapacity(int capacity) {
         this.capacity = capacity;
     }
 
+    /**
+     * This is the getter of the neighbours.
+     *
+     * @return a list with the room's neighbours (room).
+     */
     public ArrayList<Room> GetNeighbours() {
         return neighbours;
     }
 
+    /**
+     * Adds a new neighbour of the room's list of neighbours
+     * @param neighbour - new neighbour of the room
+     */
     public void AddNeighbour(Room neighbour) {
         neighbours.add(neighbour);
     }
 
+    /**
+     * You can remove a single neighbour of a room.
+     *
+     * @param neighbour the room's ex neighbour.
+     * @return - the boolean value of the success of removal
+     */
     public boolean RemoveNeighbour(Room neighbour) {
         return neighbours.remove(neighbour);
     }
 
+    /**
+     * Checks if given entity can step into the room
+     * if not throws RuntimeException
+     * if it can, adds it to room's list of entities
+     * @param entity - the entity who wants to step into the room
+     */
     public void AcceptEntity(Entity entity) {
         if (!CanStepInto(entity))
             throw new RuntimeException("main.Entity count exceeds maximum");
         entities.add(entity);
     }
 
-=======
     /**
-<<<<<<< Updated upstream
-     * Constructs a Room with the given parameter
-     * @param capacity - capacity of room (how many entities can fit)
-     */
-    public Room(int capacity) {
-//        this.uid = lastUid++;
-//        this.capacity = capacity;
-    }
-
-    /**
-     * Sets the lastUid attribute to 0
-     */
-    public static void ResetUIDs() {
-        System.out.println("Room.ResetUIDs");
-//        lastUid = 0;
-    }
-
-    /**
-     * @return the unique identifier (uid) of room
-     */
-    public int GetRoomNumber() {
-        System.out.println("Room.GetRoomNumber");
-        return 0;
-    }
-
-    /**
-     * @return the list of items in the room
-=======
      * Remove the ability type of room, but check it before if the room has it or not.
      *
      * @param abilityClass an abilityClass (it can be CursedAbility or PoisonAbility)
@@ -158,58 +140,6 @@ public class Room implements TimerSubscriber {
     }
 
     /**
-     * Retrieves the Room Number (UID).
-     *
-     * @return the unique identifier of the room.
-     */
-    public int GetRoomNumber() { return uid; }
-
-    /**
-     * Retrieves the items that can be found in the room.
-     *
-     * @return the list of items that are in the room.
->>>>>>> Stashed changes
-     */
-    public ArrayList<Item> GetItems() {
-        System.out.println("Room.GetItems");
-        return new ArrayList<>();
-    }
-
-    /**
-<<<<<<< Updated upstream
-     * Places item to room, adds it to list of items in room
-     * @param item - the item placed
-=======
-     * You can place down a single Item in the room with this.
-     *
-     * @param item which you place down in the room.
->>>>>>> Stashed changes
-     */
-    public void PlaceItem(Item item) {
-        System.out.println("Room.PlaceItem");
-    }
-
-    /**
-<<<<<<< Updated upstream
-     * Picks up item from room, removes it from list of items in room
-     * @param item - the item picked up
-     */
-    public void PickUpItem(Item item) {
-        System.out.println("Room.PickUpItem");
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Could the item be found in the room entity is standing in?\n 1-yes 2-no");
-
-        String answer = scanner.nextLine();
-        if(answer.equals("2")) {
-            System.out.println("Room doesn't contain provided item.");
-        } else
-            System.out.println("Picked up item from room");
-    }
-
-    /**
-     * @return the capacity of room
-=======
      * You can pick up a single Item from the room with this.
      *
      * @param item which you pick up from the room.
@@ -225,32 +155,6 @@ public class Room implements TimerSubscriber {
     }
 
     /**
-     * This is the getter of the capacity.
-     *
-     * @return the max capacity of the room.
->>>>>>> Stashed changes
-     */
-    public int GetCapacity() {
-        System.out.println("Room.GetCapacity");
-        return 0;
-    }
-
-    /**
-<<<<<<< Updated upstream
-     * Sets the value of capacity (how many entities fit into the room)
-     * @param capacity - capacity of room
-=======
-     * This is the setter of the capacity.
-     *
-     * @param capacity the max capacity of the room.
->>>>>>> Stashed changes
-     */
-    public void SetCapacity(int capacity) {
-        System.out.println("Room.SetCapacity");
-    }
-
-<<<<<<< Updated upstream
-    /**
      * Adds ability to the list of abilities of the room
      * @param ability - the ability added
      */
@@ -259,181 +163,48 @@ public class Room implements TimerSubscriber {
         abilities.add(ability);
     }
 
-    public void ActivateAbilities() {
-        System.out.println("Room.ActivateAbilities");
-
-        System.out.println("Is the ability a curse(1) ability or a poison(2) ability?");
-
-        Scanner scanner = new Scanner(System.in);
-        if (scanner.nextLine().equals("1")) {
-            CursedAbility cursedAbility = new CursedAbility();
-            cursedAbility.Activate(this);
-        } else {
-            PoisonAbility poison = new PoisonAbility();
-            poison.Activate(this);
-        }
-    }
 
     /**
-     * @return neighbours - the list of neighbours that the room has
-=======
-
-    /**
-     * This is the getter of the neighbours.
-     *
-     * @return a list with the room's neighbours (room).
->>>>>>> Stashed changes
-     */
-    public ArrayList<Room> GetNeighbours() {
-        System.out.println("Room.GetNeighbours");
-        return new ArrayList<>();
-    }
-
-    /**
-<<<<<<< Updated upstream
-     * Adds a new neighbour of the room's list of neighbours
-     * @param neighbour - new neighbour of the room
-=======
-     * You can add a single neighbour to a room.
-     *
-     * @param neighbour the room's new neighbour.
->>>>>>> Stashed changes
-     */
-    public void AddNeighbour(Room neighbour) {
-        System.out.println("Room.AddNeighbour");
-    }
-
-    /**
-<<<<<<< Updated upstream
-     * @param neighbour - the neighbour which we want to remove
-     * @return - the boolean value of the success of removal
-=======
-     * You can remove a single neighbour of a room.
-     *
-     * @param neighbour the room's ex neighbour.
->>>>>>> Stashed changes
-     */
-    public boolean RemoveNeighbour(Room neighbour) {
-        System.out.println("Room.RemoveNeighbour");
-        return true;
-    }
-
-    /**
-<<<<<<< Updated upstream
-     * Checks if given entity can step into the room
-     * if not throws RuntimeException
-     * if it can, adds it to room's list of entities
-     * @param entity - the entity who wants to step into the room
-=======
-     * You can add a single entity to a room.
-     *
-     * @param entity the entity that steps into this room.
->>>>>>> Stashed changes
-     */
-    public void AcceptEntity(Entity entity) {
-        System.out.println("Room.AcceptEntity");
-    }
-
-    /**
-<<<<<<< Updated upstream
      * if we can remove the entity from list of entities, it does
      * if we cannot, it throws a RunTimeException
      * @param entity - the entity which we want to remove
-=======
-     * You can remove a single entity from a room.
-     *
-     * @param entity the entity that steps out from this room.
->>>>>>> Stashed changes
      */
->>>>>>> Stashed changes
+
     public void RemoveEntity(Entity entity) {
         if (!entities.remove(entity))
             throw new RuntimeException("main.Room failed to remove entity.");
     }
 
-<<<<<<< Updated upstream
-=======
+
     /**
-<<<<<<< Updated upstream
-     * @return entities - the list of entities currently in the room
-=======
      * This is the getter of the entities that are in this room.
      *
      * @return a list of the entities that are currently in this room.
->>>>>>> Stashed changes
      */
->>>>>>> Stashed changes
+
     public ArrayList<Entity> GetEntities() {
         return entities;
     }
 
-<<<<<<< Updated upstream
-    public boolean CanStepInto(Entity who) {
-        return entities.size() < capacity;
-    }
-
-=======
     /**
-<<<<<<< Updated upstream
-     *
-     * @param who - entity who wants to step into the room
-     * @return boolean value of whether we can step into the room or not
-=======
      * Checks if the entity can step into the room.
      *
      * @param who the entity that wants to step into the room.
      * @return a bool value, true if the entity can step into the room, otherwise it's false.
->>>>>>> Stashed changes
      */
     public boolean CanStepInto(Entity who) {
-        System.out.println("Room.CanStepInto");
-        return true;
+        return entities.size() < capacity;
     }
 
-<<<<<<< Updated upstream
-    public void SplitRoom() {
-        System.out.println("Room.SplitRoom");
-
-        Room newRoom = new Room(0);
-
-        GetNeighbours();
-        newRoom.AddNeighbour(this);
-        RemoveNeighbour(this);
-
-        newRoom.AddAbility(new PoisonAbility());
-        newRoom.SetCapacity(0);
-    }
-
-    public static void MergeRoom(Room a, Room b) {
-        System.out.println("Room.MergeRoom");
-
-        a.GetNeighbours();
-        b.GetNeighbours();
-
-        System.out.println("For neighbour in a.GetNeighbours() and b.GetNeigbours");
-        new Room(0).RemoveNeighbour(a);
-        new Room(0).RemoveNeighbour(b);
-
-        System.out.println("new Room");
-        Room newRoom = new Room(0);
-
-        newRoom.AddAbility(new PoisonAbility());
-        newRoom.SetCapacity(0);
-=======
     /**
      * This is the cleaning's effects on the room.
      * The room becomes not sticky and also the poison ability is removed.
      */
->>>>>>> Stashed changes
     public void Clean() {
         isSticky = false;
         RemoveAbilityType(Poisoner.class);
     }
 
-<<<<<<< Updated upstream
-    public String toString(){
-        return "room#" + Integer.toString(uid);
-=======
     /**
      * Retrieves a string representation of the room with its uid.
      *
@@ -441,20 +212,10 @@ public class Room implements TimerSubscriber {
      */
     public String toString(){
         return "room#" + Integer.toString(uid);
->>>>>>> Stashed changes
->>>>>>> Stashed changes
     }
 
     @Override
     public void StartRound(TimerEvent data) {
-<<<<<<< Updated upstream
-        for(RoomAbility ra : abilities){
-            ra.Activate(this);
-        }
-=======
-<<<<<<< Updated upstream
-        System.out.println("Room.StartRound");
-=======
         ArrayList<RoomAbility> _abilities = new ArrayList<RoomAbility>();
         _abilities.addAll(abilities);
 
@@ -462,11 +223,6 @@ public class Room implements TimerSubscriber {
         while (iter.hasNext()) {
             iter.next().Activate(this);
         }
-//        for (RoomAbility ra : abilities){
-//            ra.Activate(this);
-//        }
->>>>>>> Stashed changes
->>>>>>> Stashed changes
     }
 
     @Override
@@ -483,18 +239,12 @@ public class Room implements TimerSubscriber {
     public void EndTurn(TimerEvent data) {
 
     }
-<<<<<<< Updated upstream
-
-=======
-<<<<<<< Updated upstream
-=======
 
     /**
      * Saves the Room's attributes into a JsonObject, then returns it
      *
      * @return json - A JsonObject made from the Room's attributes
      */
->>>>>>> Stashed changes
     public JsonObject Serialize() {
         JsonObject json = new JsonObject();
         json.add("id", new JsonPrimitive(String.format("item#%d", uid)));

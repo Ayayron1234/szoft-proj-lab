@@ -7,6 +7,9 @@ import com.google.gson.JsonObject;
  * This class define specific protections provided by items to entities.
  */
 public class Protection {
+    private final ProtectionType type;
+    private int uid;
+    static private int previousUid = 0;
     private Item provider;
     private int duration;
 

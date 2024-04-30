@@ -7,4 +7,5 @@ entity#1 drops "TVSZ Denevérbőrre Nyomtatott Példánya"
 entity#1 misses 1 round(s)
 entity#1 misses their turn
 it’s entity#2’s turn
+item#1 poisons room
 it’s entity#1’s turn

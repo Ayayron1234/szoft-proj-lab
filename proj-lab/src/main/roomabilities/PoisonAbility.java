@@ -16,36 +16,21 @@ import java.util.Optional;
  * to each of them.
  */
 public class PoisonAbility implements RoomAbility {
-<<<<<<< Updated upstream
-
     @Override
     public void Activate(Room room) {
         Poisoner poisoner = new Poisoner();
-        System.out.printf("room#%d poisons it's entities", room.GetRoomNumber());
-=======
-<<<<<<< Updated upstream
-=======
 
-    /**
-     * Activates the poison room ability, applying the poison effects towards the entities whose are in this room.
-     *
-     * @param room The room in which the poison ability is activated.
-     */
->>>>>>> Stashed changes
-    @Override
-    public void Activate(Room room) {
-        System.out.println("PoisonAbility.Activate");
-
-        System.out.println("new Poisoner");
-        Poisoner poisoner = new Poisoner();
-<<<<<<< Updated upstream
-=======
         System.out.printf("room#%d poisons it's entities\n", room.GetRoomNumber());
->>>>>>> Stashed changes
 
-       // boolean
         for (Entity entity : room.GetEntities()) {
-<<<<<<< Updated upstream
+            Optional<Item> airFreshenerOptional = entity.GetItems().stream().filter(item -> item.GetName().equals(new AirFreshener().GetName())).findFirst();
+            if (airFreshenerOptional.isPresent()) {
+                entity.PlaceItem(airFreshenerOptional.get());
+                return;
+            }
+        }
+
+        for (Entity entity : room.GetEntities()) {
             entity.ApplyAction(poisoner);
         }
     }
@@ -53,30 +38,15 @@ public class PoisonAbility implements RoomAbility {
     @Override
     public String GetTypeString() {
         return "poison_ability";
-=======
-            Optional<Item> airFreshenerOptional = entity.GetItems().stream().filter(item -> item.GetName().equals(new AirFreshener().GetName())).findFirst();
-            if (airFreshenerOptional.isPresent()) {
-                entity.PlaceItem(airFreshenerOptional.get());
-                return;
-            }
         }
->>>>>>> Stashed changes
 
-        room.GetEntities();
-        System.out.println("For entity in room.GetEntities()");
-
-<<<<<<< Updated upstream
-        new Student("").ApplyAction(poisoner);
-=======
     /**
      * Retrieves a string representation of the poison type of the room abilities.
      *
      * @return A string representing the type of poison ability.
      */
-    @Override
-    public String GetTypeString() {
-        return "poison_ability";
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-    }
+//    @Override
+//    public String GetTypeString() {
+//        return "poison_ability";
+//    }
 }

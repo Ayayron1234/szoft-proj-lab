@@ -32,21 +32,11 @@ public class Mask extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
-<<<<<<< Updated upstream
-        if (IsFake())
-            return;
-=======
-<<<<<<< Updated upstream
-        System.out.println("Mask.PickedUp");
-=======
-
         System.out.printf("%s picked up \"%s\"\n", who.GetName(), GetName());
         if(IsFake()) {
             System.out.printf("\"%s\" was a fake item\n", GetName());
             return;
         }
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
         owner = who;
         Protection protection = new Protection(ProtectionType.POISON_PROTECTION, durationLeft, this);
@@ -94,18 +84,8 @@ public class Mask extends Item {
             owner.RemoveProtection(providedProtection);
             providedProtection = null;
         }
-    }
-<<<<<<< Updated upstream
 
-    @Override
-    public void Use(Entity who) {
-        System.out.printf("%s blocked poison with %s", who.GetName(), GetName());
     }
-}
-=======
-<<<<<<< Updated upstream
-}
-=======
 
     /**
      * With the use of the mask, poison effect is negated.
@@ -114,6 +94,8 @@ public class Mask extends Item {
     @Override
     public void Use(Entity who) {
         System.out.printf("%s blocked poison with \"%s\"\n", who.GetName(), GetName());
+//        durationLeft--;
+
     }
 
     /**
@@ -140,5 +122,3 @@ public class Mask extends Item {
     }
 
 }
->>>>>>> Stashed changes
->>>>>>> Stashed changes
