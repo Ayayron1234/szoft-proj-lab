@@ -1,9 +1,10 @@
 package main.itemtypes;
 
+import com.google.gson.JsonObject;
 import main.*;
 
 /**
- * Represents a protective mask item that can provide protection against specific
+ * Represents a protective Mask item that can provide protection against specific
  * threats (e.g., poison) for a limited duration. Once picked up by an entity,
  * it grants a protection effect that decreases in duration each round until it expires.
  */
@@ -31,8 +32,21 @@ public class Mask extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
+<<<<<<< Updated upstream
         if (IsFake())
             return;
+=======
+<<<<<<< Updated upstream
+        System.out.println("Mask.PickedUp");
+=======
+
+        System.out.printf("%s picked up \"%s\"\n", who.GetName(), GetName());
+        if(IsFake()) {
+            System.out.printf("\"%s\" was a fake item\n", GetName());
+            return;
+        }
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
         owner = who;
         Protection protection = new Protection(ProtectionType.POISON_PROTECTION, durationLeft, this);
@@ -81,9 +95,50 @@ public class Mask extends Item {
             providedProtection = null;
         }
     }
+<<<<<<< Updated upstream
 
     @Override
     public void Use(Entity who) {
         System.out.printf("%s blocked poison with %s", who.GetName(), GetName());
     }
 }
+=======
+<<<<<<< Updated upstream
+}
+=======
+
+    /**
+     * With the use of the mask, poison effect is negated.
+     * @param who The entity that using the item.
+     */
+    @Override
+    public void Use(Entity who) {
+        System.out.printf("%s blocked poison with \"%s\"\n", who.GetName(), GetName());
+    }
+
+    /**
+     * Deserialize a json object into a Mask object
+     * @param json
+     */
+    @Override
+    public void DeserializeSpecificItems(Game game, JsonObject json) {
+        if(json.has("duration")) {
+            durationLeft = json.get("duration").getAsInt();
+        }
+
+        if(json.has("providedProtection")) {
+            Protection protection = game.GetDeserializedObjectReference(json.get("providedProtection").getAsString());
+            providedProtection = protection;
+            providedProtection.SetProvider(this);
+            providedProtection.SetDuration(durationLeft);
+        }
+    }
+
+    @Override
+    public void SetOwnerIfNeeded(Entity owner) {
+        this.owner = owner;
+    }
+
+}
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes

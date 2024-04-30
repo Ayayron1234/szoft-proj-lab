@@ -22,9 +22,9 @@ public class SlideRule extends Item {
     }
 
     /**
-     * Returns the name of the item.
+     * Returns the name of the sliderule.
      *
-     * @return A string representing the name of this item.
+     * @return A string representing the name of the sliderule.
      */
     @Override
     public String GetName() {
@@ -41,11 +41,31 @@ public class SlideRule extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
+<<<<<<< Updated upstream
         if(IsFake()){
             //System.out.printf("%s picked up a fake sliderule from room #%d so Students won the game.\n", who.GetName(), where.GetRoomNumber());
             return;
         }
         //System.out.printf("%s picked up the sliderule from room #%d so Students won the game.\n", who.GetName(), where.GetRoomNumber());
         if(game != null) game.End(true);
+=======
+<<<<<<< Updated upstream
+        System.out.println("SlideRule.PickedUp");
+        new Game().End(true);
+
+        /*
+        System.out.printf("%s picked up the sliderule from room #%d so Students won the game.\n", who.GetName(), where.GetRoomNumber());
+=======
+
+        System.out.printf("%s picked up \"%s\"\n", who.GetName(), GetName());
+        if(IsFake()) {
+            System.out.printf("\"%s\" was a fake item\n", GetName());
+            return;
+        }
+        //System.out.printf("%s picked up the sliderule from room #%d so Students won the game.\n", who.GetName(), where.GetRoomNumber());
+>>>>>>> Stashed changes
+        if(game != null) game.End(true);
+         */
+>>>>>>> Stashed changes
     }
 }

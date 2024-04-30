@@ -1,5 +1,6 @@
 package main;
 
+import com.google.gson.JsonObject;
 
 /**
  * The Protection class represents a protective effect that can be applied to entities within the game.
@@ -8,11 +9,6 @@ package main;
 public class Protection {
     private Item provider;
     private int duration;
-    private final ProtectionType type;
-
-    private int uid;
-
-    static private int previousUid = 0;
 
     /**
      * This method is the Constructor of the Protection class with 3 parameters
@@ -27,6 +23,22 @@ public class Protection {
         this.provider = provider;
         this.uid = previousUid + 1;
         this.previousUid = uid;
+    }
+
+    public static Protection Deserialize(Game game, JsonObject json) {
+        String protectionTypeString = json.get("type").getAsString();
+
+        ProtectionType type = ProtectionType.SOULD_DRAIN_PROTECTION;
+        if (protectionTypeString.equals("poison_protection"))
+            type = ProtectionType.POISON_PROTECTION;
+
+        int duration = 2;
+        if (json.has("duration"))
+            duration = json.get("duration").getAsInt();
+
+        Protection protection = new Protection(type, duration, null);
+
+        return protection;
     }
 
     /**
@@ -67,4 +79,12 @@ public class Protection {
      * @return the uid of the protection
      */
     public int GetUid() { return uid; }
+
+    public void SetProvider(Item item) {
+        this.provider = item;
+    }
+
+    public void SetDuration(int duration) {
+        this.duration = duration;
+    }
 }

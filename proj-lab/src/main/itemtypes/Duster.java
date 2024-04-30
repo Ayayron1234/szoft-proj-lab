@@ -1,12 +1,32 @@
 package main.itemtypes;
 
+import com.google.gson.JsonObject;
 import main.*;
 import main.actions.Stunner;
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+=======
+/**
+ * Represents a protective Duster item that can provide protection for a few times (the usesLeft indicates it).
+ * Once picked up by an entity, it grants a reusable protection that stuns the Teacher Entity who tries to drain.
+ */
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 public class Duster extends Item {
     private int         usesLeft = 2;
     private Entity      owner;
 
+    /**
+     * Returns the name of the duster.
+     *
+     * @return A string representing the name of the duster.
+     */
     @Override
     public String GetName() {
         return "Nedves Táblatörlő Rongy";
@@ -20,7 +40,26 @@ public class Duster extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
+<<<<<<< Updated upstream
         owner = who;
+=======
+<<<<<<< Updated upstream
+        System.out.println("Duster.PickedUp");
+        owner = who;
+        /*
+        System.out.printf("%s picked up duster with duration:%d.\n", who.GetName(), usesLeft);
+        owner = who;
+         */
+=======
+
+        owner = who;
+        System.out.printf("%s picked up \"%s\"\n", who.GetName(), GetName());
+        if(IsFake()) {
+            System.out.printf("\"%s\" was a fake item\n", GetName());
+            return;
+        }
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     }
 
     /**
@@ -42,6 +81,7 @@ public class Duster extends Item {
      * @param timerEvent TimerEvent object holding roundsLeft and roundCount data points.
      */
     @Override
+<<<<<<< Updated upstream
     public void StartRound(TimerEvent timerEvent) {
         if(IsFake()) return;
         if (owner == null || owner.GetContainingRoom() == null)
@@ -51,5 +91,73 @@ public class Duster extends Item {
         Stunner stunner = new Stunner();
         for (Entity target : owner.GetContainingRoom().GetEntities())
             target.ApplyAction(stunner);
+=======
+<<<<<<< Updated upstream
+    public void StartRound(TimerEvent data) {
+        System.out.println("Duster.StartRound");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Is the Duster owned by anyone?\n 1-yes 2-no");
+        String answer = scanner.nextLine();
+        if(answer.equals("2")) return;
+
+        System.out.println("Is the Duster dried out?\n 1-yes 2-no");
+        answer = scanner.nextLine();
+        if(answer.equals("1")) return;
+
+        ArrayList<Entity> others = owner.GetContainingRoom().GetEntities();
+        others.remove(owner);
+        Stunner stunner = new Stunner(1);
+        for(Entity teacher : others){
+            if(teacher.getClass() == Teacher.class) {
+                stunner.Execute(teacher);
+            }
+        }
+        usesLeft -= 1;
+
+        /*
+        if(owner == null) return;
+        if(usesLeft == 0) return;
+
+        ArrayList<Entity> others = owner.GetContainingRoom().GetEntities();
+        others.remove(owner);
+        Stunner stunner = new Stunner(1);
+        for(Entity teacher : others){
+           if(teacher.getClass() == Teacher.class) {
+               stunner.Execute(teacher);
+           }
+        }
+        usesLeft -= 1;
+        */
+=======
+    public void StartRound(TimerEvent timerEvent) {
+        if(IsFake()) return;
+        if (owner == null && owner.GetContainingRoom() == null)
+            return;
+
+        // Apply stunner to each entity in the same room as the duster's owner
+        Stunner stunner = new Stunner();
+        for (Entity target : owner.GetContainingRoom().GetEntities()) {
+            if (target == owner)
+                continue;
+
+            System.out.printf("%s stuns %s with \"%s\"\n", owner.GetName(), target.GetName(), GetName());
+            target.ApplyAction(stunner);
+        }
+
+    }
+
+    @Override
+    public void DeserializeSpecificItems(Game game, JsonObject json) {
+        if(json.has("durationLeft")) {
+            usesLeft = json.get("durationLeft").getAsInt();
+        }
+    }
+
+    @Override
+    public void SetOwnerIfNeeded(Entity owner) {
+        this.owner = owner;
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     }
 }

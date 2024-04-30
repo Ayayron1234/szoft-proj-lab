@@ -19,6 +19,7 @@ public class SoulDrainer implements Action {
      */
     @Override
     public void Execute(Entity target) {
+<<<<<<< Updated upstream
         // Check if target has protection against souldrain
         if (target.HasProtectionType(ProtectionType.SOULD_DRAIN_PROTECTION)) {
             // Invoke the Use method of the item which provided the protection
@@ -30,5 +31,19 @@ public class SoulDrainer implements Action {
 
         // Entity's soul was drained and dropped out of game
         target.DropOutOfGame();
+=======
+        System.out.println("SoulDrainer.Execute");
+
+        target.GetActiveProtections();
+
+        System.out.println("Does the entity have SOUL_DRAIN_PROTECTION?\n 1-yes 2-no");
+        Scanner scanner = new Scanner(System.in);
+
+        String line = scanner.nextLine();
+        if (line.equals("2"))
+            target.DropOutOfGame();
+        else if (line.equals("1"))
+            System.out.println("Entity blocked soul drain.");
+>>>>>>> Stashed changes
     }
 }
