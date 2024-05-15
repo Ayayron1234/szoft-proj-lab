@@ -1,0 +1,20 @@
+{
+	"game": {"roundsLeft": 10},
+	"rooms": [
+		{"id": "room#1", "capacity": 1, 
+"containedEntities": ["entity#1"], 
+"abilities": ["poison_ability"]}
+	],
+	"entities": [
+		{"id": "entity#1", "type": "Student", 
+"inventory": ["item#1"], 
+"activeProtections": ["protection#1"]}
+	],
+"protections": [
+		{"id": "protection#1", "type": "poison_protection"}
+	],
+	"items": [
+		{"id": "item#1", "type": "Mask", 
+"durationLeft": 3, "providedProtection": "protection#1"}
+	]
+}

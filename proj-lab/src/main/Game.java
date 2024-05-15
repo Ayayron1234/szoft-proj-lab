@@ -421,4 +421,19 @@ public class Game {
 
         return game;
     }
+
+    public void setEntityCount(int student, int teacher, int cleaner) {
+        for(int i = 0; i <= student; i++) {
+            CreateStudent(i);
+        }
+
+        for(int i = 0; i <= teacher; i++) {
+            CreateTeacher(i);
+        }
+
+        for(int i = 0; i <= cleaner; i++) {
+            CreateCleaner(i);
+        }
+
+    }
 }
