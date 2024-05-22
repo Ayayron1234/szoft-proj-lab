@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class GameScreen extends Screen {
     private LogPanel        logPanel;
-    private MapPanel        mapPanel;
+    private JPanel          mapContainerPanel;
 
     private JPanel          inventoryContainerPanel;
     private InventoryPanel  inventoryPanel;
@@ -33,19 +33,19 @@ public class GameScreen extends Screen {
 
         AddInventoryPanel(gamePanel, gamePanelConstraints);
 
-        JPanel mapContainerPanel = new JPanel();
+        mapContainerPanel = new JPanel();
         mapContainerPanel.setBackground(Color.blue);
         gamePanelConstraints.weightx = 0.988;
         gamePanel.add(mapContainerPanel, gamePanelConstraints);
 
-        JButton finishTurnButton = new JButton("finish turn");
-        mapContainerPanel.add(finishTurnButton);
-        finishTurnButton.addActionListener(e -> {
-            if (!game.UIActionEnabled())
-                return;
-
-            game.UIReady();
-        });
+//        JButton finishTurnButton = new JButton("finish turn");
+//        mapContainerPanel.add(finishTurnButton);
+//        finishTurnButton.addActionListener(e -> {
+//            if (!game.UIActionEnabled())
+//                return;
+//
+//            game.UIReady();
+//        });
 
         AddRoomItemsPanel(gamePanel, gamePanelConstraints);
 
@@ -83,6 +83,16 @@ public class GameScreen extends Screen {
             game.UIReady();
         });
         roomItemsContainerPanel.add(roomItemsPanel);
+
+        // Room
+        mapContainerPanel.removeAll();
+        mapContainerPanel.add(new RoomPanel(GetActivePlayersContainingRoom(), (Room room) -> {
+            if (!game.UIActionEnabled())
+                return;
+
+            game.GetActivePlayer().Step(room);
+            game.UIReady();
+        }));
 
         // Redraw log panel
         logPanel.Redraw();
