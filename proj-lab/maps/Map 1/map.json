@@ -1,5 +1,5 @@
 {
-    "game": {"roundsLeft": 3},
+    "game": {"roundsLeft": 20},
     "rooms": [
         {"id": "room#1", "neighbours": ["room#2"], 
         "abilities": ["poison_ability"], "capacity": 1},
