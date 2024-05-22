@@ -46,6 +46,25 @@ public class SavedGamesScreen extends JPanel {
     static JsonParser parser = new JsonParser();
 
     public SavedGamesScreen(String savesDirectoryPath) {
+//        super();
+//
+//        // Load saved games from the ./saves/ directory
+//        LoadSaves(savesDirectoryPath);
+//
+//        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+//
+//        // List saves
+//        CreateSavedGamesTable();
+//
+//        // Create start game button
+//        JButton startGameBtn = new JButton("Start Game");
+//        add(startGameBtn);
+//        startGameBtn.addActionListener(e -> StartGame(savesDirectoryPath));
+//
+//        // Create exit button
+//        JButton exitBtn = new JButton("Back");
+//        add(exitBtn);
+//        exitBtn.addActionListener(e -> MainWindow.SetScreen("startMenu"));
         super();
 
         // Load saved games from the ./saves/ directory
@@ -56,15 +75,23 @@ public class SavedGamesScreen extends JPanel {
         // List saves
         CreateSavedGamesTable();
 
-        // Create start game button
-        JButton startGameBtn = new JButton("Start Game");
-        add(startGameBtn);
-        startGameBtn.addActionListener(e -> StartGame(savesDirectoryPath));
+        // Create a panel for the bottom buttons
+        JPanel bottomButtonsPanel = new JPanel();
+        bottomButtonsPanel.setLayout(new BoxLayout(bottomButtonsPanel,BoxLayout.X_AXIS));
+        bottomButtonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bottomButtonsPanel.setPreferredSize(new Dimension(600,100));
 
-        // Create exit button
-        JButton exitBtn = new JButton("Back");
-        add(exitBtn);
-        exitBtn.addActionListener(e -> MainWindow.SetScreen("startMenu"));
+        // Create the bottom buttons and add them to the panel
+        JButton startButton = new JButton("Start game");
+        startButton.addActionListener(e -> StartGame(savesDirectoryPath));
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> MainWindow.SetScreen("startMenu"));
+        bottomButtonsPanel.add(startButton);
+        bottomButtonsPanel.add(Box.createRigidArea(new Dimension(10, 0)));  // Add some space between buttons
+        bottomButtonsPanel.add(backButton);
+
+        add(bottomButtonsPanel);
     }
 
     private void CreateSavedGamesTable() {
@@ -135,6 +162,6 @@ public class SavedGamesScreen extends JPanel {
 
         // Switch to game screen
         MainWindow.SetGame(game);
-        MainWindow.SetScreen("gameScreen");
+        MainWindow.SetScreen("game");
     }
 }

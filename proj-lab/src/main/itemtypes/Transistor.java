@@ -35,20 +35,21 @@ public class Transistor extends Item {
      */
     @Override
     public void PickedUp(Entity who, Room where) {
-
         System.out.printf("%s picked up \"%s\"\n", who.GetName(), GetName());
         if(IsFake()) {
             System.out.printf("\"%s\" was a fake item\n", GetName());
             return;
         }
 
+        location = null;
+
         if (pair == null) {
             Transistor pairedTransistor = new Transistor();
             pairedTransistor.pair = this;
             pairedTransistor.location = where;
             pair = pairedTransistor;
+            where.PlaceItem(pair);
         }
-        where.PlaceItem(pair);
     }
 
 

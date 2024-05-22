@@ -75,7 +75,7 @@ public class Mask extends Item {
         if (IsFake())
             return;
 
-        if (providedProtection == null)
+        if (providedProtection == null || owner == null)
             return;
 
         providedProtection.DecreaseDuration();

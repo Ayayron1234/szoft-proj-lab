@@ -1,19 +1,21 @@
 package main.graphics;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameOverScreen extends JPanel {
-    private JTextField winnerText;
-    private JTextField infoField;
+public class GameOverScreen extends Screen {
+    private JLabel resultText;
+    private JLabel resultInfoText;
     private JButton exitButton;
 
-    public GameOverScreen(String info) {
+    public GameOverScreen() {
         super();
 
-        winnerText = new JTextField("Use the SetMessage(String message) method to set the value of this label");
-        infoField = new JTextField(info);
+        resultText = new JLabel("result");
+        resultText.setFont(new Font(resultText.getFont().getName(), Font.BOLD, 24));
+        resultInfoText = new JLabel("info");
 
         exitButton = new JButton("Exit");
         exitButton.addActionListener(new ActionListener() {
@@ -23,19 +25,23 @@ public class GameOverScreen extends JPanel {
             }
         });
 
-        this.add(winnerText);
-        this.add(infoField);
+        this.add(resultText);
+        this.add(resultInfoText);
         this.add(exitButton);
-
-
     }
 
-    public void SetMessage(String message) {
-        winnerText.setText(message);
+    @Override
+    public void Present() {
+        if (MainWindow.GetGame().IsVictory())
+            resultText.setText("Victory!");
+        else
+            resultText.setText("Teachers Win!");
+        // TODO: Set result info
+
+        revalidate();
     }
 
     public void Exit() {
         MainWindow.Exit();
     }
-
 }

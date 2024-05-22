@@ -6,6 +6,7 @@ import main.actions.Stunner;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import main.graphics.LogPanel;
 import main.graphics.MainWindow;
 import main.itemtypes.Beer;
 import main.itemtypes.Camembert;
@@ -26,12 +27,13 @@ public class Main {
     private static MainWindow mainWindow = null;
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                MainWindow.Open("A Logarléc", 720, 480);
-            }
+        SwingUtilities.invokeLater(() -> {
+            LogPanel.HandleLogs();
+            MainWindow.Open("A Logarléc", 720, 480);
+            new Thread(() -> {
+                MainWindow.WaitForGameInitalization();
+                MainWindow.GetGame().Start();
+            }).start();
         });
     }
-
 }

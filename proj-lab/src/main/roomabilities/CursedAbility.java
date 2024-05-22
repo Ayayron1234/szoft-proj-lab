@@ -5,6 +5,8 @@ import com.google.gson.JsonPrimitive;
 import main.Room;
 import main.RoomAbility;
 
+import java.util.Random;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -23,7 +25,47 @@ public class CursedAbility implements RoomAbility {
      */
     @Override
     public void Activate(Room where) {
-
+        Random R = new Random();
+        ArrayList<Room> neighbors = where.GetNeighbours();
+        if(neighbors.size() == 0 && hiddenNeighbours.size() == 0) return;
+        /*else if(hiddenNeighbours.size() == 0) {
+            for (Room room: neighbors
+                 ) {
+                int n = R.nextInt(2)+1;
+                if(n == 1) {
+                    hiddenNeighbours.add(room);
+                    where.RemoveNeighbour(room);
+                }
+            }
+        }
+        else if (neighbors.size() == 0){
+            for (Room room: hiddenNeighbours
+            ) {
+                int n = R.nextInt(2)+1;
+                if(n == 1) {
+                    hiddenNeighbours.remove(room);
+                    where.AddNeighbour(room);
+                }
+            }
+        }*/
+        else{
+            for (Room room: neighbors
+            ) {
+                int n = R.nextInt(2)+1;
+                if(n == 1) {
+                    hiddenNeighbours.add(room);
+                    where.RemoveNeighbour(room);
+                }
+            }
+            for (Room room: hiddenNeighbours
+            ) {
+                int n = R.nextInt(2)+1;
+                if(n == 1) {
+                    hiddenNeighbours.remove(room);
+                    where.AddNeighbour(room);
+                }
+            }
+        }
     }
 
     /**

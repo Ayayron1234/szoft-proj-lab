@@ -212,7 +212,7 @@ public abstract class Entity implements TimerSubscriber, Serializable {
      * @param item The item to pick up.
      */
     public void PickUpItem(Item item) {
-        if (containingRoom == null || !containingRoom.GetItems().contains(item))
+        if (containingRoom == null || !containingRoom.GetItems().contains(item) || GetSpaceLeftInInventory() == 0)
             throw new RuntimeException("Can't pick up item");
 
         if (containingRoom.PickUpItem(item)) {
@@ -354,8 +354,11 @@ public abstract class Entity implements TimerSubscriber, Serializable {
      * @return an int value that is the space left in the entity's Inventory.
      */
     public int GetSpaceInInventory() {
-        // TODO: implement max inventory size
-        return 1;
+        return 5;
+    }
+
+    public int GetSpaceLeftInInventory(){
+        return GetSpaceInInventory() - items.size();
     }
 
     public static Entity Deserialize(Game game, JsonObject json) {

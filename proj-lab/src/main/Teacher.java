@@ -5,9 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import main.actions.SoulDrainer;
 
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * The Teacher class represents a character in a game known as a Teacher. This character has special abilities,
@@ -144,78 +142,120 @@ public class Teacher extends Entity implements Serializable {
      * @return the formatted string of that
      */
     public void HandleTurn() {
-        /*
-         *  Possible operations (only one each turn):
-         *      - list rooms => list neighbouring rooms
-         *      - list items => list items in room
-         *      - place <item_index_in_inventory> => place an item from inventory
-         *      - pickup <item_index_in_room_inventory> => pick up an item from the room
-         *      - drainsoul => drain the soul of students inside the room
-         *      - skip => no op
-         */
-        Scanner in = game.GetScanner();    //
-        String[] cmd = in.nextLine().split(" ");
-        String out = "";
-
-        switch(cmd[0])
-        {
-            case "list":
-                if(cmd.length < 2) out += "Incorrect command, missing argument";
-                else if(cmd[1].equals("rooms")){
-                    out += "neighbouring rooms:";
-                    int i = 0;
-                    for(Room r : containingRoom.GetNeighbours()){
-                        out += String.format(" %d:%s",i,r.toString());
-                    }
+        DrainSouls();
+        Random R = new Random();
+        int whattodo = R.nextInt(3) + 1;
+        if(whattodo == 1){
+          //step
+            Room room = this.GetContainingRoom();
+            ArrayList<Room> neighbors = room.GetNeighbours();
+            boolean stepped = false;
+            Room whichRoom = room;
+            do{
+                if(neighbors.size() == 0) {
+                    stepped = true;
+                    break;
                 }
-                else if(cmd[1].equals("items")){
-                    out += "items in room:";
-                    int i = 0;
-                    for(Item item : containingRoom.GetItems()){
-                        out += String.format(" %d:\"%s\"",i,item.GetName());
-                    }
-                }
-                else{
-                    out += "Incorrect command, unknown argument";
-                }
-                break;
-            case "place":
-                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
-                else if(items.size() <= Integer.parseInt(cmd[1])){
-                    out += "Incorrect argument, index out of range\n";
-                }
-                else{
-                    PlaceItem(containingRoom.GetItems().get(Integer.parseInt(cmd[1])));
-//                    items.get(Integer.parseInt(cmd[1])).Placed(this, containingRoom);
-                }
-                break;
-            case "pickup":
-                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
-                else if(containingRoom.GetItems().size() <= Integer.parseInt(cmd[1])){
-                    out += "Incorrect argument, index out of range\n";
-                }
-                else{
-                    PickUpItem(containingRoom.GetItems().get(Integer.parseInt(cmd[1])));
-//                    containingRoom.GetItems().get(Integer.parseInt(cmd[1])).PickedUp(this, containingRoom);
-                }
-                break;
-            case "drainsoul":
-                DrainSouls();
-                break;
-            case "step":
-                if(cmd.length < 2) out += "Incorrect command, missing argument";
-                else if(containingRoom.GetNeighbours().size() <= Integer.parseInt(cmd[1])){
-                    out += "Incorrect argument, index out of range";
-                }
-                else{
-                    this.Step(containingRoom.GetNeighbours().get(Integer.parseInt(cmd[1])));
-                }
-                break;
-            case "skip":
-                break;
-            case "exit":
-                game.Exit(); break;
+                whichRoom = neighbors.get(R.nextInt(neighbors.size())); //itt még belefuthat végtelen ciklusba de ki is szedhetem a listából az adott szobát átmenetileg
+                neighbors.remove(whichRoom);
+            } while(whichRoom.GetSpaceLeft() > 0);
+            if(!stepped) this.Step(whichRoom);
         }
-        System.out.print(out);
+        else if(whattodo == 2) {
+            //pickup
+            Room room = this.GetContainingRoom();
+            ArrayList<Item> items = room.GetItems();
+            if(items.size() != 0){
+                Item whichItem = items.get(R.nextInt(items.size()));
+                items.remove(whichItem);
+                if(!whichItem.IsSticky() && this.GetSpaceLeftInInventory() > 0){
+                    this.PickUpItem(whichItem);
+                }
+            }
+        }
+        else {
+            Room room = this.GetContainingRoom();
+            ArrayList<Item> items = this.GetItems();
+            if (items.size() != 0) {
+                Item whichItem = items.get(R.nextInt(items.size()));
+                items.remove(whichItem);
+                if (!whichItem.IsFake() && room.GetSpaceLeft() > 0) {
+                    this.PlaceItem(whichItem);
+                }
+            }
+        }
     }
+//        /*
+//         *  Possible operations (only one each turn):
+//         *      - list rooms => list neighbouring rooms
+//         *      - list items => list items in room
+//         *      - place <item_index_in_inventory> => place an item from inventory
+//         *      - pickup <item_index_in_room_inventory> => pick up an item from the room
+//         *      - drainsoul => drain the soul of students inside the room
+//         *      - skip => no op
+//         */
+//        Scanner in = game.GetScanner();    //
+//        String[] cmd = in.nextLine().split(" ");
+//        String out = "";
+//
+//        switch(cmd[0])
+//        {
+//            case "list":
+//                if(cmd.length < 2) out += "Incorrect command, missing argument";
+//                else if(cmd[1].equals("rooms")){
+//                    out += "neighbouring rooms:";
+//                    int i = 0;
+//                    for(Room r : containingRoom.GetNeighbours()){
+//                        out += String.format(" %d:%s",i,r.toString());
+//                    }
+//                }
+//                else if(cmd[1].equals("items")){
+//                    out += "items in room:";
+//                    int i = 0;
+//                    for(Item item : containingRoom.GetItems()){
+//                        out += String.format(" %d:\"%s\"",i,item.GetName());
+//                    }
+//                }
+//                else{
+//                    out += "Incorrect command, unknown argument";
+//                }
+//                break;
+//            case "place":
+//                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
+//                else if(items.size() <= Integer.parseInt(cmd[1])){
+//                    out += "Incorrect argument, index out of range\n";
+//                }
+//                else{
+//                    PlaceItem(containingRoom.GetItems().get(Integer.parseInt(cmd[1])));
+////                    items.get(Integer.parseInt(cmd[1])).Placed(this, containingRoom);
+//                }
+//                break;
+//            case "pickup":
+//                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
+//                else if(containingRoom.GetItems().size() <= Integer.parseInt(cmd[1])){
+//                    out += "Incorrect argument, index out of range\n";
+//                }
+//                else{
+//                    PickUpItem(containingRoom.GetItems().get(Integer.parseInt(cmd[1])));
+////                    containingRoom.GetItems().get(Integer.parseInt(cmd[1])).PickedUp(this, containingRoom);
+//                }
+//                break;
+//            case "drainsoul":
+//                DrainSouls();
+//                break;
+//            case "step":
+//                if(cmd.length < 2) out += "Incorrect command, missing argument";
+//                else if(containingRoom.GetNeighbours().size() <= Integer.parseInt(cmd[1])){
+//                    out += "Incorrect argument, index out of range";
+//                }
+//                else{
+//                    this.Step(containingRoom.GetNeighbours().get(Integer.parseInt(cmd[1])));
+//                }
+//                break;
+//            case "skip":
+//                break;
+//            case "exit":
+//                game.Exit(); break;
+//        }
+//        System.out.print(out);
 }

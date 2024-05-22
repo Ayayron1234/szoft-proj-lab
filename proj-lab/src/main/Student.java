@@ -107,69 +107,72 @@ public class Student extends Entity implements Serializable {
 //        System.out.println(out);
 
     public void HandleTurn() {
-        Scanner in = game.GetScanner();
-        String[] cmd = in.nextLine().split(" ");
-        String out = "";
+        game.SetActivePlayer(this);
+        game.WaitForUI();
 
-        switch(cmd[0])
-        {
-            case "list":
-                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
-                else if(cmd[1].equals("rooms")){
-                    out += "neighbouring rooms:";
-                    int i = 0;
-                    for(Room r : containingRoom.GetNeighbours()){
-                        out += String.format(" %d:%s",i,r.toString());
-                    }
-                    out += "\n";
-                }
-                else if(cmd[1].equals("items")){
-                    out += "items in room:";
-                    int i = 0;
-                    for(Item item : containingRoom.GetItems()){
-                        out += String.format(" %d:\"%s\"",i,item.GetName());
-                    }
-                    out += "\n";
-                }
-                else{
-                    out += "Incorrect command, unknown argument\n";
-                }
-                break;
-            case "place":
-                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
-                else if(items.size() <= Integer.parseInt(cmd[1])){
-                    out += "Incorrect argument, index out of range\n";
-                }
-                else{
-                    PlaceItem(items.get(Integer.parseInt(cmd[1])));
-                    //items.get(Integer.parseInt(cmd[1])).Placed(this, containingRoom);
-                }
-                break;
-            case "pickup":
-                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
-                else if(containingRoom.GetItems().size() <= Integer.parseInt(cmd[1])){
-                    out += "Incorrect argument, index out of range\n";
-                }
-                else{
-                    PickUpItem(containingRoom.GetItems().get(Integer.parseInt(cmd[1])));
-//                    containingRoom.GetItems().get(Integer.parseInt(cmd[1])).PickedUp(this, containingRoom);
-                }
-                break;
-            case "step":
-                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
-                else if(containingRoom.GetNeighbours().size() <= Integer.parseInt(cmd[1])){
-                    out += "Incorrect argument, index out of range\n";
-                }
-                else{
-                    this.Step(containingRoom.GetNeighbours().get(Integer.parseInt(cmd[1])));
-                }
-                break;
-            case "skip":
-                break;
-            case "exit":
-                game.Exit(); break;
-        }
-        System.out.print(out);
+//        Scanner in = game.GetScanner();
+//        String[] cmd = in.nextLine().split(" ");
+//        String out = "";
+//
+//        switch(cmd[0])
+//        {
+//            case "list":
+//                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
+//                else if(cmd[1].equals("rooms")){
+//                    out += "neighbouring rooms:";
+//                    int i = 0;
+//                    for(Room r : containingRoom.GetNeighbours()){
+//                        out += String.format(" %d:%s",i,r.toString());
+//                    }
+//                    out += "\n";
+//                }
+//                else if(cmd[1].equals("items")){
+//                    out += "items in room:";
+//                    int i = 0;
+//                    for(Item item : containingRoom.GetItems()){
+//                        out += String.format(" %d:\"%s\"",i,item.GetName());
+//                    }
+//                    out += "\n";
+//                }
+//                else{
+//                    out += "Incorrect command, unknown argument\n";
+//                }
+//                break;
+//            case "place":
+//                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
+//                else if(items.size() <= Integer.parseInt(cmd[1])){
+//                    out += "Incorrect argument, index out of range\n";
+//                }
+//                else{
+//                    PlaceItem(items.get(Integer.parseInt(cmd[1])));
+//                    //items.get(Integer.parseInt(cmd[1])).Placed(this, containingRoom);
+//                }
+//                break;
+//            case "pickup":
+//                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
+//                else if(containingRoom.GetItems().size() <= Integer.parseInt(cmd[1])){
+//                    out += "Incorrect argument, index out of range\n";
+//                }
+//                else{
+//                    PickUpItem(containingRoom.GetItems().get(Integer.parseInt(cmd[1])));
+////                    containingRoom.GetItems().get(Integer.parseInt(cmd[1])).PickedUp(this, containingRoom);
+//                }
+//                break;
+//            case "step":
+//                if(cmd.length < 2) out += "Incorrect command, missing argument\n";
+//                else if(containingRoom.GetNeighbours().size() <= Integer.parseInt(cmd[1])){
+//                    out += "Incorrect argument, index out of range\n";
+//                }
+//                else{
+//                    this.Step(containingRoom.GetNeighbours().get(Integer.parseInt(cmd[1])));
+//                }
+//                break;
+//            case "skip":
+//                break;
+//            case "exit":
+//                game.Exit(); break;
+//        }
+//        System.out.print(out);
 
     }
 

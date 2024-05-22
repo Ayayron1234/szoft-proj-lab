@@ -3,8 +3,11 @@ import main.Game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
 
 public class MainWindow extends JFrame {
     static MainWindow instance = null;
@@ -12,24 +15,64 @@ public class MainWindow extends JFrame {
     CardLayout cardLayout = null;
     JPanel cardPanel = null;
 
-    StartMenuScreen startMenu = null;
-    SavedGamesScreen savedGamesScreen = null;
-    NewGameScreen newGameScreen = null;
+    StartMenuScreen     startMenu = null;
+    SavedGamesScreen    savedGamesScreen = null;
+    NewGameScreen       newGameScreen = null;
+    GameScreen          gameScreen = null;
+    GameOverScreen      gameOverScreen = null;
 
-    Game game = null;
+    Game                game = null;
+    CountDownLatch      gameInitializedLatch = null;
+
+    private HashMap<String, ImageIcon> loadedImages = new HashMap<>();
 
     public MainWindow(String title) {
         super(title);
     }
 
+    public static void WaitForGameInitalization() {
+        instance.gameInitializedLatch = new CountDownLatch(1);
+        try {
+            instance.gameInitializedLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void GameInitialized() {
+        instance.gameInitializedLatch.countDown();
+    }
+
+    public static void RedrawGame() {
+        if (instance.game.IsGameOver())
+            SetScreen("gameOver");
+
+        instance.gameScreen.Redraw();
+    }
+
     public static ImageIcon LoadImageIcon(String path) {
+        if (instance.loadedImages.containsKey(path))
+            return instance.loadedImages.get(path);
+
         java.net.URL imgURL = MainWindow.class.getResource(path);
         if (imgURL != null) {
-            return new ImageIcon(imgURL);
+            instance.loadedImages.put(path, new ImageIcon(imgURL));
+            return instance.loadedImages.get(path);
         } else {
             System.err.println("Couldn't find file: " + path);
             return new ImageIcon("");
         }
+    }
+
+    public static Image ResizeImage(Image sourceImage, int w, int h) {
+        BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2 = resizedImage.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(sourceImage, 0, 0, w, h, null);
+        g2.dispose();
+
+        return resizedImage;
     }
 
     public static void Open(String title, int width, int height) {
@@ -40,6 +83,10 @@ public class MainWindow extends JFrame {
 
     public static void SetScreen(String screenName) {
         instance.cardLayout.show(instance.cardPanel, screenName);
+
+        for (Component comp : instance.cardPanel.getComponents())
+            if (comp instanceof Screen && comp.isVisible())
+                ((Screen)comp).Present();
     }
 
     public static void SetGame(Game game) {
@@ -90,6 +137,12 @@ public class MainWindow extends JFrame {
         // Saved Games Screen
         savedGamesScreen = new SavedGamesScreen("./saves/");
         cardPanel.add(savedGamesScreen, "savedGames");
+        // Game Screen
+        gameScreen = new GameScreen();
+        cardPanel.add(gameScreen, "game");
+        // Game Over Screen
+        gameOverScreen = new GameOverScreen();
+        cardPanel.add(gameOverScreen, "gameOver");
 
         add(cardPanel, BorderLayout.CENTER);
 

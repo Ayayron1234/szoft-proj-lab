@@ -3,6 +3,8 @@ package main;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
+
+import main.graphics.MainWindow;
 import main.roomabilities.PoisonAbility;
 
 import java.util.ArrayList;
@@ -12,10 +14,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import main.itemtypes.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Manages the state and logic of the game, including rounds, entities (students and teachers),
@@ -27,6 +31,7 @@ public class Game {
     int                 roundsLeft = 4;
     int                 roundNumber = 0;
     boolean             shouldExit = false;
+    boolean             victory = false;
 
     ArrayList<Room>     rooms = new ArrayList<>();
     ArrayList<Entity>   entities = new ArrayList<>();
@@ -38,6 +43,47 @@ public class Game {
     ArrayList<Entity>   mainLoopEntities = new ArrayList<>();
 
     Scanner scanner = new Scanner(System.in);
+
+    Student         activePlayer = null;
+    CountDownLatch  latch = null;
+    boolean         uiDisabled = false;
+
+    public void SetActivePlayer(Student student) {
+        this.activePlayer = student;
+        SwingUtilities.invokeLater(MainWindow::RedrawGame);
+    }
+
+    public Student GetActivePlayer() {
+        return this.activePlayer;
+    }
+
+    public void WaitForUI() {
+        latch = new CountDownLatch(1);
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean UIActionEnabled() {
+        return latch.getCount() > 0 && !uiDisabled;
+    }
+
+    public void UIReady() {
+        SwingUtilities.invokeLater(MainWindow::RedrawGame);
+        uiDisabled = true;
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        uiDisabled = false;
+                        latch.countDown();
+                    }
+                },
+                800
+        );
+    }
 
     /**
      * Constructor of the Game class with 1 parameter
@@ -333,6 +379,14 @@ public class Game {
             End(false);
     }
 
+    public boolean IsGameOver() {
+        return shouldExit;
+    }
+
+    public boolean IsVictory() {
+        return victory;
+    }
+
     /**
      * Ends the game with a specified outcome.
      *
@@ -340,12 +394,14 @@ public class Game {
      */
     public void End(boolean victory){
         if (victory) {
+            this.victory = true;
             System.out.printf("victory\n");
         }
         else {
             System.out.printf("game over\n");
         }
         shouldExit = true;
+        SwingUtilities.invokeLater(MainWindow::RedrawGame);
     }
 
     /**

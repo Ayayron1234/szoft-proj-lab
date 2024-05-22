@@ -30,6 +30,8 @@ public class Room implements TimerSubscriber {
     boolean                         isSticky = false;
     private ArrayList<RoomAbility>  abilities = new ArrayList<>();
 
+    private int                     makeSticky = 0;
+
     /**
      * Retrieves the Room Number (UID).
      *
@@ -202,6 +204,10 @@ public class Room implements TimerSubscriber {
      */
     public void Clean() {
         isSticky = false;
+        for (Item item: GetItems()
+             ) {
+            item.SetSticky(false);
+        }
         RemoveAbilityType(Poisoner.class);
     }
 
@@ -216,6 +222,15 @@ public class Room implements TimerSubscriber {
 
     @Override
     public void StartRound(TimerEvent data) {
+        if(makeSticky == 3) {
+            isSticky = true;
+            for (Item item: GetItems()
+                 ) {
+                item.SetSticky(true);
+            }
+            makeSticky = 0;
+        }
+
         ArrayList<RoomAbility> _abilities = new ArrayList<RoomAbility>();
         _abilities.addAll(abilities);
 

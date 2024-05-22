@@ -63,7 +63,7 @@ public class Duster extends Item {
     @Override
     public void StartRound(TimerEvent timerEvent) {
         if(IsFake()) return;
-        if (owner == null && owner.GetContainingRoom() == null)
+        if (owner == null || owner.GetContainingRoom() == null)
             return;
 
         // Apply stunner to each entity in the same room as the duster's owner

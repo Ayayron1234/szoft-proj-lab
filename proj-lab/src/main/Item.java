@@ -95,6 +95,8 @@ import com.google.gson.JsonPrimitive;
         return isSticky;
     }
 
+    public void SetSticky(boolean toWhich) { isSticky = toWhich;}
+
     /**
      * This method is to get if the item is fake or not
      *
