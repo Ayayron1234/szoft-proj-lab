@@ -73,7 +73,7 @@ public class Transistor extends Item {
         //System.out.printf("%s placed \"%s\"\n", who.GetName(), GetName());
 
         if (pair == null || pair.location == null) {
-            System.out.println("VALAMI NULL");
+            //System.out.println("VALAMI NULL");
             return;
         }
 

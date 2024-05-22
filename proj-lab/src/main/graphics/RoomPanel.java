@@ -18,10 +18,7 @@ public class RoomPanel extends JPanel {
 
     private final Color BACKGROUND_COLOR = Color.GRAY;
     private final Color DOOR_COLOR = Color.BLACK;
-    private boolean hasNorth;
-    private boolean hasSouth;
-    private boolean hasEast;
-    private boolean hasWest;
+
 
 
     private Room currentRoom;
@@ -32,16 +29,13 @@ public class RoomPanel extends JPanel {
     private JPanel eastDoorPanel;
     private JPanel westDoorPanel;
 
-    private JPanel door;
-    private JPanel door2;
-    private JPanel door3;
-    private JPanel door4;
-    private JPanel door5;
-    private JPanel door6;
-    private JPanel door7;
+    private int horizontalCounter = 1;
+    private int verticalCounter = 1;
 
 
-    private ArrayList<JPanel> doorPanels;
+
+    private ArrayList<JPanel> horizontalDoorPanels;
+    private ArrayList<JPanel> verticalDoorPanels;
 
     public RoomPanel(Room room, DoorPanel.DoorClickListener clickListener) {
         super();
@@ -52,7 +46,8 @@ public class RoomPanel extends JPanel {
         //setMinimumSize(new Dimension(100, 100));
         setLayout(new BorderLayout());
 
-        doorPanels = new ArrayList<>();
+        horizontalDoorPanels = new ArrayList<>();
+        verticalDoorPanels = new ArrayList<>();
 
 
         /*Image scaledImage3 = icon.getImage().getScaledInstance(Integer.parseInt(String.valueOf(icon.getIconWidth() * 0.3)), Integer.parseInt(String.valueOf(icon.getIconHeight() * 0.3)), Image.SCALE_SMOOTH);
@@ -65,21 +60,21 @@ public class RoomPanel extends JPanel {
 
         northDoorPanel = new JPanel(new GridBagLayout());
         northDoorPanel.setPreferredSize(new Dimension(0, 10));
-        northDoorPanel.setBackground(Color.blue);
+        northDoorPanel.setBackground(BACKGROUND_COLOR);
         add(northDoorPanel, BorderLayout.NORTH);
 
 
 
         southDoorPanel = new JPanel(new GridBagLayout());
         southDoorPanel.setPreferredSize(new Dimension(0, 10));
-        southDoorPanel.setBackground(Color.GREEN);
+        southDoorPanel.setBackground(BACKGROUND_COLOR);
 
         //southDoorPanel.add(door);
         add(southDoorPanel, BorderLayout.SOUTH);
 
         westDoorPanel = new JPanel(new GridBagLayout());
         westDoorPanel.setPreferredSize(new Dimension(10, 0));
-        westDoorPanel.setBackground(Color.pink);
+        westDoorPanel.setBackground(BACKGROUND_COLOR);
         //westDoorPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         //westDoorPanel.add(door2);
@@ -88,7 +83,7 @@ public class RoomPanel extends JPanel {
 
         eastDoorPanel = new JPanel(new GridBagLayout());
         eastDoorPanel.setPreferredSize(new Dimension(10, 0));
-        eastDoorPanel.setBackground(Color.RED);
+        eastDoorPanel.setBackground(BACKGROUND_COLOR);
 
         add(eastDoorPanel, BorderLayout.EAST);
 
@@ -197,42 +192,56 @@ public class RoomPanel extends JPanel {
      */
 
     public void PlaceDoors() {
-        for(JPanel doorPanel : doorPanels) {
-            eastDoorPanel.add(doorPanel);
-            westDoorPanel.add(doorPanel);
+
+        for(JPanel doorPanel : horizontalDoorPanels) {
+            if(horizontalCounter % 2 == 1) {
+                northDoorPanel.add(doorPanel);
+                horizontalCounter++;
+            }
+            else {
+                southDoorPanel.add(doorPanel);
+                horizontalCounter++;
+            }
         }
+
+        for(JPanel doorPanel : verticalDoorPanels) {
+            if(verticalCounter % 2 == 1) {
+                westDoorPanel.add(doorPanel);
+                verticalCounter++;
+            }
+            else {
+                eastDoorPanel.add(doorPanel);
+                verticalCounter++;
+            }
+        }
+
     }
 
     public void InitializeDoors(DoorPanel.DoorClickListener clickListener) {
         //if(currentRoom.GetNeighbours() == null) return;
-
-        for(int i = 0; i < currentRoom.GetNeighbours().size(); i++) {
-            //System.out.println(currentRoom.GetNeighbours().get(i).GetRoomNumber());
-            DoorPanel doorPanel = new DoorPanel(DoorPanel.Orientation.HORIZONTAL, currentRoom.GetNeighbours().get(i), clickListener);
-            //System.out.println(doorPanel.getHeight());
-
-            JPanel door = new JPanel();
-            door.setPreferredSize(new Dimension(10, 40));
-            door.setBackground(DOOR_COLOR);
-            door.setBorder(new MatteBorder(5,0,5,0, BACKGROUND_COLOR));
-            //westDoorPanel.add(doorPanel);*/
-            doorPanels.add(doorPanel);
-            //westDoorPanel.add(door);
-
-            /*door4 = new JPanel();
-            door4.setPreferredSize(new Dimension(10, 40));
-            door4.setBackground(Color.BLACK);
-            door4.setBorder(new MatteBorder(5,0,5,0, Color.GRAY));*/
+        if(currentRoom.GetNeighbours().size() >= 2) {
+            for(int i = 0; i < 2; i++) {
+                DoorPanel horizontalDoorPanel = new DoorPanel(DoorPanel.Orientation.HORIZONTAL, currentRoom.GetNeighbours().get(i), clickListener);
+                horizontalDoorPanels.add(horizontalDoorPanel);
+            }
+            for(int i = 2; i < currentRoom.GetNeighbours().size(); i++) {
+                DoorPanel verticalDoorPanel = new DoorPanel(DoorPanel.Orientation.VERTICAL, currentRoom.GetNeighbours().get(i), clickListener);
+                verticalDoorPanels.add(verticalDoorPanel);
+            }
+        }
+        else {
+            for(int i = 0; i < currentRoom.GetNeighbours().size(); i++) {
+                DoorPanel doorPanel = new DoorPanel(DoorPanel.Orientation.HORIZONTAL, currentRoom.GetNeighbours().get(i), clickListener);
+                horizontalDoorPanels.add(doorPanel);
 
 
-            //TODO place the doors based on directions
+
+
+            }
         }
     }
 
-    public void Step(Room room) {
-        //TODO execute stepping function
-        //RoomPanel(room);
-    }
+
 
     public void PlaceEntities() {
         //if(currentRoom.GetEntities() == null) return;
@@ -272,8 +281,5 @@ public class RoomPanel extends JPanel {
         return id % 3 + 1;
     }
 
-    private String GetSimplifiedClassName(Class clazz) {
-        String[] name = clazz.getName().split("\\.");
-        return name[name.length - 1];
-    }
+
 }

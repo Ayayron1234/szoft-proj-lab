@@ -34,7 +34,7 @@ public class GameScreen extends Screen {
         AddInventoryPanel(gamePanel, gamePanelConstraints);
 
         mapContainerPanel = new JPanel();
-        mapContainerPanel.setBackground(Color.blue);
+        //mapContainerPanel.setBackground(Color.blue);
         gamePanelConstraints.weightx = 0.988;
         gamePanel.add(mapContainerPanel, gamePanelConstraints);
 

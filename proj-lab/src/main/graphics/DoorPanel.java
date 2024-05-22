@@ -20,13 +20,13 @@ public class DoorPanel extends JPanel {
         super();
 
         if (orientation.equals(Orientation.HORIZONTAL)) {
-            System.out.println("horizontal");
+            //System.out.println("horizontal");
             setPreferredSize(new Dimension(40, 10));
             setBackground(Color.BLACK);
             setBorder(new MatteBorder(0,5,0,5, Color.GRAY));
         } else if (orientation.equals(Orientation.VERTICAL)) {
-            System.out.println("vertical");
-            setPreferredSize(new Dimension(10, 100));
+            //System.out.println("vertical");
+            setPreferredSize(new Dimension(10, 40));
             setBackground(Color.BLACK);
             setBorder(new MatteBorder(5,0,5,0, Color.GRAY));
         }
